@@ -2,6 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
+  // GitHub project pages are served from /<repo>/, not from the domain root,
+  // so CI sets BASE_PATH. Local dev and preview keep '/'.
+  base: process.env.BASE_PATH ?? '/',
   plugins: [react()],
   server: {
     port: 5173,
