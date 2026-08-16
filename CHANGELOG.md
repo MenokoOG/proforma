@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The GitHub Pages workflow is manual-only (`workflow_dispatch`) until this
+  repository is public. Pages is not available on private repositories under
+  GitHub Free, so a push-triggered deploy failed on every merge to main.
+- Removed the live demo link from the README header and the `homepage` field
+  from `package.json` — both pointed at a page that does not exist yet.
+  Restored together with the push trigger when the repository goes public.
+
 ## [1.0.0] — 2026-08-16
 
 First public release.
