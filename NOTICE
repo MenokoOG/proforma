@@ -1,0 +1,111 @@
+ProForma
+Copyright 2026 classHuman AI LLC
+
+This product includes software developed by classHuman AI LLC
+(https://classhuman.org).
+
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+
+================================================================================
+SOURCE MATERIAL AND ATTRIBUTION
+================================================================================
+
+ProForma implements four frameworks taught in the module
+
+    AI Leadership: Commercial value with AI
+
+which forms part of the Proficient AI Engineer program by Ed Donner:
+
+    https://edwarddonner.com/proficient/
+
+The four documents are:
+
+  1. High-Level Strategic Decision Framework
+     The five-year cost / benefit / risk model, its seven cost lines, three
+     benefit categories and three risk-mitigation lines, and the rule that
+     annual amounts begin in the second year.
+     Implemented in: src/lib/defaults.ts, src/lib/calc.ts
+
+  2. Cross-Functional AI Project Decision-Making Framework
+     The eighteen stakeholder roles, and the architecture decision matrix
+     with its seven risk dimensions and named owners.
+     Implemented in: src/data/stakeholders.ts, src/data/decisions.ts
+
+  3. End-to-End AI Delivery Roadmap
+     Six phase gates by seven swimlanes, 122 deliverables.
+     Implemented in: src/data/roadmap.ts
+
+  4. AI Industry Use Cases
+     Twenty industries, each with a predictive, generative and agentic
+     example.
+     Implemented in: src/data/industries.ts
+
+Each of those files carries a header comment naming its source document.
+
+
+WHAT IS BORROWED AND WHAT IS NOT
+
+The structure and method are Ed Donner's: which cost lines exist, which
+benefit categories a case is argued in, which risk dimensions get scored and
+by whom, the shape of the delivery roadmap, and the arithmetic convention
+that one-time amounts land in Year 1 while annual amounts apply to Years 2-5.
+ProForma is faithful to that arithmetic and does not vary it.
+
+The application is classHuman AI's: the interface, the calculation engine,
+the token cost model, the export formats, the readiness checks, and all
+explanatory and guidance text.
+
+The industry descriptions in src/data/industries.ts were rewritten in
+ProForma's own words. The original entries were closer to encyclopedia
+summaries; these are framed around the cost and benefit shape a business case
+would actually claim. Unsourced performance figures present in the original
+were removed rather than repeated. The industry list and the
+predictive / generative / agentic structure are retained from the source.
+
+src/data/roadmap.ts, src/data/stakeholders.ts and src/data/decisions.ts
+follow their source documents closely. They encode structure and method
+rather than prose, and they are attributed here rather than rewritten,
+because changing them would change what the framework says.
+
+
+PROVENANCE
+
+Lawrence Jefferson II completed the Proficient AI Engineer program;
+certificate issued 3 August 2026. The toolkits were distributed to program
+participants, and the accompanying workbooks invite participants to share
+improvements back.
+
+
+PERMISSION STATUS
+
+    >>> OUTSTANDING <<<
+
+    Written permission from Ed Donner has been requested but not yet
+    received. Paste his reply below this line before making this repository
+    public, and delete this notice.
+
+    -----------------------------------------------------------------------
+    (reply goes here)
+    -----------------------------------------------------------------------
+
+If you are Ed Donner and you would like attribution changed, expanded or
+removed, please open an issue on this repository or contact classHuman AI
+directly. Any such request will be honoured.
+
+
+================================================================================
+THIRD-PARTY DEPENDENCIES
+================================================================================
+
+ProForma has two runtime dependencies, both MIT licensed:
+
+  react, react-dom          https://github.com/facebook/react
+
+The optional AI review server (server/index.mjs) loads @anthropic-ai/sdk
+(MIT) only when it is run. It is an optional dependency and the application
+is fully functional without it.
+
+Inference prices in src/data/models.ts are Anthropic first-party API list
+rates, included for the token calculator. No third-party provider prices are
+shipped; see the note in that file.
