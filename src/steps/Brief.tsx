@@ -1,7 +1,16 @@
 import { STAKEHOLDER_ROLES } from '../data/stakeholders'
 import { CURRENCIES } from '../lib/format'
 import { useStore } from '../state/store'
-import { Card, Field, NumberField, Note, Segmented, SelectField, TextArea, TextField } from '../components/ui'
+import {
+  Card,
+  Field,
+  NumberField,
+  Note,
+  Segmented,
+  SelectField,
+  TextArea,
+  TextField,
+} from '../components/ui'
 
 export function Brief() {
   const { doc, dispatch } = useStore()
@@ -16,8 +25,8 @@ export function Brief() {
         <p className="eyebrow">Step 1 of 8</p>
         <h1>What are you proposing?</h1>
         <p>
-          Everything downstream hangs off this. A reviewer who reads only this page should be
-          able to say what you want to build, for whom, and who is accountable.
+          Everything downstream hangs off this. A reviewer who reads only this page should be able
+          to say what you want to build, for whom, and who is accountable.
         </p>
       </header>
 
@@ -70,7 +79,10 @@ export function Brief() {
         </Note>
       </Card>
 
-      <Card title="Accountability" sub="Named people, not team names. Empty rows are a finding in themselves.">
+      <Card
+        title="Accountability"
+        sub="Named people, not team names. Empty rows are a finding in themselves."
+      >
         <div className="grid-2">
           <TextField
             label="Proposers"
@@ -121,10 +133,7 @@ export function Brief() {
 
       <Card title="Financial assumptions" sub="These drive every figure in the model.">
         <div className="grid-3">
-          <Field
-            label="Year 1 starts"
-            hint="Anchors the year labels and the roadmap gates."
-          >
+          <Field label="Year 1 starts" hint="Anchors the year labels and the roadmap gates.">
             {(id) => (
               <input
                 id={id}

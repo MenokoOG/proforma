@@ -85,11 +85,7 @@ export function exportCsv(doc: Doc, results: Results) {
   const header = ['Item', 'Description', 'One-time', 'Annual', ...labels, '5-year total']
   rows.push(header)
 
-  const section = (
-    title: string,
-    items: Doc['costs'],
-    sign: 1 | -1,
-  ) => {
+  const section = (title: string, items: Doc['costs'], sign: 1 | -1) => {
     rows.push([title])
     for (const item of items) {
       const cells = spread(item).map((v) => v * sign)
@@ -105,14 +101,7 @@ export function exportCsv(doc: Doc, results: Results) {
   }
 
   section('COSTS', doc.costs, -1)
-  rows.push([
-    'TOTAL COST',
-    '',
-    '',
-    '',
-    ...results.years.map((y) => -y.cost),
-    -results.totalCost,
-  ])
+  rows.push(['TOTAL COST', '', '', '', ...results.years.map((y) => -y.cost), -results.totalCost])
   rows.push([])
 
   section('BENEFITS', doc.benefits, 1)
@@ -145,14 +134,7 @@ export function exportCsv(doc: Doc, results: Results) {
     ...results.years.map((y) => y.net),
     results.totalNet,
   ])
-  rows.push([
-    'RUNNING TOTAL',
-    '',
-    '',
-    '',
-    ...results.years.map((y) => y.cumulative),
-    '',
-  ])
+  rows.push(['RUNNING TOTAL', '', '', '', ...results.years.map((y) => y.cumulative), ''])
   rows.push([])
 
   rows.push(['SUMMARY'])
@@ -276,9 +258,7 @@ export function buildMarkdown(doc: Doc, results: Results): string {
   L.push(
     `| **Net** | ${results.years.map((y) => `**${fmt(y.net)}**`).join(' | ')} | **${fmt(results.totalNet)}** |`,
   )
-  L.push(
-    `| Running total | ${results.years.map((y) => fmt(y.cumulative)).join(' | ')} | |`,
-  )
+  L.push(`| Running total | ${results.years.map((y) => fmt(y.cumulative)).join(' | ')} | |`)
   L.push('')
 
   L.push('## Headline')
@@ -350,9 +330,5 @@ export function buildMarkdown(doc: Doc, results: Results): string {
 }
 
 export function exportMarkdown(doc: Doc, results: Results) {
-  download(
-    `${slug(doc.project.title)}-proforma.md`,
-    'text/markdown',
-    buildMarkdown(doc, results),
-  )
+  download(`${slug(doc.project.title)}-proforma.md`, 'text/markdown', buildMarkdown(doc, results))
 }

@@ -140,8 +140,7 @@ export function irr(flows: number[]): number | null {
   const hasPos = flows.some((f) => f > 0)
   if (!hasNeg || !hasPos) return null
 
-  const npvAt = (rate: number) =>
-    flows.reduce((acc, f, i) => acc + f / Math.pow(1 + rate, i), 0)
+  const npvAt = (rate: number) => flows.reduce((acc, f, i) => acc + f / Math.pow(1 + rate, i), 0)
 
   let lo = -0.9999
   let hi = 10
@@ -191,8 +190,7 @@ export const CACHE_READ_MULTIPLIER = 0.1
 
 export function computeTokenCost(plan: TokenPlan, models: TokenModel[]): TokenCost {
   const model = models.find((m) => m.id === plan.modelId)
-  const inputPerM =
-    plan.modelId === 'custom' ? num(plan.customInputPerM) : num(model?.inputPerM)
+  const inputPerM = plan.modelId === 'custom' ? num(plan.customInputPerM) : num(model?.inputPerM)
   const outputPerM =
     plan.modelId === 'custom' ? num(plan.customOutputPerM) : num(model?.outputPerM)
 
@@ -289,12 +287,10 @@ export function findGaps(doc: Doc, results: Results): Gap[] {
   const push = (id: string, step: number, severity: Gap['severity'], message: string) =>
     gaps.push({ id, step, severity, message })
 
-  if (!doc.project.title.trim())
-    push('title', 0, 'blocker', 'The initiative has no title.')
+  if (!doc.project.title.trim()) push('title', 0, 'blocker', 'The initiative has no title.')
   if (!doc.project.proposal.trim())
     push('proposal', 0, 'blocker', 'No proposal summary — a sponsor has nothing to read.')
-  if (!doc.project.sponsors.trim())
-    push('sponsor', 0, 'warning', 'No executive sponsor named.')
+  if (!doc.project.sponsors.trim()) push('sponsor', 0, 'warning', 'No executive sponsor named.')
 
   const namedStakeholders = Object.values(doc.stakeholders).filter((v) => v.trim()).length
   if (namedStakeholders < 4)
@@ -316,9 +312,7 @@ export function findGaps(doc: Doc, results: Results): Gap[] {
   if (results.totalBenefit === 0)
     push('benefits', 4, 'blocker', 'Every benefit line is zero — there is no case to make.')
 
-  const unjustifiedBenefits = doc.benefits.filter(
-    (b) => lineTotal(b) > 0 && !b.note.trim(),
-  )
+  const unjustifiedBenefits = doc.benefits.filter((b) => lineTotal(b) > 0 && !b.note.trim())
   if (unjustifiedBenefits.length)
     push(
       'justify',

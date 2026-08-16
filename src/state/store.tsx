@@ -150,10 +150,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, [saved])
 
   const results = useMemo(() => computeResults(doc), [doc])
-  const tokenCost = useMemo(
-    () => computeTokenCost(doc.tokenPlan, TOKEN_MODELS),
-    [doc.tokenPlan],
-  )
+  const tokenCost = useMemo(() => computeTokenCost(doc.tokenPlan, TOKEN_MODELS), [doc.tokenPlan])
   const gaps = useMemo(() => findGaps(doc, results), [doc, results])
 
   // The token model feeds the AI API cost line when the user has linked them.
