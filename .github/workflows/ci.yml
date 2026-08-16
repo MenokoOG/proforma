@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Cancel a superseded run rather than paying for both.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # `ci` not `install`: fail on a lockfile that does not match.
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # The small bundle is a stated feature, so it is enforced rather than
+      # trusted. See README and CONTRIBUTING.
+      - name: Check bundle size
+        run: |
+          LIMIT=122880   # 120 kB
+          TOTAL=0
+          for f in dist/assets/*.js dist/assets/*.css; do
+            SIZE=$(gzip -c "$f" | wc -c)
+            printf '  %-34s %7s bytes gzipped\n' "$(basename "$f")" "$SIZE"
+            TOTAL=$((TOTAL + SIZE))
+          done
+          echo "  ----"
+          echo "  total: $TOTAL bytes gzipped (limit $LIMIT)"
+          if [ "$TOTAL" -gt "$LIMIT" ]; then
+            echo "::error::Bundle is $TOTAL bytes gzipped, over the $LIMIT byte budget."
+            exit 1
+          fi
