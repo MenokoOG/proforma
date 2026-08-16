@@ -1,5 +1,33 @@
 import { compactMoney, money } from '../lib/format'
 import type { Results } from '../lib/types'
+import { useMediaQuery } from './ui'
+
+/**
+ * Chart geometry, per breakpoint.
+ *
+ * The narrow layout is a second geometry rather than the same one restyled.
+ * Scaling the 720-wide viewBox into a 375px viewport puts it at roughly
+ * 0.476, which renders a 10px axis label at about 4.8px — the shape still
+ * reads, every number stops being legible. At 360 wide the SVG renders near
+ * 1:1 on a phone, so 11px stays 11px.
+ */
+const GEOMETRY = {
+  wide: { W: 720, H: 320, padL: 56, padR: 16, padT: 24, padB: 46, barCap: 30, gap: 5, ticks: 4 },
+  narrow: {
+    W: 360,
+    H: 260,
+    padL: 42,
+    padR: 10,
+    padT: 26,
+    padB: 44,
+    barCap: 16,
+    gap: 4,
+    ticks: 2,
+  },
+} as const
+
+/** Matches the `max-width: 600px` breakpoint the stylesheet uses. */
+export const CHART_NARROW_QUERY = '(max-width: 600px)'
 
 /**
  * Five-year cash picture: grouped bars for outflow vs inflow, and the
@@ -9,19 +37,11 @@ import type { Results } from '../lib/types'
  * Hand-rolled SVG rather than a chart library: it keeps the bundle small,
  * renders instantly, inherits theme tokens, and prints correctly.
  */
-export function CashChart({
-  results,
-  currency,
-}: {
-  results: Results
-  currency: string
-}) {
-  const W = 720
-  const H = 320
-  const padL = 56
-  const padR = 16
-  const padT = 24
-  const padB = 46
+export function CashChart({ results, currency }: { results: Results; currency: string }) {
+  const narrow = useMediaQuery(CHART_NARROW_QUERY)
+  const g = narrow ? GEOMETRY.narrow : GEOMETRY.wide
+
+  const { W, H, padL, padR, padT, padB } = g
   const plotW = W - padL - padR
   const plotH = H - padT - padB
 
@@ -43,8 +63,8 @@ export function CashChart({
 
   const n = results.years.length
   const slot = plotW / n
-  const barW = Math.min(30, slot * 0.3)
-  const gap = 5
+  const barW = Math.min(g.barCap, slot * 0.3)
+  const gap = g.gap
 
   const cx = (i: number) => padL + slot * i + slot / 2
 
@@ -52,8 +72,9 @@ export function CashChart({
     .map((v, i) => `${i === 0 ? 'M' : 'L'}${cx(i).toFixed(1)},${y(v).toFixed(1)}`)
     .join(' ')
 
-  // Gridlines at quarters of the range.
-  const ticks = 4
+  // Gridlines across the range. Narrow drops to two plus the zero baseline —
+  // five gridlines in 190px of plot height is noise, not information.
+  const ticks = g.ticks
   const gridValues = Array.from({ length: ticks + 1 }, (_, i) => bottom + (range / ticks) * i)
 
   const paybackIdx = results.paybackYear !== null ? results.paybackYear - 1 : -1
@@ -61,7 +82,7 @@ export function CashChart({
   return (
     <>
       <svg
-        className="chart"
+        className={`chart${narrow ? ' chart--narrow' : ''}`}
         viewBox={`0 0 ${W} ${H}`}
         preserveAspectRatio="xMidYMid meet"
         role="img"
@@ -96,12 +117,7 @@ export function CashChart({
               y1={padT}
               y2={H - padB}
             />
-            <text
-              className="payback-text"
-              x={cx(paybackIdx)}
-              y={padT - 8}
-              textAnchor="middle"
-            >
+            <text className="payback-text" x={cx(paybackIdx)} y={padT - 8} textAnchor="middle">
               break-even
             </text>
           </g>
@@ -141,13 +157,20 @@ export function CashChart({
               <text className="axis-label" x={cx(i)} y={H - padB + 16} textAnchor="middle">
                 Y{i + 1}
               </text>
+              {/* On narrow this row of numbers does the job the cumulative
+                  line does on wide, so the sign has to be readable without
+                  tracing the line. */}
               <text
-                className="value-label"
+                className={
+                  narrow ? `value-label ${row.cumulative < 0 ? 'neg' : 'pos'}` : 'value-label'
+                }
                 x={cx(i)}
                 y={H - padB + 30}
                 textAnchor="middle"
               >
-                {compactMoney(row.cumulative, currency)}
+                {narrow
+                  ? signedCompact(row.cumulative, currency)
+                  : compactMoney(row.cumulative, currency)}
               </text>
             </g>
           )
@@ -176,9 +199,20 @@ export function CashChart({
   )
 }
 
+/**
+ * Compact and signed: "−1.9M", "+440K". Uses the same true minus sign as
+ * `signedMoney` so the two never disagree on screen.
+ */
+function signedCompact(value: number, currency: string): string {
+  if (value === 0) return compactMoney(0, currency)
+  const body = compactMoney(Math.abs(value), currency)
+  return value > 0 ? `+${body}` : `−${body}`
+}
+
 function describe(results: Results, currency: string): string {
   const parts = results.years.map(
-    (row) => `Year ${row.index + 1}: net ${money(row.net, currency)}, cumulative ${money(row.cumulative, currency)}`,
+    (row) =>
+      `Year ${row.index + 1}: net ${money(row.net, currency)}, cumulative ${money(row.cumulative, currency)}`,
   )
   const payback =
     results.paybackYear === null
