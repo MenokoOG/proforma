@@ -1,7 +1,9 @@
-import { CashChart } from '../components/Chart'
-import { Card, Icon, Stat } from '../components/ui'
+import { useState } from 'react'
+import { CashChart, CHART_NARROW_QUERY } from '../components/Chart'
+import { Card, Icon, Stat, useMediaQuery } from '../components/ui'
 import { lineTotal, spread } from '../lib/calc'
-import { money, percent, signedMoney, years } from '../lib/format'
+import { compactMoney, money, percent, signedMoney, years } from '../lib/format'
+import type { Doc, YearRow } from '../lib/types'
 import { useStore } from '../state/store'
 
 export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
@@ -9,6 +11,16 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
   const r = results
   const outlay = r.totalCost + r.totalMitigation
   const blockers = gaps.filter((g) => g.severity === 'blocker')
+
+  // Below 600px the six secondary stat cards are ~165px wide, which will not
+  // hold "$1,230,000" at 1.3rem. Compact them. The hero spans the full width
+  // and keeps the exact figure. Chosen here rather than inside `Stat`, which
+  // other steps use at widths where compaction would lose precision for
+  // nothing.
+  const narrow = useMediaQuery(CHART_NARROW_QUERY)
+  const stat = (v: number) => (narrow ? compactMoney(v, currency) : money(v, currency))
+
+  const [showTable, setShowTable] = useState(false)
 
   return (
     <>
@@ -44,19 +56,29 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
         />
         <Stat
           label="Peak funding need"
-          value={money(Math.abs(r.peakExposure), currency)}
-          sub="Deepest point of the cash hole"
+          value={stat(Math.abs(r.peakExposure))}
+          sub={narrow ? 'Deepest cash hole' : 'Deepest point of the cash hole'}
           tone={r.peakExposure < 0 ? 'neg' : undefined}
         />
       </div>
 
       <div className="stats" style={{ marginBottom: 16 }}>
-        <Stat label="Total cost" value={money(r.totalCost, currency)} sub="Excluding mitigation" tone="neg" />
-        <Stat label="Total mitigation" value={money(r.totalMitigation, currency)} sub="Risk budget" tone="neg" />
-        <Stat label="Total benefit" value={money(r.totalBenefit, currency)} sub="Five-year" tone="pos" />
+        <Stat
+          label="Total cost"
+          value={stat(r.totalCost)}
+          sub={narrow ? 'Excl. mitigation' : 'Excluding mitigation'}
+          tone="neg"
+        />
+        <Stat
+          label="Total mitigation"
+          value={stat(r.totalMitigation)}
+          sub="Risk budget"
+          tone="neg"
+        />
+        <Stat label="Total benefit" value={stat(r.totalBenefit)} sub="Five-year" tone="pos" />
         <Stat
           label={`NPV at ${doc.project.discountRate}%`}
-          value={money(r.npv, currency)}
+          value={stat(r.npv)}
           sub={r.irr !== null ? `IRR ${percent(r.irr, 1)}` : 'IRR not defined'}
           tone={r.npv >= 0 ? 'pos' : 'neg'}
         />
@@ -83,7 +105,36 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
       </Card>
 
       <Card title="Year by year">
-        <div className="tablewrap">
+        {/* Below 760px the seven-column table is a 1.5-screen sideways
+            scroll, so Year 1 and the 5-year total can never be read
+            together — which is the comparison the table exists for. The
+            same figures render as one card per year instead. The table
+            stays mounted: PrintReport and the scroll wrapper both need it,
+            and it is still the right tool for anyone who asks for it. */}
+        <div className="yearcards">
+          {r.years.map((y) => (
+            <YearCard
+              key={y.index}
+              year={y}
+              doc={doc}
+              currency={currency}
+              breakEven={r.paybackYear === y.index + 1}
+            />
+          ))}
+        </div>
+        <div className="yearcards-foot">
+          <span>Need every line at once?</span>
+          <button
+            type="button"
+            className="btn small"
+            aria-expanded={showTable}
+            onClick={() => setShowTable((v) => !v)}
+          >
+            {showTable ? 'Hide table' : 'Full table'}
+          </button>
+        </div>
+
+        <div className={`tablewrap${showTable ? ' is-open' : ''}`}>
           <table>
             <caption className="visually-hidden">
               Five-year cost, benefit and cumulative position
@@ -182,16 +233,16 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
           </p>
           {r.paybackYear === null ? (
             <p>
-              Nothing here breaks even inside five years. That is not automatically a
-              no — strategic and option value sit outside this sheet — but it does mean the case
-              cannot be made on payback alone.
+              Nothing here breaks even inside five years. That is not automatically a no —
+              strategic and option value sit outside this sheet — but it does mean the case cannot
+              be made on payback alone.
             </p>
           ) : null}
           {r.totalBenefit > 0 && r.totalBenefit > outlay * 3 ? (
             <p>
-              Benefits exceed outlay by more than three to one. That is achievable, but it is
-              also the profile of a case where the benefit side has been estimated more
-              generously than the cost side. Check the justifications before presenting it.
+              Benefits exceed outlay by more than three to one. That is achievable, but it is also
+              the profile of a case where the benefit side has been estimated more generously than
+              the cost side. Check the justifications before presenting it.
             </p>
           ) : null}
         </div>
@@ -219,6 +270,64 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
         </div>
       )}
     </>
+  )
+}
+
+/**
+ * One year of the projection as a card, for viewports too narrow to hold the
+ * table. Every figure is read from the already-computed `YearRow` and from
+ * `spread()` — the same function the table rows use — so this is a second
+ * rendering of the numbers, never a second derivation of them.
+ */
+function YearCard({
+  year,
+  doc,
+  currency,
+  breakEven,
+}: {
+  year: YearRow
+  doc: Doc
+  currency: string
+  breakEven: boolean
+}) {
+  const i = year.index
+
+  const lines: { id: string; label: string; amount: number }[] = [
+    ...doc.costs.map((it) => ({ id: it.id, label: it.label, amount: -spread(it)[i] })),
+    ...doc.mitigations.map((it) => ({ id: it.id, label: it.label, amount: -spread(it)[i] })),
+    ...doc.benefits.map((it) => ({ id: it.id, label: it.label, amount: spread(it)[i] })),
+  ].filter((l) => l.amount !== 0)
+
+  return (
+    <details className={`yearcard${breakEven ? ' is-breakeven' : ''}`}>
+      <summary>
+        <span className="yearcard-badge">Y{i + 1}</span>
+        <span className="yearcard-figs">
+          <span className={`yearcard-net ${year.net >= 0 ? 'pos' : 'neg'}`}>
+            {signedMoney(year.net, currency)}
+          </span>
+          <span className="yearcard-run">
+            Running total {signedMoney(year.cumulative, currency)}
+            {breakEven ? ' — breaks even' : ''}
+          </span>
+        </span>
+        <span className="chev">{Icon.chevronRight(18)}</span>
+      </summary>
+      <div className="yearcard-body">
+        {lines.map((l) => (
+          <div className="yearcard-line" key={l.id}>
+            <span>{l.label}</span>
+            <span className={l.amount >= 0 ? 'pos' : 'neg'}>
+              {signedMoney(l.amount, currency)}
+            </span>
+          </div>
+        ))}
+        <div className="yearcard-line yearcard-net-row">
+          <span>Net for the year</span>
+          <span className={year.net >= 0 ? 'pos' : 'neg'}>{signedMoney(year.net, currency)}</span>
+        </div>
+      </div>
+    </details>
   )
 }
 
@@ -255,7 +364,8 @@ function LineRow({
   const cells = spread(item)
   const total = lineTotal(item)
   if (total === 0) return null
-  const fmt = (v: number) => (v === 0 ? '—' : sign === 1 ? money(v, currency) : `−${money(v, currency)}`)
+  const fmt = (v: number) =>
+    v === 0 ? '—' : sign === 1 ? money(v, currency) : `−${money(v, currency)}`
   return (
     <tr>
       <th scope="row" style={{ fontWeight: 500 }}>

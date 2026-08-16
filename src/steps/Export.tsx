@@ -131,16 +131,15 @@ export function Export() {
       <Card title="Where the framework comes from">
         <div className="prose">
           <p>
-            ProForma implements four source documents: the High-Level Strategic Decision
-            Framework (the five-year cost, benefit and risk model), the Cross-Functional AI
-            Project Decision-Making Framework (stakeholders and the decision matrix), the
-            End-to-End AI Delivery Roadmap (six gates, seven swimlanes), and the industry
-            use-case bank.
+            ProForma implements four source documents: the High-Level Strategic Decision Framework
+            (the five-year cost, benefit and risk model), the Cross-Functional AI Project
+            Decision-Making Framework (stakeholders and the decision matrix), the End-to-End AI
+            Delivery Roadmap (six gates, seven swimlanes), and the industry use-case bank.
           </p>
           <p>
-            The frameworks are indicative starting points meant to be tuned to your business.
-            The arithmetic here is faithful to them: one-time amounts land in Year 1, annual
-            amounts apply to Years 2 through 5.
+            The frameworks are indicative starting points meant to be tuned to your business. The
+            arithmetic here is faithful to them: one-time amounts land in Year 1, annual amounts
+            apply to Years 2 through 5.
           </p>
         </div>
       </Card>

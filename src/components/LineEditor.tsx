@@ -53,12 +53,20 @@ export function LineEditor({
           <span>{item.note.trim() || item.hint}</span>
         </span>
         <span className={`line-total ${total === 0 ? 'zero' : tone}`}>
-          {total === 0 ? '—' : bucket === 'benefits' ? money(total, currency) : `−${money(total, currency)}`}
+          {total === 0
+            ? '—'
+            : bucket === 'benefits'
+              ? money(total, currency)
+              : `−${money(total, currency)}`}
         </span>
       </summary>
 
       <div className="body">
-        {item.hint ? <p className="field-hint" style={{ marginBottom: 12 }}>{item.hint}</p> : null}
+        {item.hint ? (
+          <p className="field-hint" style={{ marginBottom: 12 }}>
+            {item.hint}
+          </p>
+        ) : null}
 
         {locked ? (
           <p className="note" style={{ marginBottom: 12 }}>
@@ -105,7 +113,11 @@ export function LineEditor({
             <div className="cell" key={i}>
               <span className="y">{labels[i].replace(/ \(.*\)/, '').replace('Year ', 'Y')}</span>
               <span className="v">
-                {v === 0 ? '—' : bucket === 'benefits' ? money(v, currency) : `−${money(v, currency)}`}
+                {v === 0
+                  ? '—'
+                  : bucket === 'benefits'
+                    ? money(v, currency)
+                    : `−${money(v, currency)}`}
               </span>
             </div>
           ))}

@@ -4,43 +4,52 @@
    a media query. Dark overrides appear twice: once for the system
    preference (guarded so an explicit light choice wins) and once for the
    explicit dark choice.
+
+   Revised palette: the ground is a cool grey, not a warm cream, and blue
+   carries the brand. Because blue no longer doubles as the positive
+   semantic, benefit is a deep green and cost a carmine — so interface
+   chrome and figures never share a hue.
    ================================================================= */
 
 :root {
   /* Surfaces */
-  --paper: #f7f4ee;
-  --surface: #fffdfa;
-  --surface-2: #f1ede4;
-  --surface-sunken: #ebe6db;
-  --line: #ddd6c8;
-  --line-strong: #c6bdaa;
+  --paper: #eff2f6;
+  --surface: #ffffff;
+  --surface-2: #f2f5f9;
+  --surface-sunken: #e2e7ee;
+  --line: #d8dee7;
+  --line-strong: #b4bdca;
 
   /* Text */
-  --ink: #1b1f26;
-  --ink-2: #4a5058;
-  --ink-3: #767d87;
+  --ink: #111722;
+  --ink-2: #49525f;
+  /* Darkened from the handoff's #79838f, which cleared only 3.85:1 on
+     --surface and 3.43:1 on --paper. This clears 4.5:1 on every light
+     background: surface 5.65, surface-2 5.17, paper 5.04, sunken 4.55. */
+  --ink-3: #5f6873;
 
   /* Brand + semantics */
-  --brand: #0f6f68;
-  --brand-strong: #0b524d;
-  --brand-soft: #d9ebe8;
-  --benefit: #0f6f68;
-  --benefit-soft: #d9ebe8;
-  --cost: #a4432a;
-  --cost-soft: #f6e2da;
+  --brand: #1f4fb0;
+  --brand-strong: #16397f;
+  --brand-soft: #e2eaf8;
+  --benefit: #1c6b4a;
+  --benefit-soft: #dcefe4;
+  --cost: #a32b33;
+  --cost-soft: #f8e3e4;
   --risk: #8a6110;
-  --risk-soft: #f7ead0;
-  --danger: #a02020;
+  --risk-soft: #f4ead9;
+  --danger: #a3202a;
 
-  --focus: #0f6f68;
-  --shadow: 0 1px 2px rgb(27 31 38 / 0.06), 0 6px 18px -8px rgb(27 31 38 / 0.14);
-  --shadow-lg: 0 2px 6px rgb(27 31 38 / 0.08), 0 24px 48px -20px rgb(27 31 38 / 0.28);
+  --focus: #1f4fb0;
+  --shadow: 0 1px 2px rgb(17 23 34 / 0.06), 0 6px 18px -8px rgb(17 23 34 / 0.16);
+  --shadow-lg: 0 2px 6px rgb(17 23 34 / 0.08), 0 24px 48px -20px rgb(17 23 34 / 0.3);
 
   /* Type */
-  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
-  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --font:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
 
   /* Space + shape */
   --r-sm: 8px;
@@ -53,60 +62,94 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --paper: #101318;
-    --surface: #171b22;
-    --surface-2: #1e232b;
-    --surface-sunken: #0c0f13;
-    --line: #2b313b;
-    --line-strong: #3d4552;
+    --paper: #0e1219;
+    --surface: #161c26;
+    --surface-2: #1e2531;
+    --surface-sunken: #0a0e14;
+    --line: #2a323f;
+    --line-strong: #3c4657;
 
-    --ink: #eef1f5;
-    --ink-2: #b3bbc6;
-    --ink-3: #838d9a;
+    --ink: #e9edf3;
+    --ink-2: #aeb8c6;
+    /* Lightened from the handoff's #7d8899, which cleared only 4.29:1 on
+       --surface-2 and 4.37:1 on --brand-soft — both grounds the year cards
+       use. This clears 4.5:1 on every dark ground. */
+    --ink-3: #848f9f;
 
-    --brand: #4fbfb2;
-    --brand-strong: #7ad4c8;
-    --brand-soft: #10312e;
-    --benefit: #4fbfb2;
-    --benefit-soft: #10312e;
-    --cost: #e08a68;
-    --cost-soft: #341c14;
+    --brand: #7aa5f0;
+    --brand-strong: #a3c1f7;
+    --brand-soft: #16233c;
+    --benefit: #4fb489;
+    --benefit-soft: #0f2a20;
+    --cost: #e8737c;
+    --cost-soft: #331419;
     --risk: #d9ae53;
     --risk-soft: #2e2513;
     --danger: #e57373;
 
-    --focus: #4fbfb2;
+    --focus: #7aa5f0;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 6px 18px -8px rgb(0 0 0 / 0.6);
     --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.5), 0 24px 48px -20px rgb(0 0 0 / 0.8);
   }
 }
 
 :root[data-theme='dark'] {
-  --paper: #101318;
-  --surface: #171b22;
-  --surface-2: #1e232b;
-  --surface-sunken: #0c0f13;
-  --line: #2b313b;
-  --line-strong: #3d4552;
+  --paper: #0e1219;
+  --surface: #161c26;
+  --surface-2: #1e2531;
+  --surface-sunken: #0a0e14;
+  --line: #2a323f;
+  --line-strong: #3c4657;
 
-  --ink: #eef1f5;
-  --ink-2: #b3bbc6;
-  --ink-3: #838d9a;
+  --ink: #e9edf3;
+  --ink-2: #aeb8c6;
+  /* Lightened from the handoff's #7d8899, which cleared only 4.29:1 on
+     --surface-2 and 4.37:1 on --brand-soft — both grounds the year
+     cards use. This clears 4.5:1 on every dark ground. */
+  --ink-3: #848f9f;
 
-  --brand: #4fbfb2;
-  --brand-strong: #7ad4c8;
-  --brand-soft: #10312e;
-  --benefit: #4fbfb2;
-  --benefit-soft: #10312e;
-  --cost: #e08a68;
-  --cost-soft: #341c14;
+  --brand: #7aa5f0;
+  --brand-strong: #a3c1f7;
+  --brand-soft: #16233c;
+  --benefit: #4fb489;
+  --benefit-soft: #0f2a20;
+  --cost: #e8737c;
+  --cost-soft: #331419;
   --risk: #d9ae53;
   --risk-soft: #2e2513;
   --danger: #e57373;
 
-  --focus: #4fbfb2;
+  --focus: #7aa5f0;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 6px 18px -8px rgb(0 0 0 / 0.6);
   --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.5), 0 24px 48px -20px rgb(0 0 0 / 0.8);
+}
+
+/* -----------------------------------------------------------------
+   Foreground for anything sitting on a --brand fill.
+
+   In dark mode --brand is a light blue, so white on it drops to about
+   1.6:1. Five rules read this token: .skip-link, .wordmark .mark,
+   .rail-item[aria-current='step'] .rail-num, .btn.primary, and
+   .chip[aria-pressed='true'].
+
+   Not every white-on-colour pairing belongs here. .switch::after uses
+   --surface, and .scale button[aria-pressed='true'] sits on the risk
+   severity ramp — five fixed dark hues that do not change with theme,
+   where plain white is correct.
+   ----------------------------------------------------------------- */
+
+:root {
+  --on-brand: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --on-brand: #0e1219;
+  }
+}
+
+:root[data-theme='dark'] {
+  --on-brand: #0e1219;
 }
 
 /* =================================================================
@@ -184,7 +227,7 @@ textarea {
   top: -60px;
   z-index: 100;
   background: var(--brand);
-  color: #fff;
+  color: var(--on-brand);
   padding: 10px 16px;
   border-radius: var(--r-sm);
   font-weight: 600;
@@ -241,7 +284,7 @@ textarea {
   height: 26px;
   border-radius: 7px;
   background: var(--brand);
-  color: #fff;
+  color: var(--on-brand);
   font-family: var(--font);
   font-size: 0.78rem;
   font-weight: 700;
@@ -369,7 +412,9 @@ textarea {
   cursor: pointer;
   color: var(--ink-2);
   font-size: 0.875rem;
-  transition: background 0.12s ease, color 0.12s ease;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease;
 }
 .rail-item:hover {
   background: var(--surface-2);
@@ -396,7 +441,7 @@ textarea {
 .rail-item[aria-current='step'] .rail-num {
   background: var(--brand);
   border-color: var(--brand);
-  color: #fff;
+  color: var(--on-brand);
 }
 .rail-item.complete .rail-num {
   background: var(--brand-soft);
@@ -534,7 +579,9 @@ textarea {
   border: 1px solid var(--line-strong);
   border-radius: var(--r-sm);
   color: var(--ink);
-  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+  transition:
+    border-color 0.12s ease,
+    box-shadow 0.12s ease;
 }
 .input:hover,
 .select:hover,
@@ -555,10 +602,15 @@ textarea {
 }
 .select {
   appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
     linear-gradient(135deg, currentColor 50%, transparent 50%);
-  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
-  background-size: 5px 5px, 5px 5px;
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 13px) 50%;
+  background-size:
+    5px 5px,
+    5px 5px;
   background-repeat: no-repeat;
   padding-right: 34px;
 }
@@ -639,7 +691,9 @@ textarea {
   font-size: 0.85rem;
   font-weight: 550;
   cursor: pointer;
-  transition: background 0.12s ease, color 0.12s ease;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease;
 }
 .segmented button:hover {
   color: var(--ink);
@@ -670,7 +724,10 @@ textarea {
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.12s ease, border-color 0.12s ease, transform 0.06s ease;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease,
+    transform 0.06s ease;
 }
 .btn:hover {
   background: var(--surface-2);
@@ -686,7 +743,7 @@ textarea {
 .btn.primary {
   background: var(--brand);
   border-color: var(--brand);
-  color: #fff;
+  color: var(--on-brand);
 }
 .btn.primary:hover {
   background: var(--brand-strong);
@@ -972,7 +1029,10 @@ textarea {
   letter-spacing: -0.02em;
   margin-top: 4px;
   line-height: 1.15;
-  overflow-wrap: anywhere;
+  /* Never break a figure across lines. "$1,230,000" wrapping to "$1,23" /
+     "0,000" is a misread number, which is worse than an overflow — the
+     callers compact the value instead. */
+  white-space: nowrap;
 }
 .stat .s {
   font-size: 0.74rem;
@@ -993,6 +1053,12 @@ textarea {
 @media (min-width: 760px) {
   .stat.hero {
     grid-column: span 2;
+  }
+}
+/* The hero spans the full width, so it keeps the uncompacted figure. */
+@media (max-width: 400px) {
+  .stat.hero .v {
+    font-size: 2rem;
   }
 }
 
@@ -1079,6 +1145,163 @@ td.pos {
 }
 
 /* =================================================================
+   Year cards — the five-year table, restated for narrow viewports
+
+   Shown below 760px in place of the table. The table stays in the DOM
+   (PrintReport depends on it) and is revealed by the "Full table"
+   toggle for anyone who wants every line at once.
+   ================================================================= */
+
+.yearcards {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+}
+.yearcard {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--surface);
+  overflow: hidden;
+}
+.yearcard > summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--tap);
+  padding: 12px 14px;
+  cursor: pointer;
+  list-style: none;
+}
+.yearcard > summary::-webkit-details-marker {
+  display: none;
+}
+.yearcard-badge {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.yearcard-figs {
+  flex: 1;
+  min-width: 0;
+}
+.yearcard-net {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.yearcard-net.pos {
+  color: var(--benefit);
+}
+.yearcard-net.neg {
+  color: var(--cost);
+}
+.yearcard-run {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.yearcard .chev {
+  flex: none;
+  color: var(--ink-3);
+  display: inline-flex;
+  transition: transform 0.15s ease;
+}
+.yearcard[open] .chev {
+  transform: rotate(90deg);
+}
+.yearcard-body {
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+  padding: 12px 14px;
+}
+.yearcard-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 0.83rem;
+  padding: 3px 0;
+}
+.yearcard-line > span:last-child {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.yearcard-line .pos {
+  color: var(--benefit);
+}
+.yearcard-line .neg {
+  color: var(--cost);
+}
+.yearcard-net-row {
+  border-top: 2px solid var(--line-strong);
+  margin-top: 8px;
+  padding-top: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+/* The break-even year is marked here, standing in for the dashed marker
+   the chart carries on wide viewports. */
+.yearcard.is-breakeven {
+  border: 1.5px solid var(--brand);
+  background: var(--brand-soft);
+}
+.yearcard.is-breakeven .yearcard-badge {
+  background: var(--brand);
+  color: var(--on-brand);
+}
+.yearcard.is-breakeven .yearcard-run {
+  color: var(--ink-2);
+}
+
+.yearcards-foot {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.yearcards-foot span {
+  font-size: 0.82rem;
+  color: var(--ink-2);
+}
+
+/* `screen` is load-bearing, not decoration. PrintReport renders its own
+   .tablewrap, so an unscoped rule here would blank the five-year table on
+   any page printed from a narrow viewport. The year cards are a screen
+   affordance; print always gets the full table. */
+@media screen and (max-width: 759px) {
+  .yearcards,
+  .yearcards-foot {
+    display: flex;
+  }
+  .tablewrap {
+    display: none;
+  }
+  .tablewrap.is-open {
+    display: block;
+    margin-top: 12px;
+  }
+  /* Only meaningful once the table has been opened deliberately. */
+  .scroll-hint {
+    display: none;
+  }
+  .tablewrap.is-open ~ .scroll-hint {
+    display: block;
+  }
+}
+
+/* =================================================================
    Chart
    ================================================================= */
 
@@ -1126,6 +1349,22 @@ td.pos {
   font-family: var(--font);
   font-variant-numeric: tabular-nums;
 }
+/* Narrow geometry renders near 1:1 in a phone viewport, so these sizes are
+   the sizes that reach the screen. See GEOMETRY in Chart.tsx. */
+.chart--narrow .axis-label {
+  font-size: 11px;
+}
+.chart--narrow .value-label {
+  font-size: 11px;
+  font-weight: 600;
+}
+.chart--narrow .value-label.neg {
+  fill: var(--cost);
+}
+.chart--narrow .value-label.pos {
+  fill: var(--benefit);
+}
+
 .chart .payback-line {
   stroke: var(--brand);
   stroke-width: 1.5;
@@ -1189,7 +1428,7 @@ td.pos {
 .chip[aria-pressed='true'] {
   background: var(--brand);
   border-color: var(--brand);
-  color: #fff;
+  color: var(--on-brand);
   font-weight: 650;
 }
 
@@ -1300,7 +1539,9 @@ td.pos {
   background: var(--surface-sunken);
   cursor: pointer;
   padding: 0;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
   margin-top: 2px;
 }
 .switch::after {

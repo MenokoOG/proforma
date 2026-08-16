@@ -31,7 +31,9 @@ export function UseCaseStep() {
           label="Closest industry"
           hint="Pick the one whose economics look most like yours, not necessarily your job title."
           value={uc.industry}
-          onChange={(v) => dispatch({ type: 'useCase', patch: { industry: v, aiType: '', seed: '' } })}
+          onChange={(v) =>
+            dispatch({ type: 'useCase', patch: { industry: v, aiType: '', seed: '' } })
+          }
           options={[
             { value: '', label: 'Select an industry…' },
             ...INDUSTRIES.map((i) => ({ value: i.id, label: i.name })),
@@ -98,7 +100,10 @@ export function UseCaseStep() {
       ) : null}
 
       {industry ? (
-        <Card title="The other two, for contrast" sub="Worth a glance — the cheaper option is sometimes the right one.">
+        <Card
+          title="The other two, for contrast"
+          sub="Worth a glance — the cheaper option is sometimes the right one."
+        >
           <dl className="kv">
             {TYPES.filter((t) => t !== uc.aiType).map((t) => (
               <div key={t} style={{ display: 'contents' }}>

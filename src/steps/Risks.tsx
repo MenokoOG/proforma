@@ -56,7 +56,8 @@ export function Risks() {
       ) : (
         <Note warn>
           You have not scored any risk dimensions above 2 on the Architecture step. Either the
-          initiative is genuinely low-risk, or the scoring has not had a cross-functional pass yet.
+          initiative is genuinely low-risk, or the scoring has not had a cross-functional pass
+          yet.
         </Note>
       )}
 

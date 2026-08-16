@@ -82,7 +82,9 @@ export function Costs() {
           <li>Human review of model output during the first year of operation.</li>
           <li>Re-training or re-indexing when the underlying data shifts.</li>
           <li>Legal and compliance review time, not just the mitigation budget.</li>
-          <li>Change management: training, comms, and the productivity dip while people adjust.</li>
+          <li>
+            Change management: training, comms, and the productivity dip while people adjust.
+          </li>
           <li>The cost of the version you build and then throw away.</li>
         </ul>
       </Card>
