@@ -1,0 +1,137 @@
+/* =================================================================
+   ProForma — design tokens (revised palette)
+
+   Drop-in replacement for the token block at the top of
+   src/styles/app.css. Same variable names, same three blocks, so
+   nothing downstream changes: every screen already reads these.
+
+   Light ground is a cool grey (no tan). Blue carries the brand;
+   because it no longer doubles as the positive semantic, benefit
+   moves to a deep green and cost to a carmine red, so chrome and
+   figures never share a hue.
+   ================================================================= */
+
+:root {
+  /* Surfaces */
+  --paper: #eff2f6;
+  --surface: #ffffff;
+  --surface-2: #f2f5f9;
+  --surface-sunken: #e2e7ee;
+  --line: #d8dee7;
+  --line-strong: #b4bdca;
+
+  /* Text */
+  --ink: #111722;
+  --ink-2: #49525f;
+  --ink-3: #79838f;
+
+  /* Brand + semantics */
+  --brand: #1f4fb0;
+  --brand-strong: #16397f;
+  --brand-soft: #e2eaf8;
+  --benefit: #1c6b4a;
+  --benefit-soft: #dcefe4;
+  --cost: #a32b33;
+  --cost-soft: #f8e3e4;
+  --risk: #8a6110;
+  --risk-soft: #f4ead9;
+  --danger: #a3202a;
+
+  --focus: #1f4fb0;
+  --shadow: 0 1px 2px rgb(17 23 34 / 0.06), 0 6px 18px -8px rgb(17 23 34 / 0.16);
+  --shadow-lg: 0 2px 6px rgb(17 23 34 / 0.08), 0 24px 48px -20px rgb(17 23 34 / 0.3);
+
+  /* Type */
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+  /* Space + shape */
+  --r-sm: 8px;
+  --r: 12px;
+  --r-lg: 18px;
+  --gap: 16px;
+  --tap: 44px;
+  --maxw: 1180px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #0e1219;
+    --surface: #161c26;
+    --surface-2: #1e2531;
+    --surface-sunken: #0a0e14;
+    --line: #2a323f;
+    --line-strong: #3c4657;
+
+    --ink: #e9edf3;
+    --ink-2: #aeb8c6;
+    --ink-3: #7d8899;
+
+    --brand: #7aa5f0;
+    --brand-strong: #a3c1f7;
+    --brand-soft: #16233c;
+    --benefit: #4fb489;
+    --benefit-soft: #0f2a20;
+    --cost: #e8737c;
+    --cost-soft: #331419;
+    --risk: #d9ae53;
+    --risk-soft: #2e2513;
+    --danger: #e57373;
+
+    --focus: #7aa5f0;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 6px 18px -8px rgb(0 0 0 / 0.6);
+    --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.5), 0 24px 48px -20px rgb(0 0 0 / 0.8);
+  }
+}
+
+:root[data-theme='dark'] {
+  --paper: #0e1219;
+  --surface: #161c26;
+  --surface-2: #1e2531;
+  --surface-sunken: #0a0e14;
+  --line: #2a323f;
+  --line-strong: #3c4657;
+
+  --ink: #e9edf3;
+  --ink-2: #aeb8c6;
+  --ink-3: #7d8899;
+
+  --brand: #7aa5f0;
+  --brand-strong: #a3c1f7;
+  --brand-soft: #16233c;
+  --benefit: #4fb489;
+  --benefit-soft: #0f2a20;
+  --cost: #e8737c;
+  --cost-soft: #331419;
+  --risk: #d9ae53;
+  --risk-soft: #2e2513;
+  --danger: #e57373;
+
+  --focus: #7aa5f0;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 6px 18px -8px rgb(0 0 0 / 0.6);
+  --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.5), 0 24px 48px -20px rgb(0 0 0 / 0.8);
+}
+
+/* -----------------------------------------------------------------
+   Two places outside the token block hard-code #fff on a brand fill
+   (.skip-link, .btn.primary, .chip[aria-pressed='true'],
+   .rail-item[aria-current='step'] .rail-num, .switch). In dark mode
+   the brand is a light blue, so white-on-brand loses contrast.
+   Add this after the token blocks and change those rules to use it.
+   ----------------------------------------------------------------- */
+
+:root {
+  --on-brand: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --on-brand: #0e1219;
+  }
+}
+
+:root[data-theme='dark'] {
+  --on-brand: #0e1219;
+}
