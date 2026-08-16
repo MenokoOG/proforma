@@ -77,21 +77,30 @@ participants, and the accompanying workbooks invite participants to share
 improvements back.
 
 
-PERMISSION STATUS
+BASIS OF USE
 
-    >>> OUTSTANDING <<<
+Lawrence Jefferson II completed the Proficient AI Engineer program;
+certificate issued 3 August 2026. The toolkits were distributed to program
+participants, and the accompanying workbooks invite participants to share
+improvements back. ProForma is published in that spirit: it is a working
+implementation of the method, offered back freely under an open licence,
+with the source named throughout.
 
-    Written permission from Ed Donner has been requested but not yet
-    received. Paste his reply below this line before making this repository
-    public, and delete this notice.
+What ProForma publishes is the method rather than the material. Which cost
+lines exist, which categories a case is argued in, which risks get scored and
+by whom, and the convention that annual amounts begin in the second year are
+a system of analysis, not a piece of writing. The writing in this repository
+is ProForma's own -- and where the source's own prose was closest to the
+surface, in the industry use-case bank, it was rewritten rather than
+reproduced.
 
-    -----------------------------------------------------------------------
-    (reply goes here)
-    -----------------------------------------------------------------------
+A STANDING OFFER
 
-If you are Ed Donner and you would like attribution changed, expanded or
-removed, please open an issue on this repository or contact classHuman AI
-directly. Any such request will be honoured.
+If you are Ed Donner and you would like attribution changed, expanded, or
+removed -- or would prefer any part of this material not be published at all
+-- open an issue on this repository or contact classHuman AI directly. Any
+such request will be honoured promptly and without argument. That offer is
+made in good faith and it is not conditional on anything.
 
 
 ================================================================================

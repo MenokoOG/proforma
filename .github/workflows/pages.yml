@@ -1,23 +1,11 @@
 name: Deploy to GitHub Pages
 
-# Manual only, for now.
-#
-# GitHub Pages is available on public repositories with GitHub Free, and on
-# private repositories only with Pro, Team or Enterprise. This repository is
-# private until the source-material permission recorded in NOTICE is settled,
-# so a push-triggered deploy would fail on every merge to main and train us to
-# ignore a red Actions tab.
-#
-# When the repository goes public: restore the push trigger below, enable
-# Pages under Settings -> Pages with Source set to "GitHub Actions", and put
-# the demo link back in the README header and the homepage field in
-# package.json.
-#
-# on:
-#   push:
-#     branches: [main]
+# Requires Settings -> Pages -> Source set to "GitHub Actions", and a public
+# repository (Pages on a private repo needs Pro, Team or Enterprise).
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:

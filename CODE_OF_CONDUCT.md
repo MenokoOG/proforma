@@ -59,8 +59,13 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-**[CONTACT EMAIL — SET BEFORE PUBLISHING]**.
+reported privately to the maintainers using GitHub's private reporting on this
+repository: **Security → Report a vulnerability**. That channel is visible only
+to the maintainers and is the same one used for security reports.
+
+If the report concerns something you would rather not raise on GitHub at all,
+open a public issue asking a maintainer to contact you, without detail, and one
+will.
 
 All complaints will be reviewed and investigated promptly and fairly.
 
