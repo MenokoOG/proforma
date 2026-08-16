@@ -16,7 +16,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "exactOptionalPropertyTypes": false
+    "exactOptionalPropertyTypes": false,
+
+    /* The app is browser-only. Node types are here for the test suite, which
+       reads app.css off disk to check colour contrast, and for vite.config.ts
+       reading process.env. */
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["src", "vite.config.ts"]
 }

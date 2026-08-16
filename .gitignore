@@ -1,6 +1,19 @@
 node_modules
 dist
+coverage
 tsconfig.tsbuildinfo
+*.tsbuildinfo
 .DS_Store
 *.local
+
+# Secrets. Never commit. `.env.example` documents the shape.
 .env
+.env.*
+!.env.example
+
+# Design reference bundles — implementation input, not repo content.
+design_handoff_*/
+
+# Internal board notes — belongs in the library repo, not here.
+BOARD-ENTRIES.md
+COMMIT-PLAN.ps1

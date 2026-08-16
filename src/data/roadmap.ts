@@ -1,4 +1,8 @@
 /**
+ * Source document: "End-to-End AI Delivery Roadmap", from the AI Leadership —
+ * Commercial value with AI module of Ed Donner's Proficient AI Engineer
+ * program (https://edwarddonner.com/proficient/). See NOTICE.
+ *
  * The End-to-End AI Delivery Roadmap: six phase gates by seven swimlanes.
  *
  * Reconstructed from the source deck's actual grid geometry, so each
@@ -23,7 +27,12 @@ export const PHASES: Phase[] = [
     gate: 'Is this worth funding at all?',
   },
   { id: 1, name: 'Phase 1', subtitle: 'Plan', gate: 'Who does what, by when, for how much?' },
-  { id: 2, name: 'Phase 2', subtitle: 'Research', gate: 'Does the model actually work on our data?' },
+  {
+    id: 2,
+    name: 'Phase 2',
+    subtitle: 'Research',
+    gate: 'Does the model actually work on our data?',
+  },
   { id: 3, name: 'Phase 3', subtitle: 'Build', gate: 'Are we building the thing we designed?' },
   { id: 4, name: 'Phase 4', subtitle: 'Deploy', gate: 'Go or no-go?' },
   { id: 5, name: 'Phase 5', subtitle: 'Measure', gate: 'Did we get the benefits we projected?' },
@@ -41,7 +50,10 @@ export const SWIMLANES: Swimlane[] = [
     id: 'governance',
     label: 'Governance & Sponsors',
     cells: [
-      ['Complete strategic decision-making template & approve', 'Approve budget, assign stakeholders'],
+      [
+        'Complete strategic decision-making template & approve',
+        'Approve budget, assign stakeholders',
+      ],
       [
         'Approve budget',
         'Governance meetings booked',
@@ -49,9 +61,23 @@ export const SWIMLANES: Swimlane[] = [
         'Ratify vendor selection',
         'Agree KPIs / metrics / ROI',
       ],
-      ['Review baseline KPIs', 'Confirm final plan post-R&D', 'Ratify user journeys', 'User communications'],
-      ['Make decisions as escalated by technical and business teams', 'Feedback on demos', 'Review metrics'],
-      ['Sign-off on user testing', 'Review go-live metrics', 'Go / No-go decision', 'Communicate broadly'],
+      [
+        'Review baseline KPIs',
+        'Confirm final plan post-R&D',
+        'Ratify user journeys',
+        'User communications',
+      ],
+      [
+        'Make decisions as escalated by technical and business teams',
+        'Feedback on demos',
+        'Review metrics',
+      ],
+      [
+        'Sign-off on user testing',
+        'Review go-live metrics',
+        'Go / No-go decision',
+        'Communicate broadly',
+      ],
       [
         'Review metrics / KPIs / ROI',
         'Review feedback',
@@ -105,7 +131,11 @@ export const SWIMLANES: Swimlane[] = [
         'Test plan',
         'Support plan',
       ],
-      ['Run system testing and user testing process', 'Present Go / No-go', 'Deploy to production'],
+      [
+        'Run system testing and user testing process',
+        'Present Go / No-go',
+        'Deploy to production',
+      ],
       ['Provide support', 'Monitor system performance', 'Fix defects', 'Report usage'],
     ],
   },

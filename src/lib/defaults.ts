@@ -1,3 +1,12 @@
+/**
+ * Source document: "High-Level Strategic Decision Framework", from the AI
+ * Leadership — Commercial value with AI module of Ed Donner's Proficient AI
+ * Engineer program (https://edwarddonner.com/proficient/). See NOTICE.
+ *
+ * The seven cost lines, three benefit categories and three mitigation lines
+ * below come from that framework, as does the worked example. The hint text
+ * on each line is ProForma's own.
+ */
 import { DECISION_OPTIONS } from '../data/decisions'
 import { PHASES } from '../data/roadmap'
 import type { DecisionRow, Doc, LineItem, PhaseState } from './types'
@@ -185,19 +194,25 @@ export function createSampleDoc(): Doc {
     seed: 'Draft policies and documents automatically, tailored to each customer.',
   }
 
-  const set = (
-    items: LineItem[],
-    id: string,
-    oneTime: number,
-    annual: number,
-    note = '',
-  ) => {
+  const set = (items: LineItem[], id: string, oneTime: number, annual: number, note = '') => {
     const item = items.find((i) => i.id === id)
     if (item) Object.assign(item, { oneTime, annual, note })
   }
 
-  set(doc.costs, 'data-acquisition', 30_000, 10_000, 'Labelling 12k historical claims, then quarterly refresh.')
-  set(doc.costs, 'data-science', 1_100_000, 200_000, 'Four FTE for the build year, two thereafter.')
+  set(
+    doc.costs,
+    'data-acquisition',
+    30_000,
+    10_000,
+    'Labelling 12k historical claims, then quarterly refresh.',
+  )
+  set(
+    doc.costs,
+    'data-science',
+    1_100_000,
+    200_000,
+    'Four FTE for the build year, two thereafter.',
+  )
   set(doc.costs, 'engineering', 800_000, 0, 'Integration with the claims platform. One-off.')
   set(doc.costs, 'infrastructure', 0, 200_000, 'Vector store, eval harness, observability.')
   set(doc.costs, 'ai-api', 0, 50_000, 'Inference. See the token model on the Architecture step.')
@@ -226,8 +241,20 @@ export function createSampleDoc(): Doc {
     'Same-day acknowledgement as a retention lever; assumes 1.4pt churn reduction.',
   )
 
-  set(doc.mitigations, 'technical-risk', 0, 100_000, 'Eval suite, drift monitoring, rollback path.')
-  set(doc.mitigations, 'operational-risk', 0, 50_000, 'Handler training and a manual fallback queue.')
+  set(
+    doc.mitigations,
+    'technical-risk',
+    0,
+    100_000,
+    'Eval suite, drift monitoring, rollback path.',
+  )
+  set(
+    doc.mitigations,
+    'operational-risk',
+    0,
+    50_000,
+    'Handler training and a manual fallback queue.',
+  )
   set(
     doc.mitigations,
     'strategic-risk',

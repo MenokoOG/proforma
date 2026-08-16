@@ -78,12 +78,15 @@ export function Benefits() {
         </div>
       </Card>
 
-      <Card title="How to make each one land" sub="What a good justification looks like per category.">
+      <Card
+        title="How to make each one land"
+        sub="What a good justification looks like per category."
+      >
         <dl className="kv">
           <dt>Automation</dt>
           <dd>
-            Hours or headcount. &ldquo;Triage time down from 9 to 3 minutes on 40% of volume —
-            5.2 FTE equivalent.&rdquo; Name the baseline you measured against.
+            Hours or headcount. &ldquo;Triage time down from 9 to 3 minutes on 40% of volume — 5.2
+            FTE equivalent.&rdquo; Name the baseline you measured against.
           </dd>
           <dt>Augmentation</dt>
           <dd>

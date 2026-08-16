@@ -78,9 +78,7 @@ export function AssistPanel() {
             <code>npm run assist</code> in a second terminal. The key stays on that local server —
             it is never sent to the browser.
           </p>
-          <p style={{ margin: 0 }}>
-            Everything else in ProForma works without it.
-          </p>
+          <p style={{ margin: 0 }}>Everything else in ProForma works without it.</p>
         </div>
       </Card>
     )

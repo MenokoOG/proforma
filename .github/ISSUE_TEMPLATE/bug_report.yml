@@ -1,0 +1,106 @@
+name: Bug report
+description: Something behaves differently from how it is documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting.
+
+        **Do not paste an API key, or a business case containing figures you
+        would not want public.** Redact the numbers — the shape of the problem
+        is what matters. For anything security related, see
+        [SECURITY.md](../blob/main/SECURITY.md) and report it privately instead.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you see?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to step 4, Costs
+        2. Enter 1.2m in the one-time field for Engineering
+        3. Go to step 7, Results
+        4. The five-year total reads ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of the app?
+      options:
+        - Step 1 — Brief
+        - Step 2 — Use case
+        - Step 3 — Architecture / token calculator
+        - Step 4 — Costs
+        - Step 5 — Benefits
+        - Step 6 — Risks
+        - Step 7 — Results
+        - Step 8 — Roadmap
+        - Export / print
+        - Optional AI review server
+        - Theme, layout or accessibility
+        - Something else
+    validations:
+      required: true
+
+  - type: input
+    id: numbers
+    attributes:
+      label: If a figure is wrong, what did you expect and what did you get?
+      description: The single most useful thing you can give us. Redacted or scaled figures are fine.
+      placeholder: Expected payback in year 4, got "Never"
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: v1.0.0, or the commit SHA
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and OS
+      placeholder: Firefox 141 on Windows 11
+    validations:
+      required: true
+
+  - type: input
+    id: viewport
+    attributes:
+      label: Screen width, if it is a layout issue
+      placeholder: 375px, iPhone SE
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Console errors
+      description: Anything red in the browser console. Rendered as code, no backticks needed.
+      render: shell
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: There is no API key or confidential figure in this report.
+          required: true

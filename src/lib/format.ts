@@ -15,12 +15,14 @@ function fmt(key: string, make: () => Intl.NumberFormat): Intl.NumberFormat {
 /** Full currency, no decimals: "$1,930,000". */
 export function money(value: number, currency = 'USD'): string {
   const safe = Number.isFinite(value) ? value : 0
-  return fmt(`m:${currency}`, () =>
-    new Intl.NumberFormat(undefined, {
-      style: 'currency',
-      currency,
-      maximumFractionDigits: 0,
-    }),
+  return fmt(
+    `m:${currency}`,
+    () =>
+      new Intl.NumberFormat(undefined, {
+        style: 'currency',
+        currency,
+        maximumFractionDigits: 0,
+      }),
   ).format(safe)
 }
 
@@ -36,13 +38,15 @@ export function signedMoney(value: number, currency = 'USD'): string {
 export function compactMoney(value: number, currency = 'USD'): string {
   const safe = Number.isFinite(value) ? value : 0
   if (Math.abs(safe) < 1000) return money(safe, currency)
-  return fmt(`c:${currency}`, () =>
-    new Intl.NumberFormat(undefined, {
-      style: 'currency',
-      currency,
-      notation: 'compact',
-      maximumFractionDigits: 1,
-    }),
+  return fmt(
+    `c:${currency}`,
+    () =>
+      new Intl.NumberFormat(undefined, {
+        style: 'currency',
+        currency,
+        notation: 'compact',
+        maximumFractionDigits: 1,
+      }),
   ).format(safe)
 }
 
@@ -68,8 +72,9 @@ export function integer(value: number): string {
 export function compactNumber(value: number): string {
   const safe = Number.isFinite(value) ? value : 0
   if (Math.abs(safe) < 10_000) return integer(safe)
-  return fmt('cn', () =>
-    new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }),
+  return fmt(
+    'cn',
+    () => new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }),
   ).format(safe)
 }
 
@@ -106,7 +111,7 @@ export function parseAmount(raw: string): number {
     multiplier = suffix[1] === 'k' ? 1e3 : suffix[1] === 'm' ? 1e6 : 1e9
     body = body.slice(0, suffix.index)
   }
-  const cleaned = body.replace(/[^0-9.\-]/g, '')
+  const cleaned = body.replace(/[^0-9.-]/g, '')
   const n = Number(cleaned)
   if (!Number.isFinite(n)) return 0
   const value = n * multiplier
@@ -116,7 +121,7 @@ export function parseAmount(raw: string): number {
 
 /** Same parser, but signed — used for rates and percentages. */
 export function parseSigned(raw: string): number {
-  const s = raw.trim().replace(/[^0-9.\-]/g, '')
+  const s = raw.trim().replace(/[^0-9.-]/g, '')
   const n = Number(s)
   return Number.isFinite(n) ? n : 0
 }

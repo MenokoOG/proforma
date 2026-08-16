@@ -29,8 +29,8 @@ export function Architecture() {
         <h1>Architecture &amp; inference cost</h1>
         <p>
           The cross-functional decision matrix, plus a token model so the &ldquo;AI API&rdquo;
-          line is a calculation rather than a guess. This is where most business cases quietly
-          go wrong.
+          line is a calculation rather than a guess. This is where most business cases quietly go
+          wrong.
         </p>
       </header>
 
@@ -103,8 +103,7 @@ function DecisionCard({
 }) {
   const { dispatch, currency } = useStore()
   const symbol = money(0, currency).replace(/[\d.,\s]/g, '') || '$'
-  const patch = (p: Partial<DecisionRow>) =>
-    dispatch({ type: 'decision', id: row.id, patch: p })
+  const patch = (p: Partial<DecisionRow>) => dispatch({ type: 'decision', id: row.id, patch: p })
 
   return (
     <details className={`decision${row.selected ? ' on' : ''}`} open={row.selected}>

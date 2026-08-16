@@ -1,4 +1,9 @@
 /**
+ * Source document: "Cross-Functional AI Project Decision-Making Framework",
+ * from the AI Leadership — Commercial value with AI module of Ed Donner's
+ * Proficient AI Engineer program (https://edwarddonner.com/proficient/).
+ * See NOTICE.
+ *
  * The decision matrix from the Cross-Functional AI Project Decision-Making
  * Framework: models, optimisations, infrastructure. Each option is scored on
  * cost, benefit and seven risk dimensions, with a "completed by" owner so the

@@ -26,7 +26,14 @@ export const Icon = {
   chevronRight: (s?: number) => svg(<polyline points="9 18 15 12 9 6" />, s),
   chevronLeft: (s?: number) => svg(<polyline points="15 18 9 12 15 6" />, s),
   check: (s?: number) => svg(<polyline points="20 6 9 17 4 12" />, s),
-  plus: (s?: number) => svg(<><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></>, s),
+  plus: (s?: number) =>
+    svg(
+      <>
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </>,
+      s,
+    ),
   trash: (s?: number) =>
     svg(
       <>
@@ -72,7 +79,14 @@ export const Icon = {
     ),
   moon: (s?: number) => svg(<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />, s),
   info: (s?: number) =>
-    svg(<><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></>, s),
+    svg(
+      <>
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="16" x2="12" y2="12" />
+        <line x1="12" y1="8" x2="12.01" y2="8" />
+      </>,
+      s,
+    ),
   spark: (s?: number) =>
     svg(<path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4L12 3Z" />, s),
 }
@@ -413,6 +427,29 @@ export function LiveRegion({ message }: { message: string }) {
       {message}
     </div>
   )
+}
+
+/**
+ * Tracks a CSS media query from JS. Needed where a breakpoint changes
+ * geometry rather than style — the cash chart swaps to a second viewBox on
+ * narrow screens, which CSS cannot express.
+ *
+ * Reads once on mount rather than during render, so SSR and the first paint
+ * agree. Falls back to `false` where `matchMedia` is unavailable.
+ */
+export function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false)
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+    const mql = window.matchMedia(query)
+    const update = () => setMatches(mql.matches)
+    update()
+    mql.addEventListener('change', update)
+    return () => mql.removeEventListener('change', update)
+  }, [query])
+
+  return matches
 }
 
 /** Scrolls to top whenever the key changes — used on step navigation. */

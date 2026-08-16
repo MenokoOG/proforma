@@ -352,7 +352,8 @@ function Row({
 }) {
   const total = lineTotal(item)
   if (total === 0) return null
-  const f = (v: number) => (v === 0 ? '—' : sign === 1 ? money(v, currency) : `−${money(v, currency)}`)
+  const f = (v: number) =>
+    v === 0 ? '—' : sign === 1 ? money(v, currency) : `−${money(v, currency)}`
   return (
     <tr>
       <th scope="row" style={{ fontWeight: 400 }}>

@@ -20,9 +20,9 @@ export function Roadmap() {
         <p className="eyebrow">Step 8 of 8</p>
         <h1>Delivery roadmap</h1>
         <p>
-          Six phase gates across seven swimlanes, from the end-to-end delivery roadmap. Phase 0
-          is governance only — deliberately. Nothing else starts until the business case you
-          just built is approved.
+          Six phase gates across seven swimlanes, from the end-to-end delivery roadmap. Phase 0 is
+          governance only — deliberately. Nothing else starts until the business case you just
+          built is approved.
         </p>
       </header>
 
@@ -74,15 +74,17 @@ export function Roadmap() {
             >
               <span className="p">{p.name}</span>
               <span className="n">{p.subtitle}</span>
-              <span className="c">
-                {t === 0 ? '—' : `${d}/${t}`}
-              </span>
+              <span className="c">{t === 0 ? '—' : `${d}/${t}`}</span>
             </button>
           )
         })}
       </div>
 
-      <div role="tabpanel" id={`phase-panel-${phase.id}`} aria-labelledby={`phase-tab-${phase.id}`}>
+      <div
+        role="tabpanel"
+        id={`phase-panel-${phase.id}`}
+        aria-labelledby={`phase-tab-${phase.id}`}
+      >
         <Card
           title={`${phase.name} — ${phase.subtitle}`}
           sub={`${done} of ${total} deliverables complete.`}
@@ -107,7 +109,9 @@ export function Roadmap() {
                 <div style={{ width: total ? `${(done / total) * 100}%` : '0%' }} />
               </div>
               <p className="field-hint" style={{ marginTop: 8 }}>
-                {total ? `${Math.round((done / total) * 100)}% complete` : 'No deliverables in this phase.'}
+                {total
+                  ? `${Math.round((done / total) * 100)}% complete`
+                  : 'No deliverables in this phase.'}
               </p>
             </div>
           </div>
