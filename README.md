@@ -7,7 +7,6 @@
 </p>
 
 <p align="center">
-  <a href="https://menokoog.github.io/proforma/"><strong>Live demo</strong></a> ·
   <a href="CONTRIBUTING.md">Contributing</a> ·
   <a href="CHANGELOG.md">Changelog</a>
 </p>
