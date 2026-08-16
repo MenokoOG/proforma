@@ -21,6 +21,7 @@
     "offline-first",
     "accessibility"
   ],
+  "homepage": "https://menokoog.github.io/proforma/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MenokoOG/proforma.git"

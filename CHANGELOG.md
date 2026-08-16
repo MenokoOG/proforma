@@ -9,12 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- The GitHub Pages workflow is manual-only (`workflow_dispatch`) until this
-  repository is public. Pages is not available on private repositories under
-  GitHub Free, so a push-triggered deploy failed on every merge to main.
-- Removed the live demo link from the README header and the `homepage` field
-  from `package.json` — both pointed at a page that does not exist yet.
-  Restored together with the push trigger when the repository goes public.
+- `NOTICE` now states the basis on which the source material is used, rather
+  than holding a placeholder for permission that was never a precondition. The
+  attribution is unchanged and a standing, unconditional offer to change,
+  expand or remove it is recorded alongside.
+- Code of Conduct reports route through GitHub's private reporting rather than
+  a published email address.
+- GitHub Pages deploys on push to `main` again, and the live demo link is back
+  in the README and `package.json`. Both were briefly removed while the
+  repository was private, since Pages is not available on private repositories
+  under GitHub Free.
 
 ## [1.0.0] — 2026-08-16
 
