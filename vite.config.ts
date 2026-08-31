@@ -20,5 +20,14 @@ export default defineConfig({
   build: {
     target: 'es2022',
     sourcemap: false,
+    rollupOptions: {
+      output: {
+        // React changes on a release cadence; the app changes on ours.
+        // Splitting them means a deploy only invalidates the app chunk.
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-dom/client'],
+        },
+      },
+    },
   },
 })
