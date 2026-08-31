@@ -78,6 +78,15 @@ export const Icon = {
       s,
     ),
   moon: (s?: number) => svg(<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />, s),
+  /* "Follow the system" — the third theme state, so all three read apart. */
+  monitor: (s?: number) =>
+    svg(
+      <>
+        <rect x="2.5" y="4" width="19" height="12.5" rx="2" />
+        <path d="M8.5 20.5h7M12 16.5v4" />
+      </>,
+      s,
+    ),
   info: (s?: number) =>
     svg(
       <>
@@ -438,7 +447,13 @@ export function LiveRegion({ message }: { message: string }) {
  * agree. Falls back to `false` where `matchMedia` is unavailable.
  */
 export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false)
+  // Seeded from the real match, not from false. Starting at false made every
+  // consumer render the wide layout first and then swap on mount — a wasted
+  // pass plus a visible reflow on exactly the phones that match.
+  const [matches, setMatches] = useState(
+    () =>
+      typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia(query).matches,
+  )
 
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return

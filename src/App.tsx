@@ -1,35 +1,97 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Architecture } from './steps/Architecture'
-import { Benefits } from './steps/Benefits'
-import { Brief } from './steps/Brief'
-import { Costs } from './steps/Costs'
-import { Export } from './steps/Export'
-import { ResultsStep } from './steps/ResultsStep'
-import { Risks } from './steps/Risks'
-import { Roadmap } from './steps/Roadmap'
-import { UseCaseStep } from './steps/UseCaseStep'
-import { PrintReport } from './components/PrintReport'
+import {
+  Suspense,
+  lazy,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ComponentType,
+} from 'react'
 import { Icon, LiveRegion, useScrollTop } from './components/ui'
 import { compactMoney } from './lib/format'
+import { onIdle } from './lib/idle'
 import { loadTheme, saveTheme, type Theme } from './lib/storage'
+import { usePrintReport } from './lib/printmode'
 import { useStore } from './state/store'
 
-const STEPS = [
-  { id: 'brief', label: 'Brief', short: 'Brief' },
-  { id: 'usecase', label: 'Use case', short: 'Use case' },
-  { id: 'architecture', label: 'Architecture', short: 'Arch.' },
-  { id: 'costs', label: 'Costs', short: 'Costs' },
-  { id: 'benefits', label: 'Benefits', short: 'Benefits' },
-  { id: 'risks', label: 'Risks', short: 'Risks' },
-  { id: 'results', label: 'Results', short: 'Results' },
-  { id: 'roadmap', label: 'Roadmap', short: 'Roadmap' },
-  { id: 'export', label: 'Export', short: 'Export' },
-] as const
+/**
+ * Steps load on demand.
+ *
+ * Nine steps statically imported meant a first-time visitor on a phone
+ * parsed all nine — plus the industry tables, the roadmap grid and the
+ * chart — before the Brief could paint. Each step is its own chunk now,
+ * and `preload` warms the neighbours once the browser is idle, so stepping
+ * through the flow still feels instant.
+ */
+interface StepDef {
+  id: string
+  label: string
+  short: string
+  Component: ComponentType<{ goTo: (n: number) => void }>
+  preload: () => Promise<unknown>
+}
+
+function step<T extends Record<string, unknown>>(
+  id: string,
+  label: string,
+  short: string,
+  loader: () => Promise<T>,
+  key: keyof T,
+): StepDef {
+  return {
+    id,
+    label,
+    short,
+    Component: lazy(() =>
+      loader().then((m) => ({ default: m[key] as ComponentType<{ goTo: (n: number) => void }> })),
+    ),
+    preload: loader,
+  }
+}
+
+const STEPS: StepDef[] = [
+  step('brief', 'Brief', 'Brief', () => import('./steps/Brief'), 'Brief'),
+  step('usecase', 'Use case', 'Use case', () => import('./steps/UseCaseStep'), 'UseCaseStep'),
+  step(
+    'architecture',
+    'Architecture',
+    'Arch.',
+    () => import('./steps/Architecture'),
+    'Architecture',
+  ),
+  step('costs', 'Costs', 'Costs', () => import('./steps/Costs'), 'Costs'),
+  step('benefits', 'Benefits', 'Benefits', () => import('./steps/Benefits'), 'Benefits'),
+  step('risks', 'Risks', 'Risks', () => import('./steps/Risks'), 'Risks'),
+  step('results', 'Results', 'Results', () => import('./steps/ResultsStep'), 'ResultsStep'),
+  step('roadmap', 'Roadmap', 'Roadmap', () => import('./steps/Roadmap'), 'Roadmap'),
+  step('export', 'Export', 'Export', () => import('./steps/Export'), 'Export'),
+]
+
+/** Theme cycles system → light → dark. Each state gets its own icon. */
+const NEXT_THEME: Record<Theme, Theme> = { system: 'light', light: 'dark', dark: 'system' }
+const THEME_LABEL: Record<Theme, string> = {
+  system: 'Match system',
+  light: 'Light',
+  dark: 'Dark',
+}
+
+/** Keeps the mobile browser chrome in step with an explicit theme choice. */
+function applyThemeColor(theme: Theme) {
+  const dark =
+    theme === 'dark' ||
+    (theme === 'system' && window.matchMedia?.('(prefers-color-scheme: dark)').matches)
+  const color = dark ? '#0e1219' : '#eff2f6'
+  for (const el of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) {
+    el.removeAttribute('media')
+    el.content = color
+  }
+}
 
 export function App() {
   const { doc, results, gaps, currency, saved } = useStore()
   const [step, setStep] = useState(0)
   const [theme, setTheme] = useState<Theme>(() => loadTheme())
+  const PrintReport = usePrintReport()
 
   useScrollTop(step)
 
@@ -38,11 +100,28 @@ export function App() {
     if (theme === 'system') root.removeAttribute('data-theme')
     else root.setAttribute('data-theme', theme)
     saveTheme(theme)
+    applyThemeColor(theme)
+
+    if (theme !== 'system' || !window.matchMedia) return
+    const mql = window.matchMedia('(prefers-color-scheme: dark)')
+    const sync = () => applyThemeColor('system')
+    mql.addEventListener('change', sync)
+    return () => mql.removeEventListener('change', sync)
   }, [theme])
 
   const goTo = useCallback((n: number) => {
     setStep(Math.max(0, Math.min(STEPS.length - 1, n)))
   }, [])
+
+  // Warm the steps either side of this one, so Back and Next never wait on
+  // a network round trip. Idle time only — never in front of the paint.
+  useEffect(() => {
+    const warm = () => {
+      STEPS[step + 1]?.preload()
+      STEPS[step - 1]?.preload()
+    }
+    return onIdle(warm)
+  }, [step])
 
   // Which steps have something in them, for the rail's completion marks.
   const completion = useMemo(() => {
@@ -68,6 +147,7 @@ export function App() {
 
   const net = results.totalNet
   const progress = ((step + 1) / STEPS.length) * 100
+  const Step = STEPS[step].Component
 
   return (
     <div className="app">
@@ -102,13 +182,15 @@ export function App() {
           <button
             type="button"
             className="iconbtn"
-            aria-label={`Theme: ${theme}. Click to change.`}
-            title={`Theme: ${theme}`}
-            onClick={() =>
-              setTheme(theme === 'system' ? 'light' : theme === 'light' ? 'dark' : 'system')
-            }
+            aria-label={`Theme: ${THEME_LABEL[theme]}. Switch to ${THEME_LABEL[NEXT_THEME[theme]]}.`}
+            title={`Theme: ${THEME_LABEL[theme]}`}
+            onClick={() => setTheme(NEXT_THEME[theme])}
           >
-            {theme === 'dark' ? Icon.moon(18) : Icon.sun(18)}
+            {theme === 'dark'
+              ? Icon.moon(18)
+              : theme === 'light'
+                ? Icon.sun(18)
+                : Icon.monitor(18)}
           </button>
         </div>
         <div className="progressbar" role="presentation">
@@ -126,6 +208,7 @@ export function App() {
                   className={`rail-item${completion[i] ? ' complete' : ''}`}
                   aria-current={step === i ? 'step' : undefined}
                   onClick={() => goTo(i)}
+                  onPointerEnter={() => s.preload()}
                 >
                   <span className="rail-num" aria-hidden="true">
                     {completion[i] && step !== i ? Icon.check(12) : i + 1}
@@ -147,19 +230,14 @@ export function App() {
 
         <main className="main" id="main" tabIndex={-1}>
           <div className="screen-only">
-            {step === 0 ? <Brief /> : null}
-            {step === 1 ? <UseCaseStep /> : null}
-            {step === 2 ? <Architecture /> : null}
-            {step === 3 ? <Costs /> : null}
-            {step === 4 ? <Benefits /> : null}
-            {step === 5 ? <Risks /> : null}
-            {step === 6 ? <ResultsStep goTo={goTo} /> : null}
-            {step === 7 ? <Roadmap /> : null}
-            {step === 8 ? <Export /> : null}
+            <Suspense fallback={<StepSkeleton />}>
+              <Step goTo={goTo} />
+            </Suspense>
           </div>
 
-          {/* Printing gives the whole case, not the open step. */}
-          <PrintReport />
+          {/* Printing gives the whole case, not the open step. It is only
+              built once a print is actually under way — see usePrintReport. */}
+          {PrintReport ? <PrintReport /> : null}
         </main>
       </div>
 
@@ -191,6 +269,18 @@ export function App() {
       </nav>
 
       <LiveRegion message={`Step ${step + 1} of ${STEPS.length}: ${STEPS[step].label}`} />
+    </div>
+  )
+}
+
+/** Holds the step's shape while its chunk arrives, so nothing jumps. */
+function StepSkeleton() {
+  return (
+    <div className="step-skeleton" aria-hidden="true">
+      <span className="sk sk-eyebrow" />
+      <span className="sk sk-title" />
+      <span className="sk sk-line" />
+      <span className="sk sk-card" />
     </div>
   )
 }

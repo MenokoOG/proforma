@@ -38,16 +38,12 @@ export function Roadmap() {
           </div>
           <div className="stat">
             <div className="k">Current gate</div>
-            <div className="v" style={{ fontSize: '1.1rem' }}>
-              {phase.subtitle}
-            </div>
+            <div className="v prose">{phase.subtitle}</div>
             <div className="s">{longDate(state.date)}</div>
           </div>
           <div className="stat" style={{ gridColumn: '1 / -1' }}>
             <div className="k">The question this gate answers</div>
-            <div className="v" style={{ fontSize: '1rem', fontFamily: 'var(--font)' }}>
-              {phase.gate}
-            </div>
+            <div className="v prose">{phase.gate}</div>
           </div>
         </div>
       </Card>

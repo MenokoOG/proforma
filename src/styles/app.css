@@ -263,13 +263,24 @@ textarea {
   padding: 10px 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  /* Narrow phones cannot afford 12px between five chrome elements — the
+     theme button is the last of them and was being pushed off-screen. */
+  gap: 8px;
+  min-width: 0;
+}
+@media (min-width: 560px) {
+  .topbar-inner {
+    gap: 12px;
+  }
 }
 
 .wordmark {
   display: flex;
   align-items: baseline;
   gap: 8px;
+  /* Yields before the controls to its right do. */
+  min-width: 0;
+  overflow: hidden;
   font-family: var(--font-display);
   font-size: 1.2rem;
   font-weight: 600;
@@ -308,6 +319,7 @@ textarea {
 .headline-pill {
   display: flex;
   align-items: center;
+  flex: none;
   gap: 8px;
   padding: 5px 12px;
   border-radius: 999px;
@@ -338,6 +350,27 @@ textarea {
   color: var(--ink-3);
   min-width: 52px;
   text-align: right;
+  flex: none;
+}
+
+/* The topbar sheds chrome from the right-hand side inwards as the viewport
+   narrows, so the theme button always stays on screen and tappable.
+   Below 560px the pill drops its caption; below 400px it goes entirely. */
+@media (max-width: 559px) {
+  .headline-pill {
+    padding: 5px 10px;
+  }
+  .headline-pill .label {
+    display: none;
+  }
+  .savechip {
+    min-width: 0;
+  }
+}
+@media (max-width: 399px) {
+  .headline-pill {
+    display: none;
+  }
 }
 
 /* =================================================================
@@ -780,6 +813,7 @@ textarea {
 .iconbtn {
   display: grid;
   place-items: center;
+  flex: none;
   width: var(--tap);
   height: var(--tap);
   border-radius: var(--r-sm);
@@ -791,6 +825,54 @@ textarea {
 .iconbtn:hover {
   background: var(--surface-2);
   color: var(--ink);
+}
+
+/* =================================================================
+   Step skeleton — holds the page open while a step's chunk arrives
+   ================================================================= */
+
+.step-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 4px;
+}
+.step-skeleton .sk {
+  display: block;
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  animation: sk-pulse 1.2s ease-in-out infinite;
+}
+.step-skeleton .sk-eyebrow {
+  width: 88px;
+  height: 12px;
+}
+.step-skeleton .sk-title {
+  width: min(320px, 70%);
+  height: 30px;
+}
+.step-skeleton .sk-line {
+  width: 100%;
+  height: 14px;
+}
+.step-skeleton .sk-card {
+  height: 220px;
+  border-radius: var(--r);
+  margin-top: 8px;
+}
+@keyframes sk-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .step-skeleton .sk {
+    animation: none;
+  }
 }
 
 /* =================================================================
@@ -1038,6 +1120,18 @@ textarea {
   font-size: 0.74rem;
   color: var(--ink-3);
   margin-top: 3px;
+}
+/* A stat whose value is a sentence, not a figure. The nowrap above exists
+   to protect numbers from breaking mid-figure; prose has no such problem
+   and overflowed the card on narrow viewports instead. */
+.stat .v.prose {
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: 1.4;
 }
 .stat.pos .v {
   color: var(--benefit);
@@ -1733,14 +1827,27 @@ td.pos {
 }
 .phase-tab {
   flex: none;
-  min-width: 108px;
+  /* Three stacked labels, so the button is a block container. As inline
+     spans they ran together on one line and wrapped mid-phrase, and the
+     margin-top below was silently dropped. */
+  display: block;
+  min-width: 120px;
+  max-width: 190px;
   padding: 10px 12px;
   border-radius: var(--r);
   border: 1.5px solid var(--line);
   background: var(--surface);
   text-align: left;
+  line-height: 1.35;
   cursor: pointer;
-  transition: all 0.12s ease;
+  transition:
+    border-color 0.12s ease,
+    background 0.12s ease;
+}
+.phase-tab .p,
+.phase-tab .n,
+.phase-tab .c {
+  display: block;
 }
 .phase-tab:hover {
   border-color: var(--line-strong);
