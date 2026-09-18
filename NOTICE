@@ -107,9 +107,15 @@ made in good faith and it is not conditional on anything.
 THIRD-PARTY DEPENDENCIES
 ================================================================================
 
-ProForma has two runtime dependencies, both MIT licensed:
+ProForma has three runtime dependencies:
 
-  react, react-dom          https://github.com/facebook/react
+  react, react-dom          https://github.com/facebook/react (MIT)
+  @fontsource-variable/space-grotesk
+                            https://github.com/fontsource/font-files
+                            Space Grotesk, SIL Open Font License 1.1,
+                            Copyright 2020 The Space Grotesk Project Authors.
+                            The font files are bundled and served with the
+                            app; no request goes to a font CDN.
 
 The optional AI review server (server/index.mjs) loads @anthropic-ai/sdk
 (MIT) only when it is run. It is an optional dependency and the application

@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- New visual system: Holographic / Iridescent. Dark is a near-black ground with
+  a cyan brand and a cyan-pink-lime foil on chrome only (card hairlines, the
+  mark, the primary button). Light reads the same foil on pearl grounds. Space
+  Grotesk type stack, 10/18/28px radius scale. Figures keep their own hues:
+  lime benefit, coral cost, amber risk. The foil drift respects
+  `prefers-reduced-motion` and print output stays plain.
+- Space Grotesk is now self-hosted via `@fontsource-variable/space-grotesk`
+  (OFL-1.1). One variable woff2 per script, served from the app's own origin;
+  no font CDN. Credited in `NOTICE`.
+- The contrast suite now also checks `--on-brand` against every stop of the
+  foil gradient, in both themes.
 - `NOTICE` now states the basis on which the source material is used, rather
   than holding a placeholder for permission that was never a precondition. The
   attribution is unchanged and a standing, unconditional offer to change,

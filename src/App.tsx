@@ -80,7 +80,7 @@ function applyThemeColor(theme: Theme) {
   const dark =
     theme === 'dark' ||
     (theme === 'system' && window.matchMedia?.('(prefers-color-scheme: dark)').matches)
-  const color = dark ? '#0e1219' : '#eff2f6'
+  const color = dark ? '#0b0b12' : '#f4f3fa'
   for (const el of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) {
     el.removeAttribute('media')
     el.content = color
