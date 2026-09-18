@@ -127,6 +127,24 @@ describe.each([
     ).toBeGreaterThanOrEqual(4.5)
   })
 
+  it('keeps --on-brand readable on every stop of the --foil fill', () => {
+    // .btn.primary and .wordmark .mark put --on-brand text on the foil
+    // gradient, so every colour stop has to clear AA, not just the average.
+    const block = themeName === 'light' ? ':root {' : ":root[data-theme='dark'] {"
+    const start = css.indexOf(block)
+    const foil = css.slice(start, css.indexOf('\n}', start)).match(/--foil:\s*([^;]+);/)
+    expect(foil, `${themeName} is missing --foil`).not.toBeNull()
+    const stops = [...foil![1].matchAll(/#[0-9a-fA-F]{6}/g)].map((m) => m[0])
+    expect(stops.length).toBeGreaterThan(2)
+    for (const stop of stops) {
+      const ratio = contrast(t['--on-brand'], stop)
+      expect(
+        ratio,
+        `${themeName}: on-brand on foil stop ${stop} is ${ratio.toFixed(2)}:1`,
+      ).toBeGreaterThanOrEqual(4.5)
+    }
+  })
+
   it('keeps the focus ring distinguishable from the page', () => {
     expect(contrast(t['--focus'], t['--paper'])).toBeGreaterThanOrEqual(3)
   })

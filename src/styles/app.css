@@ -1,60 +1,77 @@
 /* =================================================================
-   ProForma — design tokens
+   ProForma — design tokens (Holographic / Iridescent)
    Light palette is defined on bare :root so it is never trapped inside
    a media query. Dark overrides appear twice: once for the system
    preference (guarded so an explicit light choice wins) and once for the
    explicit dark choice.
 
-   Revised palette: the ground is a cool grey, not a warm cream, and blue
-   carries the brand. Because blue no longer doubles as the positive
-   semantic, benefit is a deep green and cost a carmine — so interface
-   chrome and figures never share a hue.
+   Dark is the home of the holographic system: a near-black ground, a
+   cyan brand, and a cyan-pink-lime foil that lives on chrome only
+   (borders, the mark, the primary button). Light is the same foil read
+   on white: pearl grounds and deep inks so text stays at AA.
+
+   Figures keep their own hues. Benefit is lime-green, cost is coral-red,
+   risk is amber. None of them is the brand cyan or the accent pink, so
+   interface chrome and figures never share a hue.
    ================================================================= */
 
 :root {
   /* Surfaces */
-  --paper: #eff2f6;
+  --paper: #f4f3fa;
   --surface: #ffffff;
-  --surface-2: #f2f5f9;
-  --surface-sunken: #e2e7ee;
-  --line: #d8dee7;
-  --line-strong: #b4bdca;
+  --surface-2: #f3f1fa;
+  --surface-sunken: #e7e5f1;
+  --line: #dcd9ea;
+  --line-strong: #b9b4cf;
 
   /* Text */
-  --ink: #111722;
-  --ink-2: #49525f;
-  /* Darkened from the handoff's #79838f, which cleared only 3.85:1 on
-     --surface and 3.43:1 on --paper. This clears 4.5:1 on every light
-     background: surface 5.65, surface-2 5.17, paper 5.04, sunken 4.55. */
-  --ink-3: #5f6873;
+  --ink: #0b0b12;
+  --ink-2: #45445a;
+  --ink-3: #5d5c72;
 
   /* Brand + semantics */
-  --brand: #1f4fb0;
-  --brand-strong: #16397f;
-  --brand-soft: #e2eaf8;
-  --benefit: #1c6b4a;
-  --benefit-soft: #dcefe4;
-  --cost: #a32b33;
-  --cost-soft: #f8e3e4;
-  --risk: #8a6110;
-  --risk-soft: #f4ead9;
+  --brand: #0b6a7a;
+  --brand-strong: #084f5c;
+  --brand-soft: #dff4f7;
+  --accent: #a3218f;
+  --benefit: #2f6b12;
+  --benefit-soft: #e6f4d8;
+  --cost: #b0283a;
+  --cost-soft: #fbe4e7;
+  --risk: #86600a;
+  --risk-soft: #f6ecd6;
   --danger: #a3202a;
 
-  --focus: #1f4fb0;
-  --shadow: 0 1px 2px rgb(17 23 34 / 0.06), 0 6px 18px -8px rgb(17 23 34 / 0.16);
-  --shadow-lg: 0 2px 6px rgb(17 23 34 / 0.08), 0 24px 48px -20px rgb(17 23 34 / 0.3);
+  --focus: #0b6a7a;
+  --shadow: 0 1px 2px rgb(11 11 18 / 0.06), 0 8px 22px -10px rgb(60 40 120 / 0.22);
+  --shadow-lg: 0 2px 6px rgb(11 11 18 / 0.08), 0 28px 56px -22px rgb(60 40 120 / 0.34);
+
+  /* Foil. Decorative only: never a text ground unless paired with
+     --on-foil, which is checked against every stop. */
+  --foil: linear-gradient(115deg, #0b6a7a 0%, #3b4fa8 35%, #8a2a8f 65%, #2f6b12 100%);
+  --foil-line: linear-gradient(
+    115deg,
+    rgb(124 249 255 / 0.9),
+    rgb(255 159 243 / 0.9),
+    rgb(200 255 143 / 0.9),
+    rgb(124 249 255 / 0.9)
+  );
+  --foil-wash:
+    radial-gradient(60vmax 40vmax at 10% -10%, rgb(124 249 255 / 0.28), transparent 60%),
+    radial-gradient(50vmax 40vmax at 100% 10%, rgb(255 159 243 / 0.24), transparent 60%),
+    radial-gradient(60vmax 50vmax at 50% 110%, rgb(200 255 143 / 0.2), transparent 60%);
 
   /* Type */
   --font:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    sans-serif;
-  --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
-  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+    'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display:
+    'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
 
   /* Space + shape */
-  --r-sm: 8px;
-  --r: 12px;
-  --r-lg: 18px;
+  --r-sm: 10px;
+  --r: 18px;
+  --r-lg: 28px;
   --gap: 16px;
   --tap: 44px;
   --maxw: 1180px;
@@ -62,73 +79,115 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --paper: #0e1219;
-    --surface: #161c26;
-    --surface-2: #1e2531;
-    --surface-sunken: #0a0e14;
-    --line: #2a323f;
-    --line-strong: #3c4657;
+    --paper: #0b0b12;
+    /* rgba(255,255,255,0.08) over the ground, flattened so contrast is
+       measurable. */
+    --surface: #1f1f26;
+    --surface-2: #27272f;
+    --surface-sunken: #07070c;
+    --line: #30303c;
+    --line-strong: #4a4a5c;
 
-    --ink: #e9edf3;
-    --ink-2: #aeb8c6;
-    /* Lightened from the handoff's #7d8899, which cleared only 4.29:1 on
-       --surface-2 and 4.37:1 on --brand-soft — both grounds the year cards
-       use. This clears 4.5:1 on every dark ground. */
-    --ink-3: #848f9f;
+    --ink: #ffffff;
+    --ink-2: #c7c7d9;
+    --ink-3: #9d9db3;
 
-    --brand: #7aa5f0;
-    --brand-strong: #a3c1f7;
-    --brand-soft: #16233c;
-    --benefit: #4fb489;
-    --benefit-soft: #0f2a20;
-    --cost: #e8737c;
-    --cost-soft: #331419;
-    --risk: #d9ae53;
-    --risk-soft: #2e2513;
-    --danger: #e57373;
+    --brand: #a0f0ff;
+    --brand-strong: #c8f7ff;
+    --brand-soft: #12262d;
+    --accent: #ff9ff3;
+    --benefit: #c8ff8f;
+    --benefit-soft: #1d2713;
+    --cost: #ff8e8e;
+    --cost-soft: #2f1519;
+    --risk: #ffd27a;
+    --risk-soft: #2b2312;
+    --danger: #ff7b7b;
 
-    --focus: #7aa5f0;
-    --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 6px 18px -8px rgb(0 0 0 / 0.6);
-    --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.5), 0 24px 48px -20px rgb(0 0 0 / 0.8);
+    --focus: #7cf9ff;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 10px 28px -12px rgb(0 0 0 / 0.7);
+    --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.5), 0 28px 56px -20px rgb(0 0 0 / 0.85);
+
+    --foil: linear-gradient(
+      115deg,
+      #7cf9ff 0%,
+      #a0f0ff 25%,
+      #ff9ff3 55%,
+      #c8ff8f 85%,
+      #7cf9ff 100%
+    );
+    --foil-line: linear-gradient(
+      115deg,
+      rgb(124 249 255 / 0.55),
+      rgb(255 159 243 / 0.5),
+      rgb(200 255 143 / 0.45),
+      rgb(124 249 255 / 0.55)
+    );
+    --foil-wash:
+      radial-gradient(60vmax 40vmax at 10% -10%, rgb(124 249 255 / 0.14), transparent 60%),
+      radial-gradient(50vmax 40vmax at 100% 10%, rgb(255 159 243 / 0.12), transparent 60%),
+      radial-gradient(60vmax 50vmax at 50% 110%, rgb(200 255 143 / 0.08), transparent 60%);
   }
 }
 
 :root[data-theme='dark'] {
-  --paper: #0e1219;
-  --surface: #161c26;
-  --surface-2: #1e2531;
-  --surface-sunken: #0a0e14;
-  --line: #2a323f;
-  --line-strong: #3c4657;
+  --paper: #0b0b12;
+  /* rgba(255,255,255,0.08) over the ground, flattened so contrast is
+     measurable. */
+  --surface: #1f1f26;
+  --surface-2: #27272f;
+  --surface-sunken: #07070c;
+  --line: #30303c;
+  --line-strong: #4a4a5c;
 
-  --ink: #e9edf3;
-  --ink-2: #aeb8c6;
-  /* Lightened from the handoff's #7d8899, which cleared only 4.29:1 on
-     --surface-2 and 4.37:1 on --brand-soft — both grounds the year
-     cards use. This clears 4.5:1 on every dark ground. */
-  --ink-3: #848f9f;
+  --ink: #ffffff;
+  --ink-2: #c7c7d9;
+  --ink-3: #9d9db3;
 
-  --brand: #7aa5f0;
-  --brand-strong: #a3c1f7;
-  --brand-soft: #16233c;
-  --benefit: #4fb489;
-  --benefit-soft: #0f2a20;
-  --cost: #e8737c;
-  --cost-soft: #331419;
-  --risk: #d9ae53;
-  --risk-soft: #2e2513;
-  --danger: #e57373;
+  --brand: #a0f0ff;
+  --brand-strong: #c8f7ff;
+  --brand-soft: #12262d;
+  --accent: #ff9ff3;
+  --benefit: #c8ff8f;
+  --benefit-soft: #1d2713;
+  --cost: #ff8e8e;
+  --cost-soft: #2f1519;
+  --risk: #ffd27a;
+  --risk-soft: #2b2312;
+  --danger: #ff7b7b;
 
-  --focus: #7aa5f0;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 6px 18px -8px rgb(0 0 0 / 0.6);
-  --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.5), 0 24px 48px -20px rgb(0 0 0 / 0.8);
+  --focus: #7cf9ff;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 10px 28px -12px rgb(0 0 0 / 0.7);
+  --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.5), 0 28px 56px -20px rgb(0 0 0 / 0.85);
+
+  --foil: linear-gradient(
+    115deg,
+    #7cf9ff 0%,
+    #a0f0ff 25%,
+    #ff9ff3 55%,
+    #c8ff8f 85%,
+    #7cf9ff 100%
+  );
+  --foil-line: linear-gradient(
+    115deg,
+    rgb(124 249 255 / 0.55),
+    rgb(255 159 243 / 0.5),
+    rgb(200 255 143 / 0.45),
+    rgb(124 249 255 / 0.55)
+  );
+  --foil-wash:
+    radial-gradient(60vmax 40vmax at 10% -10%, rgb(124 249 255 / 0.14), transparent 60%),
+    radial-gradient(50vmax 40vmax at 100% 10%, rgb(255 159 243 / 0.12), transparent 60%),
+    radial-gradient(60vmax 50vmax at 50% 110%, rgb(200 255 143 / 0.08), transparent 60%);
 }
 
 /* -----------------------------------------------------------------
-   Foreground for anything sitting on a --brand fill.
+   Foreground for anything sitting on a --brand or --foil fill.
 
-   In dark mode --brand is a light blue, so white on it drops to about
-   1.6:1. Five rules read this token: .skip-link, .wordmark .mark,
+   Light: --brand is a deep teal and the foil runs through deep hues, so
+   white text reads. Dark: --brand is a pale cyan and the foil runs
+   through pastels, so the ink flips to near-black. Five rules read this
+   token: .skip-link, .wordmark .mark,
    .rail-item[aria-current='step'] .rail-num, .btn.primary, and
    .chip[aria-pressed='true'].
 
@@ -144,12 +203,12 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --on-brand: #0e1219;
+    --on-brand: #05050a;
   }
 }
 
 :root[data-theme='dark'] {
-  --on-brand: #0e1219;
+  --on-brand: #05050a;
 }
 
 /* =================================================================
@@ -2079,6 +2138,81 @@ td.pos {
    Print — the export path that always works
    ================================================================= */
 
+/* =================================================================
+   Holographic layer
+   The foil sits on chrome only: the page wash, card hairlines, the mark
+   and the primary action. Text never sits on a gradient except where
+   --on-brand is checked against every foil stop (contrast.test.ts).
+   ================================================================= */
+
+body {
+  background-color: var(--paper);
+  background-image: var(--foil-wash);
+  background-attachment: fixed;
+}
+
+.step-head h1 {
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+/* A 1px foil hairline around a solid surface. The fill stays opaque so
+   every contrast figure in the test suite still holds. */
+.card {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    var(--foil-line) border-box;
+}
+
+.wordmark .mark,
+.btn.primary {
+  background: var(--foil);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  border-color: transparent;
+  color: var(--on-brand);
+}
+
+/* The sheen shifts with the angle of approach: hover slides the foil. */
+.btn.primary {
+  transition:
+    background-position 0.5s ease,
+    box-shadow 0.2s ease,
+    transform 0.06s ease;
+}
+.btn.primary:hover {
+  background: var(--foil);
+  background-size: 200% 100%;
+  background-position: 100% 50%;
+  border-color: transparent;
+  box-shadow: 0 6px 22px -8px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wordmark .mark {
+    animation: foil-drift 9s ease-in-out infinite alternate;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn.primary {
+    transition: none;
+  }
+}
+
+@keyframes foil-drift {
+  to {
+    background-position: 100% 50%;
+  }
+}
+
 @media print {
   :root {
     --paper: #fff;
@@ -2095,6 +2229,7 @@ td.pos {
   }
   body {
     background: #fff;
+    background-image: none;
   }
   .topbar,
   .bottomnav,
@@ -2114,6 +2249,7 @@ td.pos {
   .card {
     break-inside: avoid;
     box-shadow: none;
+    background: #fff;
     border: 1px solid #ccc;
     margin-bottom: 12px;
   }
