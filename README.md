@@ -148,7 +148,7 @@ Override the model with `PROFORMA_MODEL` (default `claude-opus-5`).
 44 px, no horizontal page scroll at 375 px. Wide tables and phase tabs scroll inside their own
 containers rather than pushing the page sideways. The step rail appears at ≥900 px.
 
-**Snappy.** React and nothing else — no chart library, no UI kit, no icon font. 93 kB gzipped.
+**Snappy.** React and one self-hosted typeface (Space Grotesk) — no chart library, no UI kit, no icon font. 93 kB gzipped.
 The chart is hand-rolled SVG so it renders instantly, inherits theme colours, and prints
 correctly. Writes to `localStorage` are debounced so typing never blocks.
 
