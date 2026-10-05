@@ -189,7 +189,7 @@ you change anything under `src/data/`.
 In short: the structure and method are Ed Donner's — which cost lines exist, which categories a
 case is argued in, which risks get scored and by whom, and the arithmetic convention. The
 interface, calculation engine, token model, exports, readiness checks and all guidance text are
-classHuman AI's. The industry descriptions were rewritten in ProForma's own words, and unsourced
+Lawrence Jefferson II's. The industry descriptions were rewritten in ProForma's own words, and unsourced
 performance figures in the original were removed rather than repeated.
 
 Lawrence Jefferson II completed the Proficient AI Engineer program (certificate issued 3 August
@@ -201,7 +201,7 @@ here is faithful to them; the judgement is still yours.
 
 ## Licence
 
-[Apache-2.0](LICENSE). Copyright 2026 classHuman AI LLC.
+[Apache-2.0](LICENSE). Copyright 2026 Lawrence Jefferson II.
 
 ---
 

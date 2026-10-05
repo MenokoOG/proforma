@@ -1,8 +1,8 @@
 ProForma
-Copyright 2026 classHuman AI LLC
+Copyright 2026 Lawrence Jefferson II
 
-This product includes software developed by classHuman AI LLC
-(https://classhuman.org).
+This product includes software developed by Lawrence Jefferson II
+(https://github.com/MenokoOG).
 
 Licensed under the Apache License, Version 2.0. See LICENSE.
 
@@ -52,7 +52,7 @@ by whom, the shape of the delivery roadmap, and the arithmetic convention
 that one-time amounts land in Year 1 while annual amounts apply to Years 2-5.
 ProForma is faithful to that arithmetic and does not vary it.
 
-The application is classHuman AI's: the interface, the calculation engine,
+The application is Lawrence Jefferson II's: the interface, the calculation engine,
 the token cost model, the export formats, the readiness checks, and all
 explanatory and guidance text.
 
@@ -98,7 +98,7 @@ A STANDING OFFER
 
 If you are Ed Donner and you would like attribution changed, expanded, or
 removed -- or would prefer any part of this material not be published at all
--- open an issue on this repository or contact classHuman AI directly. Any
+-- open an issue on this repository or contact Lawrence Jefferson II directly. Any
 such request will be honoured promptly and without argument. That offer is
 made in good faith and it is not conditional on anything.
 

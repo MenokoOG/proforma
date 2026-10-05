@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Author and copyright holder are now Lawrence Jefferson II in `LICENSE`,
+  `NOTICE`, `README.md` and `package.json`. The license terms are unchanged.
 - New visual system: Holographic / Iridescent. Dark is a near-black ground with
   a cyan brand and a cyan-pink-lime foil on chrome only (card hairlines, the
   mark, the primary button). Light reads the same foil on pearl grounds. Space
