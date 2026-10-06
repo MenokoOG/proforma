@@ -6,7 +6,10 @@ import {
   findGaps,
   HORIZON,
   irr,
+  irrDetail,
   lineTotal,
+  normalizeDiscountRate,
+  NPV_TIMING_NOTE,
   rollupDecisions,
   spread,
 } from '../calc'
@@ -340,5 +343,108 @@ describe('findGaps', () => {
     doc.costs[0].oneTime = 99_000_000
     const ids = findGaps(doc, computeResults(doc)).map((g) => g.id)
     expect(ids).toContain('payback')
+  })
+})
+
+/* ------------------------------------------------------------------ */
+/* Review fixes, 2026-10: edge cases the first release left open        */
+/* ------------------------------------------------------------------ */
+
+describe('payback on degenerate cases', () => {
+  it('is never paid back when nothing has been entered', () => {
+    const r = computeResults(createDoc())
+    expect(r.paybackYear).toBeNull()
+    expect(r.paybackYears).toBeNull()
+  })
+
+  it('is Year 1 when there is a benefit and no cost', () => {
+    const doc = createDoc()
+    doc.benefits[0] = { ...doc.benefits[0], oneTime: 100, annual: 0 }
+    const r = computeResults(doc)
+    expect(r.paybackYear).toBe(1)
+    expect(r.paybackYears).toBe(1)
+  })
+
+  it('still breaks even in Year 4 on the worked example', () => {
+    expect(computeResults(createSampleDoc()).paybackYear).toBe(4)
+  })
+})
+
+describe('irrDetail', () => {
+  it('explains a series with no cost year or no benefit year', () => {
+    expect(irrDetail([100, 100, 100]).rate).toBeNull()
+    expect(irrDetail([100, 100, 100]).note).toMatch(/cost year and one benefit year/)
+    expect(irrDetail([-5, -5]).note).toMatch(/cost year and one benefit year/)
+    expect(irrDetail([0, 0, 0]).note).toMatch(/cost year and one benefit year/)
+  })
+
+  it('explains a rate beyond the searched range', () => {
+    const d = irrDetail([-1, 1_000_000])
+    expect(d.rate).toBeNull()
+    expect(d.note).toMatch(/1,000%/)
+  })
+
+  it('returns a clean rate with no note when the sign changes once', () => {
+    const d = irrDetail([-1000, 400, 400, 400, 400])
+    expect(d.rate).not.toBeNull()
+    expect(d.note).toBeNull()
+  })
+
+  it('warns, but still returns a rate, when the sign changes more than once', () => {
+    const d = irrDetail([-10, 25, -10, 5])
+    expect(d.rate).not.toBeNull()
+    expect(d.note).toMatch(/more than once/)
+  })
+
+  it('agrees with irr() on the rate', () => {
+    const flows = [-1000, 400, 400, 400, 400]
+    expect(irrDetail(flows).rate).toBe(irr(flows))
+  })
+
+  it('reports no note on the worked example', () => {
+    expect(computeResults(createSampleDoc()).irrNote).toBeNull()
+  })
+
+  it('surfaces the reason through computeResults when IRR is undefined', () => {
+    const r = computeResults(createDoc())
+    expect(r.irr).toBeNull()
+    expect(r.irrNote).not.toBeNull()
+  })
+})
+
+describe('discount rate', () => {
+  it('is brought back into 0 to 100', () => {
+    expect(normalizeDiscountRate(-100)).toBe(0)
+    expect(normalizeDiscountRate(250)).toBe(100)
+    expect(normalizeDiscountRate(8)).toBe(8)
+  })
+
+  it('treats non-numeric input as zero', () => {
+    expect(normalizeDiscountRate('abc')).toBe(0)
+    expect(normalizeDiscountRate(undefined)).toBe(0)
+    expect(normalizeDiscountRate(Number.NaN)).toBe(0)
+  })
+
+  it('never lets an out-of-range rate produce a non-finite NPV', () => {
+    const doc = createSampleDoc()
+    for (const bad of [-100, -250, 1e9, Number.NaN]) {
+      doc.project.discountRate = bad
+      expect(Number.isFinite(computeResults(doc).npv)).toBe(true)
+    }
+  })
+
+  it('gives the 0% answer for a negative rate', () => {
+    const doc = createSampleDoc()
+    doc.project.discountRate = 0
+    const atZero = computeResults(doc).npv
+    doc.project.discountRate = -100
+    expect(computeResults(doc).npv).toBe(atZero)
+  })
+})
+
+describe('NPV timing note', () => {
+  it('says Year 1 is not discounted and warns that Excel differs', () => {
+    expect(NPV_TIMING_NOTE).toMatch(/Year 1 is treated as today/)
+    expect(NPV_TIMING_NOTE).toMatch(/Excel/)
   })
 })

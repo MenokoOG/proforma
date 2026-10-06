@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **CSV formula injection.** Text typed into the app (title, sponsor, justifications and so on)
+  that began with `=`, `+`, `-` or `@` ran as a formula when the exported CSV was opened in Excel
+  or Sheets. Such cells are now prefixed with an apostrophe and stay text. Real numbers, including
+  negatives, are untouched. `buildCsv` is now a pure function so this is tested.
+- **Payback on an empty case.** A case with no benefit reported "break-even Year 1" because the
+  running total was `0 >= 0`. Payback now needs some benefit to have arrived.
+- **IRR says why it is undefined.** No cost or benefit year, or a rate beyond -99.99% to 1,000%,
+  now gives a reason instead of a bare "not defined". When the cash flows change sign more than
+  once (so more than one IRR can exist) the rate is shown with a caution. `Results` gains
+  `irrNote`; `irrDetail()` returns the rate and the note, and `irr()` is unchanged.
+- **Discount rate is clamped to 0-100 in the calculation and on load.** A value from an imported
+  file (a string, or one at or below -100) could previously give an `Infinity` or `NaN` NPV.
+
+### Added
+
+- **How NPV is timed**, stated on the Results step, the printed report, the CSV and the Markdown
+  export: Year 1 is treated as today and not discounted, so Excel's `NPV()` (which discounts its
+  first value by one period) gives a different figure.
+- 34 tests: CSV guard, payback edge cases, `irrDetail`, discount-rate normalisation, and `hydrate`
+  on untrusted rates. Each fix was checked by removing it and confirming its tests fail.
+
 ### Changed
 
 - Author and copyright holder are now Lawrence Jefferson II in `LICENSE`,

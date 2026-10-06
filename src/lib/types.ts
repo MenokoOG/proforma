@@ -179,6 +179,8 @@ export interface Results {
   npv: number
   /** Internal rate of return as a fraction, e.g. 0.23; null when undefined. */
   irr: number | null
+  /** Why IRR is undefined, or a caution about the rate shown; null when clean. */
+  irrNote: string | null
   /** Worst cumulative position — the cash the initiative must be funded through. */
   peakExposure: number
 }
