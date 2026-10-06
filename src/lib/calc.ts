@@ -83,11 +83,15 @@ export function computeResults(doc: Doc): Results {
   const totalNet = totalBenefit - totalCost - totalMitigation
   const outlay = totalCost + totalMitigation
 
-  // Payback: first year the running total is no longer under water.
+  // Payback: first year the running total is no longer under water. A case with
+  // no benefit yet has not paid anything back, so an all-zero (or cost-free,
+  // benefit-free) opening year is not "Year 1 payback".
   let paybackYear: number | null = null
   let paybackYears: number | null = null
+  let benefitSoFar = 0
   for (let i = 0; i < HORIZON; i++) {
-    if (years[i].cumulative >= 0) {
+    benefitSoFar += benefits[i]
+    if (years[i].cumulative >= 0 && benefitSoFar > 0) {
       paybackYear = i + 1
       if (i === 0) {
         // Already in the black by the end of Year 1.
@@ -102,11 +106,12 @@ export function computeResults(doc: Doc): Results {
     }
   }
 
-  const r = num(doc.project.discountRate) / 100
+  const r = normalizeDiscountRate(doc.project.discountRate) / 100
   let npv = 0
   for (let i = 0; i < HORIZON; i++) npv += years[i].net / Math.pow(1 + r, i)
 
   const peakExposure = Math.min(0, ...years.map((y) => y.cumulative))
+  const irrResult = irrDetail(years.map((y) => y.net))
 
   return {
     years,
@@ -118,10 +123,29 @@ export function computeResults(doc: Doc): Results {
     paybackYears,
     roi: outlay > 0 ? totalNet / outlay : null,
     npv,
-    irr: irr(years.map((y) => y.net)),
+    irr: irrResult.rate,
+    irrNote: irrResult.note,
     peakExposure,
   }
 }
+
+/** The discount rate the form allows, in percent. Applied again here because a
+ *  loaded or imported file does not pass through the form. */
+export const DISCOUNT_RATE_MIN = 0
+export const DISCOUNT_RATE_MAX = 100
+
+export function normalizeDiscountRate(v: unknown): number {
+  return clamp(num(v), DISCOUNT_RATE_MIN, DISCOUNT_RATE_MAX)
+}
+
+/**
+ * How NPV and IRR place the years in time. Stated wherever NPV is shown,
+ * because a reviewer checking in Excel will otherwise get a different number:
+ * Excel's NPV() discounts its first value by one period.
+ */
+export const NPV_TIMING_NOTE =
+  'Year 1 is treated as today and is not discounted; Years 2-5 are discounted 1 to 4 periods. ' +
+  "Excel's NPV() discounts its first value by one period, so it will give a different figure."
 
 function sum(xs: number[]): number {
   return xs.reduce((a, b) => a + b, 0)
@@ -131,37 +155,77 @@ function clamp(n: number, lo: number, hi: number): number {
   return Math.min(hi, Math.max(lo, n))
 }
 
+export interface IrrResult {
+  /** The rate as a fraction, e.g. 0.23; null when none is defined. */
+  rate: number | null
+  /** Why there is no rate, or a caution about the one returned. Null when clean. */
+  note: string | null
+}
+
+/** Searched range, as fractions: -99.99% to 1,000%. */
+const IRR_LO = -0.9999
+const IRR_HI = 10
+
+/** How many times the sign flips along the series, ignoring zero years. */
+function signChanges(flows: number[]): number {
+  let changes = 0
+  let last = 0
+  for (const f of flows) {
+    const s = Math.sign(f)
+    if (s === 0) continue
+    if (last !== 0 && s !== last) changes += 1
+    last = s
+  }
+  return changes
+}
+
 /**
- * Internal rate of return by bisection. Returns null when the cash flows do
- * not cross zero (all-positive or all-negative series have no meaningful IRR).
+ * Internal rate of return by bisection, with the reason when there is none.
+ *
+ * No rate is defined when the flows never change sign, or when the NPV does not
+ * cross zero inside the searched range. When the flows change sign more than
+ * once there can be more than one IRR; a rate is still returned, with a caution.
  */
-export function irr(flows: number[]): number | null {
+export function irrDetail(flows: number[]): IrrResult {
   const hasNeg = flows.some((f) => f < 0)
   const hasPos = flows.some((f) => f > 0)
-  if (!hasNeg || !hasPos) return null
+  if (!hasNeg || !hasPos) {
+    return { rate: null, note: 'IRR needs at least one cost year and one benefit year.' }
+  }
 
   const npvAt = (rate: number) => flows.reduce((acc, f, i) => acc + f / Math.pow(1 + rate, i), 0)
 
-  let lo = -0.9999
-  let hi = 10
+  let lo = IRR_LO
+  let hi = IRR_HI
   let fLo = npvAt(lo)
-  let fHi = npvAt(hi)
-  if (fLo * fHi > 0) return null
+  if (fLo * npvAt(hi) > 0) {
+    return { rate: null, note: 'No rate between -99.99% and 1,000% brings the NPV to zero.' }
+  }
 
+  let rate = (lo + hi) / 2
   for (let i = 0; i < 200; i++) {
     const mid = (lo + hi) / 2
     const fMid = npvAt(mid)
-    if (Math.abs(fMid) < 1e-7) return mid
+    rate = mid
+    if (Math.abs(fMid) < 1e-7) break
     if (fLo * fMid < 0) {
       hi = mid
-      fHi = fMid
     } else {
       lo = mid
       fLo = fMid
     }
   }
-  void fHi
-  return (lo + hi) / 2
+
+  const note =
+    signChanges(flows) > 1
+      ? 'The cash flows change sign more than once, so more than one IRR can exist. Treat this one with caution.'
+      : null
+  return { rate, note }
+}
+
+/** The rate alone. Returns null when the cash flows do not define one. */
+export function irr(flows: number[]): number | null {
+  return irrDetail(flows).rate
 }
 
 /* ------------------------------------------------------------------ */

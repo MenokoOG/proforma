@@ -1,3 +1,4 @@
+import { normalizeDiscountRate } from './calc'
 import { createDoc, DOC_VERSION, defaultDecisions, defaultPhases } from './defaults'
 import type { Doc } from './types'
 
@@ -20,7 +21,15 @@ export function hydrate(raw: unknown): Doc {
   return {
     version: DOC_VERSION,
     updatedAt: typeof input.updatedAt === 'string' ? input.updatedAt : base.updatedAt,
-    project: { ...base.project, ...(input.project ?? {}) },
+    // A loaded or imported file does not pass through the form, so its discount
+    // rate is brought back into the allowed range here (and a string becomes a number).
+    project: {
+      ...base.project,
+      ...(input.project ?? {}),
+      discountRate: normalizeDiscountRate(
+        input.project?.discountRate ?? base.project.discountRate,
+      ),
+    },
     stakeholders: { ...(input.stakeholders ?? {}) },
     useCase: { ...base.useCase, ...(input.useCase ?? {}) },
     decisions: defaultDecisions().map((d) => {

@@ -131,3 +131,26 @@ describe('hydrate', () => {
     ).not.toThrow()
   })
 })
+
+describe('hydrate: discount rate from an untrusted file', () => {
+  const load = (rate: unknown) =>
+    hydrate({ project: { discountRate: rate } }).project.discountRate
+
+  it('clamps a rate above 100 and below 0', () => {
+    expect(load(250)).toBe(100)
+    expect(load(-100)).toBe(0)
+  })
+
+  it('turns a numeric string into a number and junk into zero', () => {
+    expect(load('12')).toBe(12)
+    expect(load('abc')).toBe(0)
+  })
+
+  it('keeps the default when the file has no project block', () => {
+    expect(hydrate({}).project.discountRate).toBe(createDoc().project.discountRate)
+  })
+
+  it('leaves an in-range rate alone', () => {
+    expect(load(8)).toBe(8)
+  })
+})

@@ -1,7 +1,7 @@
 import { PHASES, SWIMLANES, deliverableKey } from '../data/roadmap'
 import { DECISION_OPTIONS, RISK_DIMENSIONS } from '../data/decisions'
 import { STAKEHOLDER_ROLES } from '../data/stakeholders'
-import { lineTotal, spread, yearLabels } from './calc'
+import { NPV_TIMING_NOTE, lineTotal, spread, yearLabels } from './calc'
 import type { Doc, Results } from './types'
 
 function download(filename: string, mime: string, content: string) {
@@ -57,16 +57,28 @@ export function importJson(file: File): Promise<unknown> {
 /* CSV — opens in Excel / Sheets alongside the source workbooks        */
 /* ------------------------------------------------------------------ */
 
-function csvCell(v: unknown): string {
-  const s = String(v ?? '')
-  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
+/**
+ * Spreadsheets run a cell as a formula when its text starts with = + - or @
+ * (or a tab / carriage return that some apps strip first). Anything a user
+ * types, such as a title or a justification, ends up in this file, so a text
+ * cell that starts that way is prefixed with an apostrophe and stays text.
+ * Real numbers are written as numbers and are not touched, so a negative
+ * figure is still a negative figure.
+ */
+const FORMULA_START = /^[=+\-@\t\r]/
+
+export function csvCell(v: unknown): string {
+  let s = String(v ?? '')
+  if (typeof v === 'string' && FORMULA_START.test(s)) s = `'${s}`
+  return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
 }
 
 function csvRows(rows: unknown[][]): string {
   return rows.map((r) => r.map(csvCell).join(',')).join('\r\n')
 }
 
-export function exportCsv(doc: Doc, results: Results) {
+/** The CSV text, without the byte-order mark. Pure so it can be tested. */
+export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): string {
   const labels = yearLabels(doc.project.startDate)
   const rows: unknown[][] = []
 
@@ -77,9 +89,10 @@ export function exportCsv(doc: Doc, results: Results) {
   rows.push(['Proposers', doc.project.proposers])
   rows.push(['Currency', doc.project.currency])
   rows.push(['Discount rate (%)', doc.project.discountRate])
-  rows.push(['Generated', new Date().toISOString()])
+  rows.push(['Generated', now.toISOString()])
   rows.push([])
   rows.push(['Note', 'One-time amounts fall in Year 1. Annual amounts apply to Years 2-5.'])
+  rows.push(['NPV timing', NPV_TIMING_NOTE])
   rows.push([])
 
   const header = ['Item', 'Description', 'One-time', 'Annual', ...labels, '5-year total']
@@ -147,6 +160,7 @@ export function exportCsv(doc: Doc, results: Results) {
   rows.push(['Peak funding need', Math.abs(results.peakExposure)])
   rows.push([`NPV at ${doc.project.discountRate}%`, results.npv])
   rows.push(['IRR', results.irr === null ? 'n/a' : results.irr])
+  if (results.irrNote) rows.push(['IRR note', results.irrNote])
   rows.push([])
 
   rows.push(['STAKEHOLDERS'])
@@ -201,8 +215,16 @@ export function exportCsv(doc: Doc, results: Results) {
     })
   }
 
+  return csvRows(rows)
+}
+
+export function exportCsv(doc: Doc, results: Results) {
   // BOM so Excel opens UTF-8 correctly on Windows.
-  download(`${slug(doc.project.title)}-proforma.csv`, 'text/csv', '﻿' + csvRows(rows))
+  download(
+    `${slug(doc.project.title)}-proforma.csv`,
+    'text/csv',
+    '\uFEFF' + buildCsv(doc, results),
+  )
 }
 
 /* ------------------------------------------------------------------ */
@@ -271,6 +293,8 @@ export function buildMarkdown(doc: Doc, results: Results): string {
   L.push(
     `- **ROI:** ${results.roi === null ? 'n/a' : `${(results.roi * 100).toFixed(0)}%`} · **NPV @ ${doc.project.discountRate}%:** ${fmt(results.npv)}${results.irr !== null ? ` · **IRR:** ${(results.irr * 100).toFixed(1)}%` : ''}`,
   )
+  L.push(`- **NPV timing:** ${NPV_TIMING_NOTE}`)
+  if (results.irrNote) L.push(`- **IRR note:** ${results.irrNote}`)
   L.push('')
 
   const justified = [...doc.costs, ...doc.benefits, ...doc.mitigations].filter(

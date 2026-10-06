@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { CashChart, CHART_NARROW_QUERY } from '../components/Chart'
 import { Card, Icon, Stat, useMediaQuery } from '../components/ui'
-import { lineTotal, spread } from '../lib/calc'
+import { NPV_TIMING_NOTE, lineTotal, spread } from '../lib/calc'
 import { compactMoney, money, percent, signedMoney, years } from '../lib/format'
 import type { Doc, YearRow } from '../lib/types'
 import { useStore } from '../state/store'
@@ -83,6 +83,16 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
           tone={r.npv >= 0 ? 'pos' : 'neg'}
         />
       </div>
+
+      <p className="note" style={{ marginBottom: 16 }}>
+        <strong>How NPV is timed.</strong> {NPV_TIMING_NOTE}
+        {r.irrNote ? (
+          <>
+            {' '}
+            <strong>IRR.</strong> {r.irrNote}
+          </>
+        ) : null}
+      </p>
 
       {blockers.length ? (
         <Card title="Before this goes anywhere">
