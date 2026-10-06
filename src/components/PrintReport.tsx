@@ -2,7 +2,8 @@ import { DECISION_OPTIONS, RISK_DIMENSIONS } from '../data/decisions'
 import { INDUSTRIES } from '../data/industries'
 import { PHASES, SWIMLANES, deliverableKey } from '../data/roadmap'
 import { STAKEHOLDER_ROLES } from '../data/stakeholders'
-import { NPV_TIMING_NOTE, lineTotal, spread, yearLabels } from '../lib/calc'
+import { assumptionsList } from '../lib/assumptions'
+import { lineTotal, spread, yearLabels } from '../lib/calc'
 import { longDate, money, percent, signedMoney } from '../lib/format'
 import { useStore } from '../state/store'
 import { CashChart } from './Chart'
@@ -77,15 +78,23 @@ export function PrintReport() {
             v={`${money(results.npv, currency)}${results.irr !== null ? ` · IRR ${percent(results.irr, 1)}` : ''}`}
           />
         </div>
-        <p className="note" style={{ marginTop: 10 }}>
-          <strong>How NPV is timed.</strong> {NPV_TIMING_NOTE}
-          {results.irrNote ? (
-            <>
-              {' '}
-              <strong>IRR.</strong> {results.irrNote}
-            </>
-          ) : null}
-        </p>
+        {results.irrNote ? (
+          <p className="note" style={{ marginTop: 10 }}>
+            <strong>IRR.</strong> {results.irrNote}
+          </p>
+        ) : null}
+      </section>
+
+      <section className="card">
+        <h2>Assumptions</h2>
+        <dl className="assumptions">
+          {assumptionsList(doc).map((a) => (
+            <div key={a.label} className="assumption">
+              <dt>{a.label}</dt>
+              <dd>{a.value}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section className="card">

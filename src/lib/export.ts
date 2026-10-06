@@ -1,7 +1,8 @@
 import { PHASES, SWIMLANES, deliverableKey } from '../data/roadmap'
 import { DECISION_OPTIONS, RISK_DIMENSIONS } from '../data/decisions'
 import { STAKEHOLDER_ROLES } from '../data/stakeholders'
-import { NPV_TIMING_NOTE, lineTotal, spread, yearLabels } from './calc'
+import { assumptionsList } from './assumptions'
+import { lineTotal, spread, yearLabels } from './calc'
 import type { Doc, Results } from './types'
 
 function download(filename: string, mime: string, content: string) {
@@ -92,7 +93,6 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
   rows.push(['Generated', now.toISOString()])
   rows.push([])
   rows.push(['Note', 'One-time amounts fall in Year 1. Annual amounts apply to Years 2-5.'])
-  rows.push(['NPV timing', NPV_TIMING_NOTE])
   rows.push([])
 
   const header = ['Item', 'Description', 'One-time', 'Annual', ...labels, '5-year total']
@@ -161,6 +161,10 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
   rows.push([`NPV at ${doc.project.discountRate}%`, results.npv])
   rows.push(['IRR', results.irr === null ? 'n/a' : results.irr])
   if (results.irrNote) rows.push(['IRR note', results.irrNote])
+  rows.push([])
+
+  rows.push(['ASSUMPTIONS'])
+  for (const a of assumptionsList(doc)) rows.push([a.label, a.value])
   rows.push([])
 
   rows.push(['STAKEHOLDERS'])
@@ -293,8 +297,12 @@ export function buildMarkdown(doc: Doc, results: Results): string {
   L.push(
     `- **ROI:** ${results.roi === null ? 'n/a' : `${(results.roi * 100).toFixed(0)}%`} · **NPV @ ${doc.project.discountRate}%:** ${fmt(results.npv)}${results.irr !== null ? ` · **IRR:** ${(results.irr * 100).toFixed(1)}%` : ''}`,
   )
-  L.push(`- **NPV timing:** ${NPV_TIMING_NOTE}`)
   if (results.irrNote) L.push(`- **IRR note:** ${results.irrNote}`)
+  L.push('')
+
+  L.push('## Assumptions')
+  L.push('')
+  for (const a of assumptionsList(doc)) L.push(`- **${a.label}:** ${a.value}`)
   L.push('')
 
   const justified = [...doc.costs, ...doc.benefits, ...doc.mitigations].filter(

@@ -641,6 +641,31 @@ textarea {
   border-left-color: var(--risk);
 }
 
+/* Assumptions in force: a definition list that stacks on phones. */
+.assumptions {
+  display: grid;
+  gap: 10px 0;
+  margin: 0;
+}
+.assumption {
+  display: grid;
+  grid-template-columns: minmax(7rem, 11rem) 1fr;
+  gap: 4px 16px;
+  font-size: 0.9rem;
+}
+.assumption dt {
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.assumption dd {
+  margin: 0;
+  color: var(--ink);
+}
+@media (max-width: 600px) {
+  .assumption {
+    grid-template-columns: 1fr;
+  }
+}
 /* =================================================================
    Forms
    ================================================================= */

@@ -1,4 +1,4 @@
-import type { Doc, LineItem, Results, TokenModel, TokenPlan, YearRow } from './types'
+import type { Doc, LineItem, NpvTiming, Results, TokenModel, TokenPlan, YearRow } from './types'
 
 export const HORIZON = 5
 
@@ -107,8 +107,13 @@ export function computeResults(doc: Doc): Results {
   }
 
   const r = normalizeDiscountRate(doc.project.discountRate) / 100
+  // 'today' (the default, and what the source workbook does) leaves Year 1
+  // undiscounted. 'year-end' discounts every year by one more period, which is
+  // what Excel's NPV() does. IRR is unaffected: shifting every flow by the same
+  // number of periods does not move the rate that zeroes the NPV.
+  const timingOffset = timingPeriods(doc.project.npvTiming)
   let npv = 0
-  for (let i = 0; i < HORIZON; i++) npv += years[i].net / Math.pow(1 + r, i)
+  for (let i = 0; i < HORIZON; i++) npv += years[i].net / Math.pow(1 + r, i + timingOffset)
 
   const peakExposure = Math.min(0, ...years.map((y) => y.cumulative))
   const irrResult = irrDetail(years.map((y) => y.net))
@@ -139,13 +144,32 @@ export function normalizeDiscountRate(v: unknown): number {
 }
 
 /**
- * How NPV and IRR place the years in time. Stated wherever NPV is shown,
- * because a reviewer checking in Excel will otherwise get a different number:
- * Excel's NPV() discounts its first value by one period.
+ * Where NPV places Year 1 in time. 'today' is the default because it is what
+ * the source workbook does and what every regression figure was verified
+ * against. 'year-end' matches Excel's NPV(), so a reviewer who re-checks the
+ * number in a spreadsheet can get the same figure.
  */
-export const NPV_TIMING_NOTE =
-  'Year 1 is treated as today and is not discounted; Years 2-5 are discounted 1 to 4 periods. ' +
-  "Excel's NPV() discounts its first value by one period, so it will give a different figure."
+export const NPV_TIMING_OPTIONS: readonly { value: NpvTiming; label: string }[] = [
+  { value: 'today', label: 'Year 1 = today' },
+  { value: 'year-end', label: 'Year-end (matches Excel NPV)' },
+]
+
+/** Anything that is not exactly 'year-end' is the default; a loaded file may hold anything. */
+export function normalizeNpvTiming(v: unknown): NpvTiming {
+  return v === 'year-end' ? 'year-end' : 'today'
+}
+
+/** How many extra periods every year is discounted by under a timing. */
+export function timingPeriods(timing: unknown): number {
+  return normalizeNpvTiming(timing) === 'year-end' ? 1 : 0
+}
+
+/** One sentence saying how NPV is timed. Shown wherever NPV is shown. */
+export function npvTimingNote(timing: unknown): string {
+  return normalizeNpvTiming(timing) === 'year-end'
+    ? "Each year's net is treated as arriving at the end of that year, so Year 1 is discounted one period and Year 5 five. This matches Excel's NPV()."
+    : "Year 1 is treated as today and is not discounted; Years 2-5 are discounted 1 to 4 periods. Excel's NPV() discounts its first value by one period, so it gives a different figure unless you choose year-end timing."
+}
 
 function sum(xs: number[]): number {
   return xs.reduce((a, b) => a + b, 0)

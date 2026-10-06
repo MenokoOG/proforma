@@ -137,6 +137,7 @@ export function createDoc(): Doc {
       startDate: toISODate(now),
       currency: 'USD',
       discountRate: 10,
+      npvTiming: 'today',
     },
     stakeholders: {},
     useCase: { industry: '', aiType: '', seed: '' },

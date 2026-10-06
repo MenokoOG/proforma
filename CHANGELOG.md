@@ -24,14 +24,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **How NPV is timed**, stated on the Results step, the printed report, the CSV and the Markdown
-  export: Year 1 is treated as today and not discounted, so Excel's `NPV()` (which discounts its
-  first value by one period) gives a different figure.
-- 34 tests: CSV guard, payback edge cases, `irrDetail`, discount-rate normalisation, and `hydrate`
-  on untrusted rates. Each fix was checked by removing it and confirming its tests fail.
+- **NPV timing toggle.** Year 1 = today (the default, as in the source workbook) or Year-end,
+  which discounts every year one more period and matches Excel's `NPV()`. Set it on the Brief step
+  or flip it on Results and watch the NPV move. IRR, payback, ROI and the totals are unaffected,
+  and every figure the workbook regression guards is unchanged under the default. Files saved
+  before the setting existed open as "Year 1 = today", so a case someone has already presented does
+  not change.
+- **Assumptions in force.** One list (horizon, spreading, discount rate, NPV timing, how IRR, ROI
+  and payback are defined, currency) shown on Results and included in the printed report, the CSV
+  and the Markdown export. It comes from a single `assumptionsList()`, so they cannot disagree.
+- 57 tests: CSV guard, payback edge cases, `irrDetail`, discount-rate normalisation, `hydrate` on
+  untrusted values, the timing toggle (including a check against Excel's `NPV()` formula) and the
+  assumptions list. Each fix was checked by removing it and confirming its tests fail.
 
 ### Changed
 
+- The static NPV-timing note added with the five fixes is replaced by the toggle and the
+  assumptions list.
 - Author and copyright holder are now Lawrence Jefferson II in `LICENSE`,
   `NOTICE`, `README.md` and `package.json`. The license terms are unchanged.
 - New visual system: Holographic / Iridescent. Dark is a near-black ground with

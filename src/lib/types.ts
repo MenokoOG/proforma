@@ -42,7 +42,12 @@ export interface Project {
   currency: string
   /** Discount rate as a percentage, e.g. 10 means 10%. */
   discountRate: number
+  /** Where Year 1 sits for NPV. See calc.ts: 'today' is the default. */
+  npvTiming: NpvTiming
 }
+
+/** 'today': Year 1 undiscounted (source workbook). 'year-end': Excel's NPV() convention. */
+export type NpvTiming = 'today' | 'year-end'
 
 /** Keyed by stakeholder role id — see data/stakeholders.ts. */
 export type Stakeholders = Record<string, string>

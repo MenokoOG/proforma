@@ -91,6 +91,12 @@ A line with 30,000 one-time and 10,000 annual totals 70,000 over five years.
 This is surfaced in the UI rather than buried, because it is the single most common source of
 disagreement when two people compare their versions of the same model.
 
+NPV has a second convention of the same kind. By default **Year 1 is treated as today** and is not
+discounted, as in the source workbook. Excel's `NPV()` discounts its first value by one period, so it
+gives a different figure. Choose **Year-end** (on the Brief step or on Results) and ProForma matches
+Excel. IRR is the same either way. The convention in force is listed under **Assumptions in force**,
+and printed and exported with every case.
+
 Verified against the source workbook: seeding the framework's own example figures reproduces its
 totals exactly — Year 1 net −1,930,000, Years 2–5 net +790,000, running total
 −1,930,000 / −1,140,000 / −350,000 / +440,000 / +1,230,000.
