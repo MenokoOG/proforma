@@ -154,3 +154,22 @@ describe('hydrate: discount rate from an untrusted file', () => {
     expect(load(8)).toBe(8)
   })
 })
+
+describe('hydrate: NPV timing', () => {
+  const load = (v: unknown) => hydrate({ project: { npvTiming: v } }).project.npvTiming
+
+  it("gives a file saved before the setting existed 'today', so presented cases do not change", () => {
+    expect(hydrate({ project: { title: 'Old file' } }).project.npvTiming).toBe('today')
+    expect(hydrate({}).project.npvTiming).toBe('today')
+  })
+
+  it('keeps year-end through a JSON round trip', () => {
+    const doc = createSampleDoc()
+    doc.project.npvTiming = 'year-end'
+    expect(hydrate(JSON.parse(JSON.stringify(doc))).project.npvTiming).toBe('year-end')
+  })
+
+  it("turns anything unrecognised into 'today'", () => {
+    for (const bad of ['nonsense', '', null, 3, {}]) expect(load(bad)).toBe('today')
+  })
+})

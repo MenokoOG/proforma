@@ -9,9 +9,12 @@ import {
   irrDetail,
   lineTotal,
   normalizeDiscountRate,
-  NPV_TIMING_NOTE,
+  normalizeNpvTiming,
+  npvTimingNote,
+  NPV_TIMING_OPTIONS,
   rollupDecisions,
   spread,
+  timingPeriods,
 } from '../calc'
 import { createDoc, createSampleDoc } from '../defaults'
 import type { LineItem, TokenModel, TokenPlan } from '../types'
@@ -442,9 +445,75 @@ describe('discount rate', () => {
   })
 })
 
-describe('NPV timing note', () => {
-  it('says Year 1 is not discounted and warns that Excel differs', () => {
-    expect(NPV_TIMING_NOTE).toMatch(/Year 1 is treated as today/)
-    expect(NPV_TIMING_NOTE).toMatch(/Excel/)
+describe('NPV timing toggle', () => {
+  const sample = (timing: 'today' | 'year-end', rate = 10) => {
+    const doc = createSampleDoc()
+    doc.project.discountRate = rate
+    doc.project.npvTiming = timing
+    return computeResults(doc)
+  }
+
+  it("defaults to 'today' and leaves the worked example's NPV where it was", () => {
+    expect(createSampleDoc().project.npvTiming).toBe('today')
+    // -1.93M + 790k x (1/1.1 + 1/1.21 + 1/1.331 + 1/1.4641), worked by hand.
+    expect(computeResults(createSampleDoc()).npv).toBeCloseTo(574_193.7, 0)
+  })
+
+  it('year-end NPV is the today NPV divided by (1 + rate)', () => {
+    expect(sample('year-end', 10).npv).toBeCloseTo(521_994.3, 0)
+    expect(sample('year-end', 10).npv).toBeCloseTo(sample('today', 10).npv / 1.1, 6)
+  })
+
+  it('is the same at a 0% rate', () => {
+    expect(sample('year-end', 0).npv).toBe(sample('today', 0).npv)
+  })
+
+  it("matches Excel's NPV() under year-end timing", () => {
+    // Excel: NPV(rate, y1..y5) = sum of y_i / (1 + rate)^i for i = 1..5.
+    const r = sample('year-end', 8)
+    const excel = r.years.reduce((acc, y, i) => acc + y.net / Math.pow(1.08, i + 1), 0)
+    expect(r.npv).toBeCloseTo(excel, 6)
+  })
+
+  it('does not move IRR, payback, ROI or any total', () => {
+    const a = sample('today')
+    const b = sample('year-end')
+    expect(b.irr).toBe(a.irr)
+    expect(b.paybackYear).toBe(a.paybackYear)
+    expect(b.paybackYears).toBe(a.paybackYears)
+    expect(b.roi).toBe(a.roi)
+    expect(b.totalNet).toBe(a.totalNet)
+    expect(b.peakExposure).toBe(a.peakExposure)
+  })
+
+  it('treats anything but year-end as today', () => {
+    for (const bad of ['nonsense', '', null, undefined, 1, {}]) {
+      expect(normalizeNpvTiming(bad)).toBe('today')
+    }
+    expect(normalizeNpvTiming('year-end')).toBe('year-end')
+  })
+
+  it('computes with the default when the stored value is garbage', () => {
+    const doc = createSampleDoc()
+    doc.project.npvTiming = 'nonsense' as never
+    expect(computeResults(doc).npv).toBe(sample('today').npv)
+  })
+
+  it('shifts every year by one extra period only under year-end', () => {
+    expect(timingPeriods('today')).toBe(0)
+    expect(timingPeriods('year-end')).toBe(1)
+    expect(timingPeriods(undefined)).toBe(0)
+  })
+
+  it('offers both conventions and labels them', () => {
+    expect(NPV_TIMING_OPTIONS.map((o) => o.value)).toEqual(['today', 'year-end'])
+    expect(NPV_TIMING_OPTIONS.every((o) => o.label.length > 0)).toBe(true)
+  })
+
+  it('says which convention is in force', () => {
+    expect(npvTimingNote('today')).toMatch(/Year 1 is treated as today/)
+    expect(npvTimingNote('today')).toMatch(/Excel/)
+    expect(npvTimingNote('year-end')).toMatch(/end of that year/)
+    expect(npvTimingNote('year-end')).toMatch(/matches Excel/)
   })
 })

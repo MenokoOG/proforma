@@ -1,4 +1,4 @@
-import { normalizeDiscountRate } from './calc'
+import { normalizeDiscountRate, normalizeNpvTiming } from './calc'
 import { createDoc, DOC_VERSION, defaultDecisions, defaultPhases } from './defaults'
 import type { Doc } from './types'
 
@@ -29,6 +29,9 @@ export function hydrate(raw: unknown): Doc {
       discountRate: normalizeDiscountRate(
         input.project?.discountRate ?? base.project.discountRate,
       ),
+      // Files saved before this setting existed have none; they keep the old
+      // behaviour ('today'), so a case someone already presented does not change.
+      npvTiming: normalizeNpvTiming(input.project?.npvTiming),
     },
     stakeholders: { ...(input.stakeholders ?? {}) },
     useCase: { ...base.useCase, ...(input.useCase ?? {}) },

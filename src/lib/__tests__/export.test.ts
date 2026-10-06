@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { computeResults, NPV_TIMING_NOTE } from '../calc'
+import { computeResults } from '../calc'
 import { createSampleDoc } from '../defaults'
-import { buildCsv, csvCell } from '../export'
+import { buildCsv, buildMarkdown, csvCell } from '../export'
 
 /**
  * Anything a user types ends up in the exported CSV. A spreadsheet runs a cell
@@ -66,14 +66,21 @@ describe('buildCsv', () => {
     expect(csv).toContain('Net position,1230000')
   })
 
-  it('states how NPV is timed', () => {
+  it('lists the assumptions in force, including the NPV timing', () => {
     const doc = createSampleDoc()
     const csv = buildCsv(doc, computeResults(doc), now)
+    expect(csv).toContain('ASSUMPTIONS')
     expect(csv).toContain('NPV timing')
     expect(csv).toContain('Year 1 is treated as today')
-    expect(NPV_TIMING_NOTE).toContain('Year 1 is treated as today')
   })
 
+  it('follows the timing the user chose', () => {
+    const doc = createSampleDoc()
+    doc.project.npvTiming = 'year-end'
+    const csv = buildCsv(doc, computeResults(doc), now)
+    expect(csv).toContain('end of that year')
+    expect(csv).not.toContain('Year 1 is treated as today')
+  })
   it('does not include the byte-order mark (the download adds it)', () => {
     const doc = createSampleDoc()
     expect(buildCsv(doc, computeResults(doc), now).charCodeAt(0)).not.toBe(0xfeff)
@@ -84,5 +91,15 @@ describe('buildCsv', () => {
     const r = computeResults(doc)
     expect(buildCsv(doc, r, now)).toBe(buildCsv(doc, r, now))
     expect(buildCsv(doc, r, now)).toContain('2026-10-06T12:00:00.000Z')
+  })
+})
+
+describe('buildMarkdown', () => {
+  it('has an Assumptions section that follows the chosen timing', () => {
+    const doc = createSampleDoc()
+    expect(buildMarkdown(doc, computeResults(doc))).toContain('## Assumptions')
+    expect(buildMarkdown(doc, computeResults(doc))).toContain('- **NPV timing:**')
+    doc.project.npvTiming = 'year-end'
+    expect(buildMarkdown(doc, computeResults(doc))).toContain('end of that year')
   })
 })

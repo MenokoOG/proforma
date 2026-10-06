@@ -1,14 +1,22 @@
 import { useState } from 'react'
 import { CashChart, CHART_NARROW_QUERY } from '../components/Chart'
-import { Card, Icon, Stat, useMediaQuery } from '../components/ui'
-import { NPV_TIMING_NOTE, lineTotal, spread } from '../lib/calc'
+import { Card, Icon, Note, Segmented, Stat, useMediaQuery } from '../components/ui'
+import { assumptionsList } from '../lib/assumptions'
+import {
+  NPV_TIMING_OPTIONS,
+  lineTotal,
+  normalizeNpvTiming,
+  npvTimingNote,
+  spread,
+} from '../lib/calc'
 import { compactMoney, money, percent, signedMoney, years } from '../lib/format'
 import type { Doc, YearRow } from '../lib/types'
 import { useStore } from '../state/store'
 
 export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
-  const { doc, results, gaps, currency } = useStore()
+  const { doc, results, gaps, currency, dispatch } = useStore()
   const r = results
+  const npvTiming = normalizeNpvTiming(doc.project.npvTiming)
   const outlay = r.totalCost + r.totalMitigation
   const blockers = gaps.filter((g) => g.severity === 'blocker')
 
@@ -84,15 +92,23 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
         />
       </div>
 
-      <p className="note" style={{ marginBottom: 16 }}>
-        <strong>How NPV is timed.</strong> {NPV_TIMING_NOTE}
-        {r.irrNote ? (
-          <>
-            {' '}
-            <strong>IRR.</strong> {r.irrNote}
-          </>
-        ) : null}
-      </p>
+      <div style={{ marginBottom: 16 }}>
+        <Segmented
+          label="NPV timing"
+          value={npvTiming}
+          onChange={(v) => dispatch({ type: 'project', patch: { npvTiming: v } })}
+          options={[...NPV_TIMING_OPTIONS]}
+        />
+        <Note>
+          <strong>How NPV is timed.</strong> {npvTimingNote(npvTiming)}
+          {r.irrNote ? (
+            <>
+              {' '}
+              <strong>IRR.</strong> {r.irrNote}
+            </>
+          ) : null}
+        </Note>
+      </div>
 
       {blockers.length ? (
         <Card title="Before this goes anywhere">
@@ -256,6 +272,20 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
             </p>
           ) : null}
         </div>
+      </Card>
+
+      <Card
+        title="Assumptions in force"
+        sub="Everything the figures above rest on. The same list is printed and exported."
+      >
+        <dl className="assumptions">
+          {assumptionsList(doc).map((a) => (
+            <div key={a.label} className="assumption">
+              <dt>{a.label}</dt>
+              <dd>{a.value}</dd>
+            </div>
+          ))}
+        </dl>
       </Card>
 
       {gaps.filter((g) => g.severity === 'warning').length ? (

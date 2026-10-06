@@ -1,4 +1,5 @@
 import { STAKEHOLDER_ROLES } from '../data/stakeholders'
+import { NPV_TIMING_OPTIONS, normalizeNpvTiming } from '../lib/calc'
 import { CURRENCIES } from '../lib/format'
 import { useStore } from '../state/store'
 import {
@@ -159,6 +160,15 @@ export function Brief() {
             suffix="%"
             min={0}
             max={100}
+          />
+        </div>
+        <div style={{ marginTop: 12 }}>
+          <SelectField
+            label="NPV timing"
+            hint="Year 1 = today matches the source workbook. Year-end matches Excel's NPV(), so a reviewer re-checking in a spreadsheet gets the same figure. IRR is the same either way."
+            value={normalizeNpvTiming(p.npvTiming)}
+            onChange={(v) => set({ npvTiming: v })}
+            options={[...NPV_TIMING_OPTIONS]}
           />
         </div>
       </Card>
