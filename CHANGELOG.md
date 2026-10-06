@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   first value by one period) gives a different figure.
 - 34 tests: CSV guard, payback edge cases, `irrDetail`, discount-rate normalisation, and `hydrate`
   on untrusted rates. Each fix was checked by removing it and confirming its tests fail.
+
 ### Changed
 
 - Author and copyright holder are now Lawrence Jefferson II in `LICENSE`,
