@@ -277,7 +277,7 @@ export function createSampleDoc(): Doc {
   doc.tokenPlan = {
     ...doc.tokenPlan,
     modelId: 'claude-sonnet-5',
-    requestsPerDay: 1800,
+    requestsPerDay: 6342,
     inputTokensPerRequest: 6000,
     outputTokensPerRequest: 600,
     cacheHitRate: 60,

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Worked example no longer shifts on load.** The sample hand-entered 50,000 for the AI API line, but its linked token plan computed about 14,191 a year, and the app replaces a linked line with the computed figure. The screen therefore showed Years 2-5 net of about +825,809 instead of the +790,000 the README and tests state. The sample plan now runs 6,342 requests a day, which computes 50,000, and a test fails if the plan and the line drift apart.
 - **README bundle size.** It said 93 kB gzipped; the measured figure is about 116 kB.
 - **CSV formula injection.** Text typed into the app (title, sponsor, justifications and so on)
   that began with `=`, `+`, `-` or `@` ran as a formula when the exported CSV was opened in Excel
