@@ -1,6 +1,6 @@
 /**
  * Source document: "Cross-Functional AI Project Decision-Making Framework",
- * from the AI Leadership — Commercial value with AI module of Ed Donner's
+ * from the AI Leadership: Commercial value with AI module of Ed Donner's
  * Proficient AI Engineer program (https://edwarddonner.com/proficient/).
  * See NOTICE.
  *

@@ -104,7 +104,7 @@ export function Brief() {
         <hr className="divider" />
 
         <p className="card-sub" style={{ marginBottom: 12 }}>
-          Eighteen roles from the cross-functional framework. You will not fill in all of them —
+          Eighteen roles from the cross-functional framework. You will not fill in all of them,
           the value is in noticing which ones you cannot fill in.{' '}
           <strong>
             {named} of {STAKEHOLDER_ROLES.length} named.
@@ -147,7 +147,7 @@ export function Brief() {
           </Field>
           <SelectField
             label="Currency"
-            hint="Display only — no conversion is applied."
+            hint="Display only, no conversion is applied."
             value={p.currency}
             onChange={(v) => set({ currency: v })}
             options={CURRENCIES.map((c) => ({ value: c, label: c }))}

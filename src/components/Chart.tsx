@@ -7,7 +7,7 @@ import { useMediaQuery } from './ui'
  *
  * The narrow layout is a second geometry rather than the same one restyled.
  * Scaling the 720-wide viewBox into a 375px viewport puts it at roughly
- * 0.476, which renders a 10px axis label at about 4.8px — the shape still
+ * 0.476, which renders a 10px axis label at about 4.8px, the shape still
  * reads, every number stops being legible. At 360 wide the SVG renders near
  * 1:1 on a phone, so 11px stays 11px.
  */
@@ -32,7 +32,7 @@ export const CHART_NARROW_QUERY = '(max-width: 600px)'
 /**
  * Five-year cash picture: grouped bars for outflow vs inflow, and the
  * cumulative running total overlaid as a line. The line is the part that
- * matters — it shows how deep the hole gets and when it closes.
+ * matters, it shows how deep the hole gets and when it closes.
  *
  * Hand-rolled SVG rather than a chart library: it keeps the bundle small,
  * renders instantly, inherits theme tokens, and prints correctly.
@@ -72,7 +72,7 @@ export function CashChart({ results, currency }: { results: Results; currency: s
     .map((v, i) => `${i === 0 ? 'M' : 'L'}${cx(i).toFixed(1)},${y(v).toFixed(1)}`)
     .join(' ')
 
-  // Gridlines across the range. Narrow drops to two plus the zero baseline —
+  // Gridlines across the range. Narrow drops to two plus the zero baseline,
   // five gridlines in 190px of plot height is noise, not information.
   const ticks = g.ticks
   const gridValues = Array.from({ length: ticks + 1 }, (_, i) => bottom + (range / ticks) * i)

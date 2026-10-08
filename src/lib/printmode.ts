@@ -7,7 +7,7 @@ import { onIdle } from './idle'
  *
  * Two problems, one hook.
  *
- * First, the report is a full second rendering of the document — every stat,
+ * First, the report is a full second rendering of the document, every stat,
  * the five-year table, the chart, and the industry, decision and roadmap
  * tables behind them. Mounted at all times, it made React reconcile the whole
  * thing on every keystroke for output nobody was looking at. It is built on
@@ -17,7 +17,7 @@ import { onIdle } from './idle'
  * own. But a lazy chunk cannot be fetched during `beforeprint`: the dialog
  * opens the moment the handler returns, long before a network round trip
  * finishes, and the page would print blank. So the fetch is started once the
- * browser goes idle — after the first paint, never competing with it — and
+ * browser goes idle, after the first paint, never competing with it, and
  * the module is then held ready in state. By the time anyone can reach for
  * Ctrl+P it has long since landed.
  *

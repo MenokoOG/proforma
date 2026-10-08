@@ -103,7 +103,7 @@ export function LineEditor({
           rows={3}
           placeholder={
             bucket === 'benefits'
-              ? 'e.g. 5.2 FTE equivalent — triage time down from 9 to 3 minutes on 40% of volume.'
+              ? 'e.g. 5.2 FTE equivalent, triage time down from 9 to 3 minutes on 40% of volume.'
               : 'e.g. Four FTE for the build year, two thereafter.'
           }
         />

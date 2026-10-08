@@ -32,8 +32,8 @@ export function Risks() {
         <p className="eyebrow">Step 6 of 8</p>
         <h1>What could go wrong, and what will you spend on it?</h1>
         <p>
-          Mitigations are costs. They reduce the net just like any other line — which is the
-          point. A case with no mitigation budget is not a low-risk case, it is an unexamined one.
+          Mitigations are costs. They reduce the net just like any other line, which is the point.
+          A case with no mitigation budget is not a low-risk case, it is an unexamined one.
         </p>
       </header>
 
@@ -47,7 +47,7 @@ export function Risks() {
               <li key={i} className={`gap ${h.score >= 4 ? 'blocker' : 'warning'}`}>
                 <span className="tagword">{h.score}/5</span>
                 <span className="msg">
-                  <strong>{h.dimension}</strong> — {h.option}
+                  <strong>{h.dimension}</strong>, {h.option}
                 </span>
               </li>
             ))}

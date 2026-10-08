@@ -17,8 +17,8 @@ export function Benefits() {
         <h1>What will it be worth?</h1>
         <p>
           Three categories, from easiest to hardest to defend. The number matters less than the
-          sentence underneath it — a reviewer will accept a smaller figure with a derivation over
-          a larger one without.
+          sentence underneath it, a reviewer will accept a smaller figure with a derivation over a
+          larger one without.
         </p>
       </header>
 
@@ -85,7 +85,7 @@ export function Benefits() {
         <dl className="kv">
           <dt>Automation</dt>
           <dd>
-            Hours or headcount. &ldquo;Triage time down from 9 to 3 minutes on 40% of volume — 5.2
+            Hours or headcount. &ldquo;Triage time down from 9 to 3 minutes on 40% of volume, 5.2
             FTE equivalent.&rdquo; Name the baseline you measured against.
           </dd>
           <dt>Augmentation</dt>
@@ -95,7 +95,7 @@ export function Benefits() {
           </dd>
           <dt>Differentiation</dt>
           <dd>
-            Revenue you would not otherwise win. The hardest to defend — show the pipeline, the
+            Revenue you would not otherwise win. The hardest to defend, show the pipeline, the
             retention model, or the deal you lost last quarter without it.
           </dd>
         </dl>

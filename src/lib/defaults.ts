@@ -1,6 +1,6 @@
 /**
  * Source document: "High-Level Strategic Decision Framework", from the AI
- * Leadership — Commercial value with AI module of Ed Donner's Proficient AI
+ * Leadership: Commercial value with AI module of Ed Donner's Proficient AI
  * Engineer program (https://edwarddonner.com/proficient/). See NOTICE.
  *
  * The seven cost lines, three benefit categories and three mitigation lines
@@ -58,7 +58,7 @@ export function defaultBenefits(): LineItem[] {
     line(
       'differentiation',
       'Differentiation',
-      'Revenue you would not otherwise win. The hardest to defend — show the pipeline.',
+      'Revenue you would not otherwise win. The hardest to defend, show the pipeline.',
     ),
   ]
 }
@@ -225,7 +225,7 @@ export function createSampleDoc(): Doc {
     'automation',
     50_000,
     400_000,
-    'Triage time down from 9 to 3 minutes on 40% of volume — 5.2 FTE equivalent.',
+    'Triage time down from 9 to 3 minutes on 40% of volume, 5.2 FTE equivalent.',
   )
   set(
     doc.benefits,

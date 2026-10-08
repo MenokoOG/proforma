@@ -44,7 +44,7 @@ value is correct. If nothing moves, say so.
 - [ ] New or changed UI has labels, 44 px tap targets, and does not rely on
       colour alone.
 - [ ] No horizontal page scroll at 320 px.
-- [ ] Nothing secret is in the diff — no key, token, or real client figure.
+- [ ] Nothing secret is in the diff, no key, token, or real client figure.
 - [ ] If a `Doc` field was added, `hydrate()` in `src/lib/storage.ts` handles
       its absence in older saved documents.
 

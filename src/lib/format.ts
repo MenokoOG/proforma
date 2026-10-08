@@ -97,7 +97,7 @@ export function longDate(iso: string): string {
 
 /**
  * Parse whatever a person types into a number: "1,200", "1.2k", "$1.2m", "(500)".
- * Returns 0 for anything unparseable, and always a non-negative magnitude —
+ * Returns 0 for anything unparseable, and always a non-negative magnitude,
  * amounts carry direction through their line kind, not a minus sign.
  */
 export function parseAmount(raw: string): number {
@@ -119,7 +119,7 @@ export function parseAmount(raw: string): number {
   return Math.abs(value)
 }
 
-/** Same parser, but signed — used for rates and percentages. */
+/** Same parser, but signed: used for rates and percentages. */
 export function parseSigned(raw: string): number {
   const s = raw.trim().replace(/[^0-9.-]/g, '')
   const n = Number(s)

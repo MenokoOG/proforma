@@ -1,5 +1,5 @@
 /* =================================================================
-   ProForma — design tokens (Holographic / Iridescent)
+   ProForma, design tokens (Holographic / Iridescent)
    Light palette is defined on bare :root so it is never trapped inside
    a media query. Dark overrides appear twice: once for the system
    preference (guarded so an explicit light choice wins) and once for the
@@ -195,7 +195,7 @@
 
    Not every white-on-colour pairing belongs here. .switch::after uses
    --surface, and .scale button[aria-pressed='true'] sits on the risk
-   severity ramp — five fixed dark hues that do not change with theme,
+   severity ramp, five fixed dark hues that do not change with theme,
    where plain white is correct.
    ----------------------------------------------------------------- */
 
@@ -324,7 +324,7 @@ textarea {
   padding: 10px 16px;
   display: flex;
   align-items: center;
-  /* Narrow phones cannot afford 12px between five chrome elements — the
+  /* Narrow phones cannot afford 12px between five chrome elements, the
      theme button is the last of them and was being pushed off-screen. */
   gap: 8px;
   min-width: 0;
@@ -790,7 +790,7 @@ textarea {
   }
 }
 
-/* Segmented control — used for facing, AI type, theme */
+/* Segmented control: used for facing, AI type, theme */
 .segmented {
   display: flex;
   gap: 4px;
@@ -914,7 +914,7 @@ textarea {
 }
 
 /* =================================================================
-   Step skeleton — holds the page open while a step's chunk arrives
+   Step skeleton, holds the page open while a step's chunk arrives
    ================================================================= */
 
 .step-skeleton {
@@ -1198,7 +1198,7 @@ textarea {
   margin-top: 4px;
   line-height: 1.15;
   /* Never break a figure across lines. "$1,230,000" wrapping to "$1,23" /
-     "0,000" is a misread number, which is worse than an overflow — the
+     "0,000" is a misread number, which is worse than an overflow, the
      callers compact the value instead. */
   white-space: nowrap;
 }
@@ -1325,7 +1325,7 @@ td.pos {
 }
 
 /* =================================================================
-   Year cards — the five-year table, restated for narrow viewports
+   Year cards, the five-year table, restated for narrow viewports
 
    Shown below 760px in place of the table. The table stays in the DOM
    (PrintReport depends on it) and is revealed by the "Full table"
@@ -2162,7 +2162,7 @@ td.pos {
 }
 
 /* =================================================================
-   Print — the export path that always works
+   Print, the export path that always works
    ================================================================= */
 
 /* =================================================================

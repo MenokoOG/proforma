@@ -25,7 +25,7 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
-      // The codebase is strictly typed on purpose — `any` is not an escape
+      // The codebase is strictly typed on purpose: `any` is not an escape
       // hatch here. See CONTRIBUTING.md.
       '@typescript-eslint/no-explicit-any': 'error',
 
@@ -47,7 +47,7 @@ export default tseslint.config(
   },
 
   // `ui.tsx` and `store.tsx` deliberately export the Icon map, the shared
-  // hooks and the store alongside their components — one primitives module
+  // hooks and the store alongside their components, one primitives module
   // rather than five files. That costs nothing but fast-refresh granularity
   // in dev, so the rule is switched off here rather than left to warn
   // permanently at something we have chosen on purpose.

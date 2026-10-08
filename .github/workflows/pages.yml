@@ -33,7 +33,7 @@ jobs:
       - run: npm ci
 
       # Project pages are served from /<repo>/, so the app is built with a
-      # matching base. Local builds keep '/' — see vite.config.ts.
+      # matching base. Local builds keep '/', see vite.config.ts.
       - name: Build
         run: npm run build
         env:

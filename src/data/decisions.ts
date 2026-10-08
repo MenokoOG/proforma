@@ -1,6 +1,6 @@
 /**
  * Source document: "Cross-Functional AI Project Decision-Making Framework",
- * from the AI Leadership — Commercial value with AI module of Ed Donner's
+ * from the AI Leadership: Commercial value with AI module of Ed Donner's
  * Proficient AI Engineer program (https://edwarddonner.com/proficient/).
  * See NOTICE.
  *
@@ -45,13 +45,13 @@ export const DECISION_OPTIONS: DecisionOption[] = [
   {
     id: 'oss-large',
     group: 'Models',
-    label: 'Open source — large',
+    label: 'Open source, large',
     hint: 'No per-token fee, but infrastructure, ops and talent costs move onto your books.',
   },
   {
     id: 'oss-small',
     group: 'Models',
-    label: 'Open source — small / on-device',
+    label: 'Open source, small / on-device',
     hint: 'Cheapest inference, most engineering. Viable when the task is narrow.',
   },
 
@@ -60,7 +60,7 @@ export const DECISION_OPTIONS: DecisionOption[] = [
     id: 'multishot',
     group: 'Optimisations',
     label: 'Multi-shot prompting',
-    hint: 'Cheapest lever. Raises input tokens per request — check it against the token model.',
+    hint: 'Cheapest lever. Raises input tokens per request, check it against the token model.',
   },
   {
     id: 'rag',

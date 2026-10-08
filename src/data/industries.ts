@@ -1,14 +1,14 @@
 /**
  * Industry use-case bank.
  *
- * Source document: "AI Industry Use Cases", from the AI Leadership —
+ * Source document: "AI Industry Use Cases", from the AI Leadership,
  * Commercial value with AI module of Ed Donner's Proficient AI Engineer
  * program (https://edwarddonner.com/proficient/). See NOTICE.
  *
  * The industry list and the predictive / generative / agentic structure come
  * from that document. The descriptions are ProForma's own: rewritten to say
- * what a business case would actually claim — which benefit category the
- * value lands in, and which cost line moves — rather than to describe the
+ * what a business case would actually claim, which benefit category the
+ * value lands in, and which cost line moves, rather than to describe the
  * technology. Unsourced performance figures in the original have been
  * removed; a number without a citation is not evidence.
  *
@@ -28,9 +28,9 @@ export const INDUSTRIES: Industry[] = [
     id: 'banking',
     name: 'Banking & Financial Services',
     predictive:
-      'Default and fraud scoring against transaction history. Benefit lands as automation — losses avoided plus manual review hours removed. Cost concentrates in data acquisition and data science, not inference.',
+      'Default and fraud scoring against transaction history. Benefit lands as automation, losses avoided plus manual review hours removed. Cost concentrates in data acquisition and data science, not inference.',
     generative:
-      'Drafting customer communications from account data: statements, outreach, adverse-action notices. Benefit is augmentation — the same relationship managers cover more accounts. Token spend is the line that actually moves.',
+      'Drafting customer communications from account data: statements, outreach, adverse-action notices. Benefit is augmentation, the same relationship managers cover more accounts. Token spend is the line that actually moves.',
     agentic:
       'Multi-step workflows that gather evidence, apply policy and prepare a decision for a named approver: disputes, KYC refresh, limit reviews. Carries the largest mitigation budget in the model, because model-risk and regulatory controls are the cost, not the compute.',
   },
@@ -38,7 +38,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'insurance',
     name: 'Insurance',
     predictive:
-      'Risk pricing and fraud flagging at quote and claim. Benefit is automation — underwriting hours removed and leakage avoided. The cost that gets underestimated is data acquisition, because pricing data has to be defensible, not merely available.',
+      'Risk pricing and fraud flagging at quote and claim. Benefit is automation, underwriting hours removed and leakage avoided. The cost that gets underestimated is data acquisition, because pricing data has to be defensible, not merely available.',
     generative:
       'Drafting policy documents, endorsements and claim correspondence from structured case data. Benefit is augmentation, measured in documents per handler per day.',
     agentic:
@@ -48,7 +48,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'healthcare',
     name: 'Healthcare',
     predictive:
-      'Admission, no-show and deterioration forecasting from historical encounters. Benefit is automation — staffing to actual demand instead of to the worst case. Data acquisition costs more than teams expect, because the records need cleaning before anything can be predicted.',
+      'Admission, no-show and deterioration forecasting from historical encounters. Benefit is automation, staffing to actual demand instead of to the worst case. Data acquisition costs more than teams expect, because the records need cleaning before anything can be predicted.',
     generative:
       'Ambient note drafting and discharge summaries, clinician-reviewed before anything enters the record. Benefit is augmentation, measured in documentation minutes per clinician per shift.',
     agentic:
@@ -58,7 +58,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'pharma',
     name: 'Pharma & Life Sciences',
     predictive:
-      'Candidate triage and trial-outcome modelling. Benefit is differentiation more than automation — the claim is fewer late-stage failures, which is high value and hard to defend. Show the historical base rate you are improving on.',
+      'Candidate triage and trial-outcome modelling. Benefit is differentiation more than automation, the claim is fewer late-stage failures, which is high value and hard to defend. Show the historical base rate you are improving on.',
     generative:
       'Drafting regulatory submissions, study reports and protocol sections from trial data. Benefit is augmentation of a scarce, expensive writing function.',
     agentic:
@@ -68,7 +68,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'retail',
     name: 'Retail & E-Commerce',
     predictive:
-      'Demand forecasting per SKU per location. Benefit is automation, sized on markdown and stockout avoided — the two figures a merchandising director already tracks, which makes this the easiest case in the list to defend.',
+      'Demand forecasting per SKU per location. Benefit is automation, sized on markdown and stockout avoided, the two figures a merchandising director already tracks, which makes this the easiest case in the list to defend.',
     generative:
       'Product copy, category pages and campaign variants generated from the attribute feed. Benefit is augmentation; the cost line is inference, and it scales with catalogue size rather than headcount.',
     agentic:
@@ -88,7 +88,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'supply-chain',
     name: 'Supply Chain & Logistics',
     predictive:
-      'Demand and lead-time forecasting across suppliers and lanes. Benefit is automation — expedite freight avoided and safety stock reduced. Both are already line items in a budget somewhere, so the saving is checkable.',
+      'Demand and lead-time forecasting across suppliers and lanes. Benefit is automation, expedite freight avoided and safety stock reduced. Both are already line items in a budget somewhere, so the saving is checkable.',
     generative:
       'Shipment exception notices, customer updates and carrier correspondence drafted from tracking events. Benefit is augmentation of the exception desk.',
     agentic:
@@ -98,7 +98,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'automotive',
     name: 'Automotive & Mobility',
     predictive:
-      'Component failure prediction across a fleet. Benefit is automation — roadside events and warranty claims avoided. The cost of getting telemetry off the vehicle and into a usable store is the line most cases omit.',
+      'Component failure prediction across a fleet. Benefit is automation, roadside events and warranty claims avoided. The cost of getting telemetry off the vehicle and into a usable store is the line most cases omit.',
     generative:
       'Scenario generation for testing: weather, traffic and edge cases synthesised to widen validation coverage. Benefit is augmentation of a test programme, measured in scenarios covered per engineer-week.',
     agentic:
@@ -108,7 +108,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'energy',
     name: 'Energy & Utilities',
     predictive:
-      'Load forecasting and asset-condition monitoring. Benefit is automation, sized on outage minutes and unplanned maintenance avoided — both regulated, reported figures, which makes the claim unusually easy to evidence.',
+      'Load forecasting and asset-condition monitoring. Benefit is automation, sized on outage minutes and unplanned maintenance avoided, both regulated, reported figures, which makes the claim unusually easy to evidence.',
     generative:
       'Customer service drafting for billing queries and outage communications. Benefit is augmentation of the contact centre; token spend tracks call volume.',
     agentic:
@@ -118,9 +118,9 @@ export const INDUSTRIES: Industry[] = [
     id: 'agriculture',
     name: 'Agriculture',
     predictive:
-      'Yield and pest-pressure forecasting from field, weather and satellite data. Benefit is differentiation as often as automation — the claim is usually higher output per hectare, which needs a season of evidence, not a model score.',
+      'Yield and pest-pressure forecasting from field, weather and satellite data. Benefit is differentiation as often as automation, the claim is usually higher output per hectare, which needs a season of evidence, not a model score.',
     generative:
-      'Agronomy advice drafted in plain language from soil, weather and history. Benefit is augmentation — fewer agronomist visits per grower for the same coverage.',
+      'Agronomy advice drafted in plain language from soil, weather and history. Benefit is augmentation, fewer agronomist visits per grower for the same coverage.',
     agentic:
       'Field equipment that plans and executes passes under a set operating envelope, with an operator retaining override. Benefit is automation of labour that is genuinely hard to hire.',
   },
@@ -128,7 +128,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'education',
     name: 'Education',
     predictive:
-      'Early identification of students at risk of withdrawal. Benefit is differentiation — retained enrolment is revenue — and it is the number the institution already reports, so the case stands or falls on the intervention, not the model.',
+      'Early identification of students at risk of withdrawal. Benefit is differentiation, retained enrolment is revenue, and it is the number the institution already reports, so the case stands or falls on the intervention, not the model.',
     generative:
       'Explanations, practice material and feedback generated per student. Benefit is augmentation, measured in feedback turnaround rather than staff removed.',
     agentic:
@@ -138,7 +138,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'government',
     name: 'Government & Public Sector',
     predictive:
-      'Early warning across service demand, infrastructure condition and public health. Benefit is usually cost avoided rather than cost removed, which is harder to book — say so in the justification rather than claiming a saving.',
+      'Early warning across service demand, infrastructure condition and public health. Benefit is usually cost avoided rather than cost removed, which is harder to book, say so in the justification rather than claiming a saving.',
     generative:
       'First drafts of correspondence, summaries and briefing material. Benefit is augmentation. Procurement and accreditation are real one-time costs and belong in Year 1.',
     agentic:
@@ -148,7 +148,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'legal',
     name: 'Legal Services',
     predictive:
-      'Matter-outcome and cost modelling from historical matters. Benefit is differentiation — better-priced work won — and the honest version of this case admits the sample size is small.',
+      'Matter-outcome and cost modelling from historical matters. Benefit is differentiation, better-priced work won, and the honest version of this case admits the sample size is small.',
     generative:
       'Contract drafting, summarisation and clause review against a playbook. Benefit is augmentation, measured in documents per fee-earner. This is the strongest benefit line in the sector and the easiest to evidence.',
     agentic:
@@ -168,7 +168,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'marketing',
     name: 'Marketing & Advertising',
     predictive:
-      'Response and conversion modelling to reallocate spend. Benefit is differentiation — incremental revenue — and it is the hardest claim in this list to defend, because attribution is contested. Show the holdout.',
+      'Response and conversion modelling to reallocate spend. Benefit is differentiation, incremental revenue, and it is the hardest claim in this list to defend, because attribution is contested. Show the holdout.',
     generative:
       'Creative variants produced at volume under human art direction. Benefit is augmentation, measured in concepts tested per campaign rather than designers removed.',
     agentic:
@@ -178,7 +178,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'media',
     name: 'Media & Entertainment',
     predictive:
-      'Audience and performance modelling to inform commissioning. Benefit is differentiation, and it is a portfolio claim — it holds across a slate, not for any single title.',
+      'Audience and performance modelling to inform commissioning. Benefit is differentiation, and it is a portfolio claim, it holds across a slate, not for any single title.',
     generative:
       'Production of audio, video and image assets, and localisation at volume. Benefit is automation of production cost, which is the clearest saving in the sector; rights and provenance sit in the mitigation line.',
     agentic:
@@ -188,7 +188,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'telecom',
     name: 'Telecommunications',
     predictive:
-      'Fault prediction and churn modelling. Benefit is automation on the network side and differentiation on the retention side. Keep them as separate benefit lines — they have different confidence and reviewers will treat them differently.',
+      'Fault prediction and churn modelling. Benefit is automation on the network side and differentiation on the retention side. Keep them as separate benefit lines, they have different confidence and reviewers will treat them differently.',
     generative:
       'Service and troubleshooting conversations handled in natural language. Benefit is augmentation of the contact centre; inference cost tracks contact volume directly.',
     agentic:
@@ -198,7 +198,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'cybersecurity',
     name: 'Cybersecurity',
     predictive:
-      'Detection across signal volumes no analyst team can read. Benefit is automation — triage hours removed — and the harder claim, breach avoided, needs a stated base rate before anyone will accept it.',
+      'Detection across signal volumes no analyst team can read. Benefit is automation, triage hours removed, and the harder claim, breach avoided, needs a stated base rate before anyone will accept it.',
     generative:
       'Incident summarisation, investigation narrative and remediation drafting. Benefit is augmentation, measured in time to a written, actionable finding.',
     agentic:
@@ -208,7 +208,7 @@ export const INDUSTRIES: Industry[] = [
     id: 'defence',
     name: 'Defence & Aerospace',
     predictive:
-      'Airframe and platform condition monitoring. Benefit is automation — mission availability held with less unscheduled maintenance. Data acquisition and accreditation are both large one-time costs.',
+      'Airframe and platform condition monitoring. Benefit is automation, mission availability held with less unscheduled maintenance. Data acquisition and accreditation are both large one-time costs.',
     generative:
       'Training scenario generation, producing varied and unscripted conditions for exercises. Benefit is augmentation of a training programme.',
     agentic:
@@ -220,7 +220,7 @@ export const INDUSTRIES: Industry[] = [
     predictive:
       'Equipment condition and process monitoring across remote sites. Benefit is automation, sized on downtime and unplanned maintenance avoided, and connectivity to remote assets is a real infrastructure line.',
     generative:
-      'Geoscience and operational reporting summarised for faster cross-site decisions. Benefit is augmentation, and it is modest — do not oversell it.',
+      'Geoscience and operational reporting summarised for faster cross-site decisions. Benefit is augmentation, and it is modest, do not oversell it.',
     agentic:
       'Haulage and materials-handling agents running defined routes under supervision. Benefit is automation of shifts that are hard to staff; safety mitigation is the counterweight and belongs in the case.',
   },

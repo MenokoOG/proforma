@@ -27,7 +27,7 @@ do not test against anyone else's deployment.
 | 1.x     | Yes       |
 | < 1.0   | No        |
 
-## Threat model — what ProForma actually is
+## Threat model, what ProForma actually is
 
 The application is a static site. It has **no backend, no accounts, no
 telemetry and no network calls**. Your business case is held in `localStorage`
@@ -42,7 +42,7 @@ The practical consequences are worth stating plainly:
   need to keep.
 - There is no server-side copy and no recovery.
 
-## The assist server holds an API key — read this before running it
+## The assist server holds an API key, read this before running it
 
 `server/index.mjs` is an **optional** local Node process, off by default. The
 application is fully functional without it. It exists so the Export step can
@@ -68,7 +68,7 @@ anyone who finds it can spend your budget and send arbitrary prompts under your
 key. It is not hardened for that and adding a bind flag would not make it so.
 
 Run it on your own machine. If you need a shared deployment, put a real
-authenticating gateway in front of it and rate-limit it — treat
+authenticating gateway in front of it and rate-limit it, treat
 `server/index.mjs` as a reference implementation, not a production service.
 
 ### Handling the key
@@ -79,7 +79,7 @@ authenticating gateway in front of it and rate-limit it — treat
 - If a key is ever committed, pasted or logged, **rotate it first** and clean up
   afterwards. Revocation is the fix; deleting the commit is not.
 - Maintainers will never ask you for a key in an issue or pull request. Never
-  attach one to a bug report — the review text and any error output are enough.
+  attach one to a bug report, the review text and any error output are enough.
 
 ## Dependencies
 

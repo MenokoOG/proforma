@@ -5,7 +5,7 @@ import type { TokenModel } from '../lib/types'
  *
  * Claude figures are Anthropic first-party API list rates. For any other
  * provider, use the "Custom rate" row and enter the numbers from that
- * provider's own pricing page — ProForma does not ship guessed third-party
+ * provider's own pricing page: ProForma does not ship guessed third-party
  * prices, because a business case built on a guessed rate is worse than one
  * built on a rate you looked up.
  */
@@ -43,7 +43,7 @@ export const TOKEN_MODELS: TokenModel[] = [
     name: 'Custom rate',
     inputPerM: 0,
     outputPerM: 0,
-    note: 'Enter rates from any provider. Check their pricing page — do not estimate.',
+    note: 'Enter rates from any provider. Check their pricing page, do not estimate.',
     custom: true,
   },
 ]

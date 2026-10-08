@@ -18,8 +18,8 @@ import { useStore } from './state/store'
  * Steps load on demand.
  *
  * Nine steps statically imported meant a first-time visitor on a phone
- * parsed all nine — plus the industry tables, the roadmap grid and the
- * chart — before the Brief could paint. Each step is its own chunk now,
+ * parsed all nine, plus the industry tables, the roadmap grid and the
+ * chart, before the Brief could paint. Each step is its own chunk now,
  * and `preload` warms the neighbours once the browser is idle, so stepping
  * through the flow still feels instant.
  */
@@ -114,7 +114,7 @@ export function App() {
   }, [])
 
   // Warm the steps either side of this one, so Back and Next never wait on
-  // a network round trip. Idle time only — never in front of the paint.
+  // a network round trip. Idle time only, never in front of the paint.
   useEffect(() => {
     const warm = () => {
       STEPS[step + 1]?.preload()
@@ -236,7 +236,7 @@ export function App() {
           </div>
 
           {/* Printing gives the whole case, not the open step. It is only
-              built once a print is actually under way — see usePrintReport. */}
+              built once a print is actually under way, see usePrintReport. */}
           {PrintReport ? <PrintReport /> : null}
         </main>
       </div>
@@ -253,7 +253,7 @@ export function App() {
           </button>
           <span className="stepcount">
             {step + 1} / {STEPS.length}
-            <span className="visually-hidden"> — {STEPS[step].label}</span>
+            <span className="visually-hidden">, {STEPS[step].label}</span>
           </span>
           <span className="spacer" />
           <button

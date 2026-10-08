@@ -38,7 +38,7 @@ function tokensFor(selector: string): Record<string, string> {
   return out
 }
 
-/** The bare `:root {` blocks — the light palette. */
+/** The bare `:root {` blocks: the light palette. */
 const lightTokens = () => tokensFor(':root {')
 
 /** The explicit `:root[data-theme='dark'] {` blocks. */
@@ -78,7 +78,7 @@ describe.each([
   it('parsed a full token block out of app.css', () => {
     // Guards against the regex silently matching nothing and the suite
     // passing vacuously. Every token the checks below rely on must be
-    // present — a missing one is a parse bug, not a contrast result.
+    // present, a missing one is a parse bug, not a contrast result.
     expect(Object.keys(t).length).toBeGreaterThan(15)
     for (const token of [...GROUNDS, ...BODY_TEXT, ...LARGE_TEXT, '--on-brand', '--focus']) {
       expect(t[token], `${themeName} is missing ${token}`).toBeDefined()

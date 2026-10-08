@@ -292,7 +292,7 @@ export function PrintReport() {
           return (
             <div key={phase.id} style={{ marginTop: 14, breakInside: 'avoid' }}>
               <h3 style={{ fontSize: '0.92rem', fontWeight: 650 }}>
-                {phase.name} — {phase.subtitle}{' '}
+                {phase.name}, {phase.subtitle}{' '}
                 <span style={{ color: 'var(--ink-3)', fontWeight: 400 }}>
                   · {longDate(st.date)} · {phase.gate}
                 </span>

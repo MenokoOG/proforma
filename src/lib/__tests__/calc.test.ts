@@ -29,7 +29,7 @@ const line = (oneTime: number, annual: number): Pick<LineItem, 'oneTime' | 'annu
 /*                                                                     */
 /* These figures were verified against the source workbook. They are   */
 /* the reason this file exists. If a change moves any of them, the     */
-/* change is wrong until proven otherwise — see CONTRIBUTING.md.       */
+/* change is wrong until proven otherwise, see CONTRIBUTING.md.       */
 /* ------------------------------------------------------------------ */
 
 describe('the worked example reproduces the source workbook', () => {
@@ -73,7 +73,7 @@ describe('the worked example reproduces the source workbook', () => {
 /* The spreading rule                                                  */
 /* ------------------------------------------------------------------ */
 
-describe('spread — one-time to Year 1, annual to Years 2-5', () => {
+describe('spread, one-time to Year 1, annual to Years 2-5', () => {
   it('puts the one-time amount in Year 1 alone', () => {
     expect(spread(line(30_000, 0))).toEqual([30_000, 0, 0, 0, 0])
   })

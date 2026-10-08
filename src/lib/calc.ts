@@ -360,7 +360,7 @@ export function rollupDecisions(rows: Doc['decisions']): DecisionRollup {
 }
 
 /* ------------------------------------------------------------------ */
-/* Readiness — what still needs attention before this goes to a board  */
+/* Readiness: what still needs attention before this goes to a board  */
 /* ------------------------------------------------------------------ */
 
 export interface Gap {
@@ -377,7 +377,7 @@ export function findGaps(doc: Doc, results: Results): Gap[] {
 
   if (!doc.project.title.trim()) push('title', 0, 'blocker', 'The initiative has no title.')
   if (!doc.project.proposal.trim())
-    push('proposal', 0, 'blocker', 'No proposal summary — a sponsor has nothing to read.')
+    push('proposal', 0, 'blocker', 'No proposal summary, a sponsor has nothing to read.')
   if (!doc.project.sponsors.trim()) push('sponsor', 0, 'warning', 'No executive sponsor named.')
 
   const namedStakeholders = Object.values(doc.stakeholders).filter((v) => v.trim()).length
@@ -386,7 +386,7 @@ export function findGaps(doc: Doc, results: Results): Gap[] {
       'stakeholders',
       0,
       'warning',
-      `Only ${namedStakeholders} stakeholder role${namedStakeholders === 1 ? '' : 's'} named — cross-functional review will be thin.`,
+      `Only ${namedStakeholders} stakeholder role${namedStakeholders === 1 ? '' : 's'} named, cross-functional review will be thin.`,
     )
 
   if (!doc.useCase.industry)
@@ -398,7 +398,7 @@ export function findGaps(doc: Doc, results: Results): Gap[] {
   const costTotal = results.totalCost + results.totalMitigation
   if (costTotal === 0) push('costs', 3, 'blocker', 'Every cost line is zero.')
   if (results.totalBenefit === 0)
-    push('benefits', 4, 'blocker', 'Every benefit line is zero — there is no case to make.')
+    push('benefits', 4, 'blocker', 'Every benefit line is zero, there is no case to make.')
 
   const unjustifiedBenefits = doc.benefits.filter((b) => lineTotal(b) > 0 && !b.note.trim())
   if (unjustifiedBenefits.length)
