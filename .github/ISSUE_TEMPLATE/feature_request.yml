@@ -12,7 +12,7 @@ body:
           and CI enforces it.
         - **The calculation engine is verified against a source workbook.**
           Anything that changes a number needs to be argued on its own terms.
-          That is not a no — it is a longer conversation.
+          That is not a no, it is a longer conversation.
 
   - type: textarea
     id: problem

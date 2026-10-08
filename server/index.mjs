@@ -1,5 +1,5 @@
 /**
- * ProForma AI Assist — optional local review server.
+ * ProForma AI Assist: optional local review server.
  *
  * ProForma works completely without this. Run it only when you want the
  * "Review this business case" button on the Export step to do something.
@@ -16,7 +16,7 @@ import { createServer } from 'node:http'
 
 const PORT = Number(process.env.PORT ?? 8787)
 const MODEL = process.env.PROFORMA_MODEL ?? 'claude-opus-5'
-const MAX_BODY = 1_000_000 // 1 MB — a business case is text, not a payload
+const MAX_BODY = 1_000_000 // 1 MB, a business case is text, not a payload
 
 const SYSTEM = `You are reviewing a five-year AI business case on behalf of a sceptical CFO.
 
@@ -30,7 +30,7 @@ Give a focused review, in this order:
 4. Whether the risk mitigation budget is proportionate to the risk scores recorded.
 5. The one question you would ask in the approval meeting.
 
-Rules: be direct and brief. Use plain prose, not headers or bullet walls. Do not restate the numbers back — the reader has them. If the case is genuinely sound, say so plainly rather than manufacturing concerns. Around 300 words.`
+Rules: be direct and brief. Use plain prose, not headers or bullet walls. Do not restate the numbers back, the reader has them. If the case is genuinely sound, say so plainly rather than manufacturing concerns. Around 300 words.`
 
 let client = null
 
@@ -69,7 +69,7 @@ function readBody(req) {
 }
 
 const server = createServer(async (req, res) => {
-  // Local dev only — the Vite proxy fronts this, so same-origin in practice.
+  // Local dev only: the Vite proxy fronts this, so same-origin in practice.
   res.setHeader('access-control-allow-origin', 'http://localhost:5173')
   res.setHeader('access-control-allow-headers', 'content-type')
   res.setHeader('access-control-allow-methods', 'GET,POST,OPTIONS')
@@ -147,6 +147,6 @@ server.listen(PORT, '127.0.0.1', () => {
   console.log(
     keyed
       ? '  ANTHROPIC_API_KEY: set'
-      : '  ANTHROPIC_API_KEY: NOT SET — the review endpoint will return 503',
+      : '  ANTHROPIC_API_KEY: NOT SET, the review endpoint will return 503',
   )
 })

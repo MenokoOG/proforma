@@ -102,7 +102,7 @@ export function UseCaseStep() {
       {industry ? (
         <Card
           title="The other two, for contrast"
-          sub="Worth a glance — the cheaper option is sometimes the right one."
+          sub="Worth a glance, the cheaper option is sometimes the right one."
         >
           <dl className="kv">
             {TYPES.filter((t) => t !== uc.aiType).map((t) => (

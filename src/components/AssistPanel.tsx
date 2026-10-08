@@ -9,7 +9,7 @@ type Availability = 'checking' | 'ready' | 'absent'
  * Optional AI review of the finished case.
  *
  * The API key stays on a small local server (`npm run assist`) and is never
- * shipped to the browser — putting an Anthropic key in front-end code exposes
+ * shipped to the browser, putting an Anthropic key in front-end code exposes
  * it to anyone who opens devtools. If that server is not running, this panel
  * says so and the rest of the app is unaffected.
  */
@@ -67,7 +67,7 @@ export function AssistPanel() {
 
   if (available === 'absent') {
     return (
-      <Card title="AI review" sub="Optional — off by default.">
+      <Card title="AI review" sub="Optional, off by default.">
         <div className="assist-panel">
           <p style={{ marginBottom: 10 }}>
             A reviewer agent can read the finished case and tell you where a sceptical CFO would
@@ -75,7 +75,7 @@ export function AssistPanel() {
           </p>
           <p style={{ marginBottom: 10 }}>
             To switch it on, set <code>ANTHROPIC_API_KEY</code> in your environment and run{' '}
-            <code>npm run assist</code> in a second terminal. The key stays on that local server —
+            <code>npm run assist</code> in a second terminal. The key stays on that local server,
             it is never sent to the browser.
           </p>
           <p style={{ margin: 0 }}>Everything else in ProForma works without it.</p>
@@ -105,8 +105,8 @@ export function AssistPanel() {
 
       {!review && !busy && !error ? (
         <Note>
-          The whole document is sent — figures, justifications, risk scores and roadmap. Do not
-          use this on a case containing information you would not put in a chat window.
+          The whole document is sent, figures, justifications, risk scores and roadmap. Do not use
+          this on a case containing information you would not put in a chat window.
         </Note>
       ) : null}
     </Card>

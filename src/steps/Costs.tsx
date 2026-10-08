@@ -15,7 +15,7 @@ export function Costs() {
         <h1>What will it cost?</h1>
         <p>
           Seven categories, each with a one-time and an annual figure. Leave a line at zero if it
-          genuinely does not apply — but a business case with four empty cost lines invites the
+          genuinely does not apply, but a business case with four empty cost lines invites the
           question of what you have missed.
         </p>
       </header>

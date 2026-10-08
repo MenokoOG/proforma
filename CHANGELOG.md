@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Removed em dashes from prose, comments and docs (no behavior change).
+- `.gitattributes` now enforces LF line endings.
+- Stopped tracking `.claude/` and the design handoff folder. Both stay local.
 - The static NPV-timing note added with the five fixes is replaced by the toggle and the
   assumptions list.
 - Author and copyright holder are now Lawrence Jefferson II in `LICENSE`,
@@ -65,14 +68,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   repository was private, since Pages is not available on private repositories
   under GitHub Free.
 
-## [1.0.0] — 2026-08-16
+## [1.0.0] - 2026-08-16
 
 First public release.
 
 ### Added
 
 - **The eight-step flow.** Brief, use case, architecture, costs, benefits,
-  risks, results and roadmap — in the order an approval conversation actually
+  risks, results and roadmap, in the order an approval conversation actually
   happens.
 - **Five-year projection** with payback year and interpolated payback period,
   ROI, NPV at a configurable discount rate, IRR by bisection, and peak funding
@@ -86,7 +89,7 @@ First public release.
 - **Architecture decision matrix** across models, optimisations and
   infrastructure, scored on cost, benefit and seven risk dimensions with named
   owners.
-- **Delivery roadmap** — six phase gates by seven swimlanes, 122 deliverables,
+- **Delivery roadmap**, six phase gates by seven swimlanes, 122 deliverables,
   with dates and progress tracking.
 - **Readiness check** that names what a reviewer will ask about before the case
   leaves the building.

@@ -4,6 +4,6 @@ coverage
 package-lock.json
 *.tsbuildinfo
 
-# Verbatim licence text — never reformat.
+# Verbatim licence text: never reformat.
 LICENSE
 NOTICE

@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { groupDigits, parseAmount, parseSigned } from '../lib/format'
 
 /* ------------------------------------------------------------------ */
-/* Icons — inline so there is no icon-font request                     */
+/* Icons: inline so there is no icon-font request                     */
 /* ------------------------------------------------------------------ */
 
 const svg = (d: ReactNode, size = 18) => (
@@ -78,7 +78,7 @@ export const Icon = {
       s,
     ),
   moon: (s?: number) => svg(<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />, s),
-  /* "Follow the system" — the third theme state, so all three read apart. */
+  /* "Follow the system", the third theme state, so all three read apart. */
   monitor: (s?: number) =>
     svg(
       <>
@@ -440,7 +440,7 @@ export function LiveRegion({ message }: { message: string }) {
 
 /**
  * Tracks a CSS media query from JS. Needed where a breakpoint changes
- * geometry rather than style — the cash chart swaps to a second viewBox on
+ * geometry rather than style, the cash chart swaps to a second viewBox on
  * narrow screens, which CSS cannot express.
  *
  * Reads once on mount rather than during render, so SSR and the first paint
@@ -448,7 +448,7 @@ export function LiveRegion({ message }: { message: string }) {
  */
 export function useMediaQuery(query: string): boolean {
   // Seeded from the real match, not from false. Starting at false made every
-  // consumer render the wide layout first and then swap on mount — a wasted
+  // consumer render the wide layout first and then swap on mount, a wasted
   // pass plus a visible reflow on exactly the phones that match.
   const [matches, setMatches] = useState(
     () =>
@@ -467,7 +467,7 @@ export function useMediaQuery(query: string): boolean {
   return matches
 }
 
-/** Scrolls to top whenever the key changes — used on step navigation. */
+/** Scrolls to top whenever the key changes: used on step navigation. */
 export function useScrollTop(key: unknown) {
   const first = useRef(true)
   useEffect(() => {

@@ -3,7 +3,7 @@
  *
  * Sign convention: every amount is stored as a POSITIVE magnitude. The
  * calculation engine applies direction based on `LineKind`. Users never type a
- * minus sign — "Data acquisition: 30000" always means a 30,000 cost.
+ * minus sign, "Data acquisition: 30000" always means a 30,000 cost.
  */
 
 export type LineKind = 'cost' | 'benefit' | 'mitigation'
@@ -25,7 +25,7 @@ export interface LineItem {
 }
 
 /* ------------------------------------------------------------------ */
-/* Module 1 — project identity & stakeholders                          */
+/* Module 1: project identity & stakeholders                          */
 /* ------------------------------------------------------------------ */
 
 export type Facing = 'internal' | 'external' | 'both'
@@ -49,11 +49,11 @@ export interface Project {
 /** 'today': Year 1 undiscounted (source workbook). 'year-end': Excel's NPV() convention. */
 export type NpvTiming = 'today' | 'year-end'
 
-/** Keyed by stakeholder role id — see data/stakeholders.ts. */
+/** Keyed by stakeholder role id: see data/stakeholders.ts. */
 export type Stakeholders = Record<string, string>
 
 /* ------------------------------------------------------------------ */
-/* Module 2 — use case                                                 */
+/* Module 2: use case                                                 */
 /* ------------------------------------------------------------------ */
 
 export type AiType = 'predictive' | 'generative' | 'agentic'
@@ -66,7 +66,7 @@ export interface UseCase {
 }
 
 /* ------------------------------------------------------------------ */
-/* Module 3 — cross-functional architecture decisions                  */
+/* Module 3: cross-functional architecture decisions                  */
 /* ------------------------------------------------------------------ */
 
 /** 0 = not assessed, 1 = low concern … 5 = severe concern. */
@@ -125,7 +125,7 @@ export interface TokenPlan {
 }
 
 /* ------------------------------------------------------------------ */
-/* Module 4 — delivery roadmap                                         */
+/* Module 4: delivery roadmap                                         */
 /* ------------------------------------------------------------------ */
 
 export interface PhaseState {
@@ -186,6 +186,6 @@ export interface Results {
   irr: number | null
   /** Why IRR is undefined, or a caution about the rate shown; null when clean. */
   irrNote: string | null
-  /** Worst cumulative position — the cash the initiative must be funded through. */
+  /** Worst cumulative position: the cash the initiative must be funded through. */
   peakExposure: number
 }

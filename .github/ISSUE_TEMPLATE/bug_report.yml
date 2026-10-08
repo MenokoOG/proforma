@@ -8,7 +8,7 @@ body:
         Thanks for reporting.
 
         **Do not paste an API key, or a business case containing figures you
-        would not want public.** Redact the numbers — the shape of the problem
+        would not want public.** Redact the numbers, the shape of the problem
         is what matters. For anything security related, see
         [SECURITY.md](../blob/main/SECURITY.md) and report it privately instead.
 
@@ -44,14 +44,14 @@ body:
     attributes:
       label: Which part of the app?
       options:
-        - Step 1 — Brief
-        - Step 2 — Use case
-        - Step 3 — Architecture / token calculator
-        - Step 4 — Costs
-        - Step 5 — Benefits
-        - Step 6 — Risks
-        - Step 7 — Results
-        - Step 8 — Roadmap
+        - Step 1: Brief
+        - Step 2: Use case
+        - Step 3: Architecture / token calculator
+        - Step 4: Costs
+        - Step 5: Benefits
+        - Step 6: Risks
+        - Step 7: Results
+        - Step 8: Roadmap
         - Export / print
         - Optional AI review server
         - Theme, layout or accessibility

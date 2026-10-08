@@ -38,7 +38,7 @@ export function Architecture() {
 
       <Card
         title="Decision matrix"
-        sub="Score each option you are seriously considering. The risk columns have owners for a reason — they are not an engineering judgement."
+        sub="Score each option you are seriously considering. The risk columns have owners for a reason, they are not an engineering judgement."
       >
         <div className="stats" style={{ marginBottom: 16 }}>
           <Stat label="Options selected" value={String(rollup.selectedCount)} />
@@ -62,7 +62,7 @@ export function Architecture() {
 
         <Note>
           These figures are a <strong>cross-check, not a feed</strong>. They deliberately do not
-          write into the cost lines — you decide how much of a build estimate belongs in
+          write into the cost lines, you decide how much of a build estimate belongs in
           Engineering versus Data Science on the next step.
         </Note>
 
@@ -153,14 +153,14 @@ function DecisionCard({
             symbol={symbol}
           />
           <MoneyField
-            label="Runtime — engineering"
+            label="Runtime, engineering"
             hint="Per year"
             value={row.runtimeCostEng}
             onChange={(v) => patch({ runtimeCostEng: v })}
             symbol={symbol}
           />
           <MoneyField
-            label="Runtime — support"
+            label="Runtime, support"
             hint="Support & Operations"
             value={row.runtimeCostSupport}
             onChange={(v) => patch({ runtimeCostSupport: v })}
@@ -232,7 +232,7 @@ function DecisionCard({
                       }
                     >
                       {v}
-                      <span className="visually-hidden"> — {RISK_LABELS[v]}</span>
+                      <span className="visually-hidden">, {RISK_LABELS[v]}</span>
                     </button>
                   ))}
                 </span>
@@ -277,7 +277,7 @@ function TokenCalculator() {
           onChange={(v) => set({ modelId: v })}
           options={TOKEN_MODELS.map((m) => ({
             value: m.id,
-            label: m.custom ? m.name : `${m.name} — $${m.inputPerM} / $${m.outputPerM} per 1M`,
+            label: m.custom ? m.name : `${m.name}, $${m.inputPerM} / $${m.outputPerM} per 1M`,
           }))}
         />
         <SelectField
@@ -304,7 +304,7 @@ function TokenCalculator() {
         <>
           <Note warn>
             Look these rates up on the provider&rsquo;s own pricing page. ProForma does not ship
-            estimated third-party prices — a case built on a guessed rate is worse than one built
+            estimated third-party prices, a case built on a guessed rate is worse than one built
             on a rate you checked.
           </Note>
           <div className="grid-2" style={{ marginTop: 12 }}>

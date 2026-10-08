@@ -21,7 +21,7 @@ export function Roadmap() {
         <h1>Delivery roadmap</h1>
         <p>
           Six phase gates across seven swimlanes, from the end-to-end delivery roadmap. Phase 0 is
-          governance only — deliberately. Nothing else starts until the business case you just
+          governance only, deliberately. Nothing else starts until the business case you just
           built is approved.
         </p>
       </header>
@@ -82,7 +82,7 @@ export function Roadmap() {
         aria-labelledby={`phase-tab-${phase.id}`}
       >
         <Card
-          title={`${phase.name} — ${phase.subtitle}`}
+          title={`${phase.name}, ${phase.subtitle}`}
           sub={`${done} of ${total} deliverables complete.`}
         >
           <div className="grid-2">

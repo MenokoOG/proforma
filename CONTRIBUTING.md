@@ -1,7 +1,7 @@
 # Contributing to ProForma
 
 Thanks for looking. This file should be enough to get you productive without
-asking anyone a question. If it isn't, that's a bug in this file — open an
+asking anyone a question. If it isn't, that's a bug in this file, open an
 issue.
 
 ## Setup
@@ -29,13 +29,13 @@ CI runs exactly those four, in that order, on Node 22.
 ## The architecture in a paragraph
 
 ProForma is a Vite + React 19 + TypeScript single-page app with **no runtime
-dependencies beyond React** — no UI kit, no chart library, no icon font. State
+dependencies beyond React**, no UI kit, no chart library, no icon font. State
 lives in one reducer (`src/state/store.tsx`) holding a single `Doc` object, which
 is debounce-persisted to `localStorage` and rehydrated forward-compatibly by
 `src/lib/storage.ts`. Everything the user sees is derived: `src/lib/calc.ts`
 takes the `Doc` and returns a `Results` object, and the components render that.
 `src/steps/` holds one file per step of the eight-step flow, `src/data/` holds
-the source framework content as typed data, and `src/lib/` holds the domain —
+the source framework content as typed data, and `src/lib/` holds the domain,
 types, calculation, formatting, storage, export. There is exactly one
 stylesheet, `src/styles/app.css`, and all colour comes from CSS custom
 properties defined in the token block at the top of it.
@@ -71,7 +71,7 @@ Cost, benefit and mitigation lines are defined in `src/lib/defaults.ts` via the
 through automatically: the editor, the year-by-year table, the year cards, the
 exports and the print report all iterate the arrays.
 
-Two things to know. The `id` is a persistence key — once shipped, changing it
+Two things to know. The `id` is a persistence key, once shipped, changing it
 orphans saved documents, so pick it carefully and never rename it. And the
 spreading rule applies to every line without exception: the one-time amount
 lands in Year 1, the annual amount applies to Years 2–5. That rule lives in
@@ -84,7 +84,7 @@ are preserved across hydration by `mergeLines()`.
 
 1. Create `src/steps/YourStep.tsx`, exporting a component that takes
    `{ goTo }` if it needs to navigate.
-2. Register it in the step list in `src/App.tsx` — the order there drives the
+2. Register it in the step list in `src/App.tsx`, the order there drives the
    step rail, the bottom navigation, the progress bar and the `aria-current`
    state, so you do not wire those separately.
 3. If the step collects data, extend the `Doc` type in `src/lib/types.ts`, give
@@ -92,11 +92,11 @@ are preserved across hydration by `mergeLines()`.
    `src/lib/storage.ts` so documents saved before your change still open.
 4. If the step should appear in exports, add it to `src/lib/export.ts` and
    `src/components/PrintReport.tsx`. Print renders the entire case, not the
-   current step — that is deliberate.
+   current step, that is deliberate.
 5. If the step has a readiness condition, add it to `findGaps()` in
    `src/lib/calc.ts`.
 
-Step 3 is the one people forget. A missing `hydrate()` branch does not throw —
+Step 3 is the one people forget. A missing `hydrate()` branch does not throw,
 it silently drops the user's saved data.
 
 ## Commits and pull requests
@@ -128,8 +128,8 @@ For pull requests:
 ## Source material
 
 The frameworks in `src/data/` come from Ed Donner's _AI Leadership: Commercial
-value with AI_ module. Read `NOTICE` before changing anything in that directory
-— some of those files are attributed rather than rewritten on purpose, and
+value with AI_ module. Read `NOTICE` before changing anything in that directory.
+Some of those files are attributed rather than rewritten on purpose, and
 editing them changes what the framework says rather than how ProForma says it.
 
 ## Code of conduct

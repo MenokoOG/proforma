@@ -39,7 +39,7 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
           {doc.project.title
             ? `Five-year projection for ${doc.project.title}.`
             : 'Five-year projection.'}{' '}
-          Every figure below is derived from what you entered — nothing here is an assumption
+          Every figure below is derived from what you entered, nothing here is an assumption
           ProForma made on your behalf.
         </p>
       </header>
@@ -133,7 +133,7 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
       <Card title="Year by year">
         {/* Below 760px the seven-column table is a 1.5-screen sideways
             scroll, so Year 1 and the 5-year total can never be read
-            together — which is the comparison the table exists for. The
+            together, which is the comparison the table exists for. The
             same figures render as one card per year instead. The table
             stays mounted: PrintReport and the scroll wrapper both need it,
             and it is still the right tool for anyone who asks for it. */}
@@ -259,8 +259,8 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
           </p>
           {r.paybackYear === null ? (
             <p>
-              Nothing here breaks even inside five years. That is not automatically a no —
-              strategic and option value sit outside this sheet — but it does mean the case cannot
+              Nothing here breaks even inside five years. That is not automatically a no,
+              strategic and option value sit outside this sheet, but it does mean the case cannot
               be made on payback alone.
             </p>
           ) : null}
@@ -316,7 +316,7 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
 /**
  * One year of the projection as a card, for viewports too narrow to hold the
  * table. Every figure is read from the already-computed `YearRow` and from
- * `spread()` — the same function the table rows use — so this is a second
+ * `spread()`, the same function the table rows use, so this is a second
  * rendering of the numbers, never a second derivation of them.
  */
 function YearCard({
@@ -348,7 +348,7 @@ function YearCard({
           </span>
           <span className="yearcard-run">
             Running total {signedMoney(year.cumulative, currency)}
-            {breakEven ? ' — breaks even' : ''}
+            {breakEven ? ', breaks even' : ''}
           </span>
         </span>
         <span className="chev">{Icon.chevronRight(18)}</span>

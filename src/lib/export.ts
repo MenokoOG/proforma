@@ -28,7 +28,7 @@ function slug(s: string): string {
 }
 
 /* ------------------------------------------------------------------ */
-/* JSON — the round-trippable format                                   */
+/* JSON: the round-trippable format                                   */
 /* ------------------------------------------------------------------ */
 
 export function exportJson(doc: Doc) {
@@ -55,7 +55,7 @@ export function importJson(file: File): Promise<unknown> {
 }
 
 /* ------------------------------------------------------------------ */
-/* CSV — opens in Excel / Sheets alongside the source workbooks        */
+/* CSV: opens in Excel / Sheets alongside the source workbooks        */
 /* ------------------------------------------------------------------ */
 
 /**
@@ -83,7 +83,7 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
   const labels = yearLabels(doc.project.startDate)
   const rows: unknown[][] = []
 
-  rows.push([`ProForma — ${doc.project.title || 'Untitled initiative'}`])
+  rows.push([`ProForma, ${doc.project.title || 'Untitled initiative'}`])
   rows.push(['Business area', doc.project.businessArea])
   rows.push(['Facing', doc.project.facing])
   rows.push(['Sponsor', doc.project.sponsors])
@@ -188,7 +188,7 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
     const row = doc.decisions.find((d) => d.id === opt.id)
     if (!row) continue
     rows.push([
-      `${opt.group} — ${opt.label}`,
+      `${opt.group}, ${opt.label}`,
       row.selected ? 'Yes' : 'No',
       row.description,
       row.buildCost,
@@ -209,7 +209,7 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
       items.forEach((text, itemIndex) => {
         const key = deliverableKey(phase.id, laneIndex, itemIndex)
         rows.push([
-          `${phase.name} — ${phase.subtitle}`,
+          `${phase.name}, ${phase.subtitle}`,
           st.date,
           lane.label,
           text,
@@ -232,7 +232,7 @@ export function exportCsv(doc: Doc, results: Results) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Markdown — for pasting into a doc, a ticket or a chat               */
+/* Markdown: for pasting into a doc, a ticket or a chat               */
 /* ------------------------------------------------------------------ */
 
 export function buildMarkdown(doc: Doc, results: Results): string {
@@ -312,7 +312,7 @@ export function buildMarkdown(doc: Doc, results: Results): string {
     L.push('## Justifications')
     L.push('')
     for (const item of justified) {
-      L.push(`- **${item.label}** (${fmt(lineTotal(item))}) — ${item.note.trim()}`)
+      L.push(`- **${item.label}** (${fmt(lineTotal(item))}), ${item.note.trim()}`)
     }
     L.push('')
   }
@@ -327,7 +327,7 @@ export function buildMarkdown(doc: Doc, results: Results): string {
         .map((d) => `${d.label} ${row.risks[d.id]}/5`)
         .join(', ')
       L.push(
-        `- **${opt?.label ?? row.id}**${row.description ? ` — ${row.description}` : ''}${risks ? `  \n  Elevated risk: ${risks}` : ''}${row.recommendation ? `  \n  ${row.recommendation}` : ''}`,
+        `- **${opt?.label ?? row.id}**${row.description ? `, ${row.description}` : ''}${risks ? `  \n  Elevated risk: ${risks}` : ''}${row.recommendation ? `  \n  ${row.recommendation}` : ''}`,
       )
     }
     L.push('')
@@ -339,7 +339,7 @@ export function buildMarkdown(doc: Doc, results: Results): string {
     const st = doc.phases[phase.id]
     const total = SWIMLANES.reduce((a, l) => a + (l.cells[phase.id]?.length ?? 0), 0)
     L.push(
-      `- **${phase.name} — ${phase.subtitle}** · ${st.date}${total ? ` · ${st.done.length}/${total} complete` : ''}`,
+      `- **${phase.name}, ${phase.subtitle}** · ${st.date}${total ? ` · ${st.done.length}/${total} complete` : ''}`,
     )
   }
   L.push('')

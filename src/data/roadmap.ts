@@ -1,5 +1,5 @@
 /**
- * Source document: "End-to-End AI Delivery Roadmap", from the AI Leadership —
+ * Source document: "End-to-End AI Delivery Roadmap", from the AI Leadership,
  * Commercial value with AI module of Ed Donner's Proficient AI Engineer
  * program (https://edwarddonner.com/proficient/). See NOTICE.
  *
@@ -7,7 +7,7 @@
  *
  * Reconstructed from the source deck's actual grid geometry, so each
  * deliverable sits in the phase and swimlane the author placed it in. Phase 0
- * is deliberately governance-only — nothing else starts until the business
+ * is deliberately governance-only, nothing else starts until the business
  * case is approved.
  */
 

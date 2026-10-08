@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { groupDigits, parseAmount, parseSigned, percent, years } from '../format'
 
 /* ------------------------------------------------------------------ */
-/* parseAmount — the lenient input parser                              */
+/* parseAmount, the lenient input parser                              */
 /*                                                                     */
 /* These tests describe what the parser DOES, not what it arguably     */
 /* ought to do. See the note on accounting parentheses below.          */
@@ -54,7 +54,7 @@ describe('parseAmount', () => {
    * model, not by the typist.
    *
    * This test exists to pin that behaviour down. If it ever needs to change,
-   * it is a product decision about what a negative cost line would mean —
+   * it is a product decision about what a negative cost line would mean,
    * not a parser bug to quietly fix.
    */
   it('treats (500) as a magnitude, not a negative', () => {
@@ -81,7 +81,7 @@ describe('parseSigned', () => {
     expect(parseSigned('abc')).toBe(0)
   })
 
-  it('does not expand suffixes — it is for rates, not amounts', () => {
+  it('does not expand suffixes, it is for rates, not amounts', () => {
     expect(parseSigned('5k')).toBe(5)
   })
 })

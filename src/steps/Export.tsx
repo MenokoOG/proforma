@@ -28,7 +28,7 @@ export function Export() {
       setCopied(true)
       setTimeout(() => setCopied(false), 2200)
     } catch {
-      setStatus('Clipboard blocked by the browser — use "Download Markdown" instead.')
+      setStatus('Clipboard blocked by the browser, use "Download Markdown" instead.')
     }
   }
 
@@ -61,7 +61,7 @@ export function Export() {
         </div>
 
         <Note>
-          <strong>Print gives you the full document</strong> — every line item expanded, the
+          <strong>Print gives you the full document</strong>, every line item expanded, the
           five-year table, the chart and the roadmap. The CSV is laid out to sit alongside the
           original spreadsheets.
         </Note>
