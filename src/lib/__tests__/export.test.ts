@@ -81,6 +81,15 @@ describe('buildCsv', () => {
     expect(csv).toContain('end of that year')
     expect(csv).not.toContain('Year 1 is treated as today')
   })
+  it('writes the sensitivity tables as numbers', () => {
+    const doc = createSampleDoc()
+    const csv = buildCsv(doc, computeResults(doc), now)
+    expect(csv).toContain('SENSITIVITY')
+    expect(csv).toContain('Change (%),Five-year net')
+    expect(csv).toContain('0,1230000,')
+    expect(csv).toContain('Benefit cushion,Benefits can fall 18.0%')
+  })
+
   it('does not include the byte-order mark (the download adds it)', () => {
     const doc = createSampleDoc()
     expect(buildCsv(doc, computeResults(doc), now).charCodeAt(0)).not.toBe(0xfeff)
@@ -101,5 +110,23 @@ describe('buildMarkdown', () => {
     expect(buildMarkdown(doc, computeResults(doc))).toContain('- **NPV timing:**')
     doc.project.npvTiming = 'year-end'
     expect(buildMarkdown(doc, computeResults(doc))).toContain('end of that year')
+  })
+
+  it('says when it was generated, for a given clock', () => {
+    const doc = createSampleDoc()
+    const md = buildMarkdown(doc, computeResults(doc), new Date('2026-10-06T12:00:00.000Z'))
+    expect(md).toContain('Generated with ProForma on 2026-10-06.')
+  })
+
+  it('has a Sensitivity section with both tables and the benefit cushion', () => {
+    const doc = createSampleDoc()
+    const md = buildMarkdown(doc, computeResults(doc))
+    expect(md).toContain('## Sensitivity')
+    expect(md).toContain('**Benefits**')
+    expect(md).toContain('**Costs and mitigation**')
+    expect(md).toContain('| Base case |')
+    expect(md).toContain(
+      'Benefits can fall 18.0% before the five-year net position reaches zero.',
+    )
   })
 })

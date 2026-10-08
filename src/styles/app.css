@@ -1324,6 +1324,26 @@ td.pos {
   }
 }
 
+/* Sensitivity tables. Four narrow columns, so unlike .tablewrap they stay
+   visible at every width and need no minimum table width. */
+.sens-title {
+  margin-top: 14px;
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--ink-2);
+}
+.sens-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--surface);
+}
+.sens-wrap table {
+  min-width: 0;
+}
+
 /* =================================================================
    Year cards, the five-year table, restated for narrow viewports
 
@@ -2280,7 +2300,8 @@ body {
     border: 1px solid #ccc;
     margin-bottom: 12px;
   }
-  .tablewrap {
+  .tablewrap,
+  .sens-wrap {
     overflow: visible;
   }
   table {

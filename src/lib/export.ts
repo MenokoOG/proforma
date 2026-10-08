@@ -3,6 +3,7 @@ import { DECISION_OPTIONS, RISK_DIMENSIONS } from '../data/decisions'
 import { STAKEHOLDER_ROLES } from '../data/stakeholders'
 import { assumptionsList } from './assumptions'
 import { lineTotal, spread, yearLabels } from './calc'
+import { changeLabel, computeSensitivity, cushionSentence } from './sensitivity'
 import type { Doc, Results } from './types'
 
 function download(filename: string, mime: string, content: string) {
@@ -163,6 +164,24 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
   if (results.irrNote) rows.push(['IRR note', results.irrNote])
   rows.push([])
 
+  rows.push(['SENSITIVITY'])
+  rows.push(['Note', 'One side moves at a time; everything else is held.'])
+  for (const table of computeSensitivity(doc)) {
+    rows.push([table.label])
+    rows.push([
+      'Change (%)',
+      'Five-year net',
+      `NPV at ${doc.project.discountRate}%`,
+      'Break-even year',
+    ])
+    for (const row of table.rows) {
+      rows.push([row.changePct, row.totalNet, row.npv, row.paybackYear ?? 'never'])
+    }
+  }
+  const cushion = cushionSentence(results)
+  if (cushion) rows.push(['Benefit cushion', cushion])
+  rows.push([])
+
   rows.push(['ASSUMPTIONS'])
   for (const a of assumptionsList(doc)) rows.push([a.label, a.value])
   rows.push([])
@@ -235,7 +254,7 @@ export function exportCsv(doc: Doc, results: Results) {
 /* Markdown: for pasting into a doc, a ticket or a chat               */
 /* ------------------------------------------------------------------ */
 
-export function buildMarkdown(doc: Doc, results: Results): string {
+export function buildMarkdown(doc: Doc, results: Results, now: Date = new Date()): string {
   const cur = doc.project.currency || 'USD'
   const fmt = (n: number) =>
     new Intl.NumberFormat('en-US', {
@@ -300,6 +319,28 @@ export function buildMarkdown(doc: Doc, results: Results): string {
   if (results.irrNote) L.push(`- **IRR note:** ${results.irrNote}`)
   L.push('')
 
+  L.push('## Sensitivity')
+  L.push('')
+  L.push('One side moves at a time; everything else is held.')
+  L.push('')
+  for (const table of computeSensitivity(doc)) {
+    L.push(`**${table.label}**`)
+    L.push('')
+    L.push(`| Change | Five-year net | NPV @ ${doc.project.discountRate}% | Break-even |`)
+    L.push('|---|---:|---:|---:|')
+    for (const row of table.rows) {
+      L.push(
+        `| ${changeLabel(row.changePct)} | ${fmt(row.totalNet)} | ${fmt(row.npv)} | ${row.paybackYear ? `Year ${row.paybackYear}` : 'never'} |`,
+      )
+    }
+    L.push('')
+  }
+  const cushionLine = cushionSentence(results)
+  if (cushionLine) {
+    L.push(cushionLine)
+    L.push('')
+  }
+
   L.push('## Assumptions')
   L.push('')
   for (const a of assumptionsList(doc)) L.push(`- **${a.label}:** ${a.value}`)
@@ -355,7 +396,7 @@ export function buildMarkdown(doc: Doc, results: Results): string {
   L.push('---')
   L.push('')
   L.push(
-    '_Indicative figures. One-time amounts fall in Year 1; annual amounts apply to Years 2–5. Generated with ProForma._',
+    `_Indicative figures. One-time amounts fall in Year 1; annual amounts apply to Years 2–5. Generated with ProForma on ${now.toISOString().slice(0, 10)}._`,
   )
 
   return L.join('\n')

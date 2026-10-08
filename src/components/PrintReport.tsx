@@ -7,6 +7,7 @@ import { lineTotal, spread, yearLabels } from '../lib/calc'
 import { longDate, money, percent, signedMoney } from '../lib/format'
 import { useStore } from '../state/store'
 import { CashChart } from './Chart'
+import { SensitivityTables } from './SensitivityTables'
 
 /**
  * The paper version of the whole case. Hidden on screen, rendered on print,
@@ -168,6 +169,12 @@ export function PrintReport() {
             </tbody>
           </table>
         </div>
+      </section>
+
+      <section className="card">
+        <h2>Sensitivity</h2>
+        <p className="card-sub">One side moves at a time; everything else is held.</p>
+        <SensitivityTables doc={doc} results={results} currency={currency} />
       </section>
 
       <Justifications />
