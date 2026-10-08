@@ -16,6 +16,7 @@ import {
   spread,
   timingPeriods,
 } from '../calc'
+import { TOKEN_MODELS } from '../../data/models'
 import { createDoc, createSampleDoc } from '../defaults'
 import type { LineItem, TokenModel, TokenPlan } from '../types'
 
@@ -192,6 +193,22 @@ describe('npv, roi and irr', () => {
     expect(rate).not.toBeNull()
     const npvAtRate = flows.reduce((a, f, i) => a + f / Math.pow(1 + rate!, i), 0)
     expect(npvAtRate).toBeCloseTo(0, 4)
+  })
+})
+
+describe('the worked example agrees with its own token plan', () => {
+  // The store overwrites the linked "AI API" line with the token model's yearly
+  // figure on load. If the sample's hand-entered line and its plan disagree, the
+  // screen shows different numbers from the ones guarded above.
+  it('has the token plan linked to the cost line', () => {
+    expect(createSampleDoc().tokenPlan.linkToCosts).toBe(true)
+  })
+
+  it('computes the same yearly figure the AI API line carries', () => {
+    const doc = createSampleDoc()
+    const api = doc.costs.find((c) => c.id === 'ai-api')
+    const computed = Math.round(computeTokenCost(doc.tokenPlan, TOKEN_MODELS).annual)
+    expect(computed).toBe(api?.annual)
   })
 })
 
