@@ -47,6 +47,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "size": "node scripts/size.mjs",
     "assist": "node server/index.mjs"
   },
   "dependencies": {

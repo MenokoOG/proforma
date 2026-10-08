@@ -154,7 +154,7 @@ Override the model with `PROFORMA_MODEL` (default `claude-opus-5`).
 44 px, no horizontal page scroll at 375 px. Wide tables and phase tabs scroll inside their own
 containers rather than pushing the page sideways. The step rail appears at ≥900 px.
 
-**Snappy.** React and one self-hosted typeface (Space Grotesk), no chart library, no UI kit, no icon font. 93 kB gzipped.
+**Snappy.** React and one self-hosted typeface (Space Grotesk), no chart library, no UI kit, no icon font. About 116 kB gzipped (JS and CSS), against a 120 kB budget; `npm run size` prints the figure.
 The chart is hand-rolled SVG so it renders instantly, inherits theme colours, and prints
 correctly. Writes to `localStorage` are debounced so typing never blocks.
 
@@ -239,6 +239,7 @@ server/index.mjs    optional AI review server (holds the API key)
 | `npm run typecheck`  | Types only                                |
 | `npm test`           | Run the test suite once                   |
 | `npm run test:watch` | Tests in watch mode                       |
+| `npm run size`       | Gzipped bundle size against the budget    |
 | `npm run lint`       | ESLint                                    |
 | `npm run format`     | Prettier, writing in place                |
 | `npm run assist`     | Optional AI review server on 8787         |

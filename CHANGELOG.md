@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **README bundle size.** It said 93 kB gzipped; the measured figure is about 116 kB.
 - **CSV formula injection.** Text typed into the app (title, sponsor, justifications and so on)
   that began with `=`, `+`, `-` or `@` ran as a formula when the exported CSV was opened in Excel
   or Sheets. Such cells are now prefixed with an apostrophe and stay text. Real numbers, including
@@ -23,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   file (a string, or one at or below -100) could previously give an `Infinity` or `NaN` NPV.
 
 ### Added
+
+- **`npm run size`.** Sums the gzipped JS and CSS in `dist/assets` the way CI does and prints the
+  headroom against the 120 kB budget (115,587 bytes at this commit). Run it after `npm run build`.
 
 - **NPV timing toggle.** Year 1 = today (the default, as in the source workbook) or Year-end,
   which discounts every year one more period and matches Excel's `NPV()`. Set it on the Brief step
