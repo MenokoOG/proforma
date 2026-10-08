@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CashChart, CHART_NARROW_QUERY } from '../components/Chart'
+import { SensitivityTables } from '../components/SensitivityTables'
 import { Card, Icon, Note, Segmented, Stat, useMediaQuery } from '../components/ui'
 import { assumptionsList } from '../lib/assumptions'
 import {
@@ -245,6 +246,13 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
           </table>
         </div>
         <p className="scroll-hint">Scroll the table sideways to see all five years.</p>
+      </Card>
+
+      <Card
+        title="What would change the answer"
+        sub="One side moves at a time; everything else is held."
+      >
+        <SensitivityTables doc={doc} results={r} currency={currency} />
       </Card>
 
       <Card title="Reading this honestly">

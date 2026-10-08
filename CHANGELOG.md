@@ -26,6 +26,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Sensitivity.** Results gains "What would change the answer": benefits, then costs and
+  mitigation, each moved by -20%, -10%, +10% and +20% with everything else held, showing the
+  five-year net, NPV and break-even year. A sentence beside it says how far benefits can fall
+  before the five-year net reaches zero (18.0% for the worked example). The tables and the sentence
+  are in the printed report, the CSV and the Markdown export. Every figure comes from
+  `computeResults` on a scaled copy of the case, so the core arithmetic is untouched.
+- **Markdown export says when it was generated**, as the CSV already did.
+
 - **`npm run size`.** Sums the gzipped JS and CSS in `dist/assets` the way CI does and prints the
   headroom against the 120 kB budget (115,587 bytes at this commit). Run it after `npm run build`.
 

@@ -72,7 +72,7 @@ Eight steps, in the order a real approval conversation happens.
 | 4   | **Costs**        | Seven cost categories, one-time and annual.                                                                                                                                                      |
 | 5   | **Benefits**     | Automation, augmentation, differentiation, each demanding a justification.                                                                                                                       |
 | 6   | **Risks**        | Mitigation budget, pre-loaded with the risks you scored on step 3.                                                                                                                               |
-| 7   | **Results**      | Five-year table, cash chart, payback, ROI, NPV, IRR, peak funding need, and a readiness check.                                                                                                   |
+| 7   | **Results**      | Five-year table, cash chart, payback, ROI, NPV, IRR, peak funding need, sensitivity tables, and a readiness check.                                                                               |
 | 8   | **Roadmap**      | Six phase gates × seven swimlanes, 122 deliverables, with dates and progress tracking.                                                                                                           |
 
 Then **Export**: print/PDF, Markdown, CSV, or a JSON project file that round-trips everything.
@@ -154,7 +154,7 @@ Override the model with `PROFORMA_MODEL` (default `claude-opus-5`).
 44 px, no horizontal page scroll at 375 px. Wide tables and phase tabs scroll inside their own
 containers rather than pushing the page sideways. The step rail appears at ≥900 px.
 
-**Snappy.** React and one self-hosted typeface (Space Grotesk), no chart library, no UI kit, no icon font. About 116 kB gzipped (JS and CSS), against a 120 kB budget; `npm run size` prints the figure.
+**Snappy.** React and one self-hosted typeface (Space Grotesk), no chart library, no UI kit, no icon font. About 117 kB gzipped (JS and CSS), against a 120 kB budget; `npm run size` prints the figure.
 The chart is hand-rolled SVG so it renders instantly, inherits theme colours, and prints
 correctly. Writes to `localStorage` are debounced so typing never blocks.
 
