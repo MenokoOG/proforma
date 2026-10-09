@@ -4,6 +4,7 @@ import { buildMarkdown, exportCsv, exportJson, exportMarkdown, importJson } from
 import { hydrate } from '../lib/storage'
 import { useStore } from '../state/store'
 import { AssistPanel } from '../components/AssistPanel'
+import { SignoffCard } from '../components/SignoffCard'
 
 export function Export() {
   const { doc, results, dispatch } = useStore()
@@ -42,6 +43,8 @@ export function Export() {
           somewhere else, or to hand it to someone who needs to review it.
         </p>
       </header>
+
+      <SignoffCard />
 
       <Card title="Share the case" sub="Pick the format that suits who is reading it.">
         <div className="btn-row">

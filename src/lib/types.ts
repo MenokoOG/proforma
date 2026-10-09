@@ -143,6 +143,33 @@ export interface PhaseState {
 }
 
 /* ------------------------------------------------------------------ */
+/* Sign-off                                                            */
+/* ------------------------------------------------------------------ */
+
+export type SignoffDecision = 'approved' | 'approved-with-conditions' | 'declined'
+
+/**
+ * A record typed into the tool by the person it names. It is not an
+ * authenticated signature: the tool has no identity and the file can be edited.
+ * `fingerprint` is the SHA-256 of the case content when it was recorded, so a
+ * later edit shows the entry as out of date. See lib/signoff.ts.
+ */
+export interface Signoff {
+  id: string
+  name: string
+  /** Free text, e.g. "Finance", "Risk", "Sponsor". */
+  role: string
+  decision: SignoffDecision
+  /** Required when the decision is approved-with-conditions. */
+  conditions: string
+  /** ISO timestamp from the app's clock when the entry was recorded. */
+  at: string
+  fingerprint: string
+  /** The headline figures that were on screen when this was recorded. */
+  figures: { totalNet: number; npv: number; paybackYear: number | null }
+}
+
+/* ------------------------------------------------------------------ */
 /* Root document                                                       */
 /* ------------------------------------------------------------------ */
 
@@ -158,6 +185,8 @@ export interface Doc {
   benefits: LineItem[]
   mitigations: LineItem[]
   phases: PhaseState[]
+  /** Append-only log. Absent until someone records a sign-off. */
+  signoffs?: Signoff[]
 }
 
 /* ------------------------------------------------------------------ */

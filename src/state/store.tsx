@@ -12,7 +12,7 @@ import {
 import { computeResults, computeTokenCost, findGaps } from '../lib/calc'
 import { createDoc, createSampleDoc } from '../lib/defaults'
 import * as storage from '../lib/storage'
-import type { Doc, LineItem, Results } from '../lib/types'
+import type { Doc, LineItem, Results, Signoff } from '../lib/types'
 import { TOKEN_MODELS } from '../data/models'
 
 type LineBucket = 'costs' | 'benefits' | 'mitigations'
@@ -32,6 +32,7 @@ type Action =
   | { type: 'removeLine'; bucket: LineBucket; id: string }
   | { type: 'phase'; index: number; patch: Partial<Doc['phases'][number]> }
   | { type: 'toggleDeliverable'; index: number; key: string }
+  | { type: 'signoff'; entry: Signoff }
 
 function reducer(state: Doc, action: Action): Doc {
   switch (action.type) {
@@ -107,6 +108,9 @@ function reducer(state: Doc, action: Action): Doc {
           }
         }),
       }
+    case 'signoff':
+      // Append only. A later entry supersedes an earlier one; nothing is edited or removed.
+      return { ...state, signoffs: [...(state.signoffs ?? []), action.entry] }
     default:
       return state
   }

@@ -1,4 +1,5 @@
 import { hasFullProvenance, isStale } from './provenance'
+import { signoffStatus } from './signoff'
 import type { Doc, LineItem, NpvTiming, Results, TokenModel, TokenPlan, YearRow } from './types'
 
 export const HORIZON = 5
@@ -437,6 +438,17 @@ export function findGaps(doc: Doc, results: Results): Gap[] {
       6,
       'warning',
       'The initiative never breaks even inside five years on these numbers.',
+    )
+
+  const approval = signoffStatus(doc)
+  if (approval.state === 'none')
+    push('signoff', 8, 'warning', 'No sign-off recorded. Nobody has approved this case yet.')
+  else if (approval.state === 'outdated')
+    push(
+      'signoff-stale',
+      8,
+      'warning',
+      'The case has changed since the latest sign-off, so that approval no longer applies.',
     )
 
   return gaps

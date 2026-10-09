@@ -2155,6 +2155,24 @@ td.pos {
   border-color: transparent;
 }
 
+.signoffs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+.signoffs li {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--surface-2);
+  font-size: 0.87rem;
+}
+.signoffs li p + p {
+  margin-top: 2px;
+}
+
 .prose p {
   margin-bottom: 10px;
   font-size: 0.9rem;

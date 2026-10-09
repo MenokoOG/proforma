@@ -4,6 +4,13 @@ import { STAKEHOLDER_ROLES } from '../data/stakeholders'
 import { assumptionsList } from './assumptions'
 import { lineTotal, spread, yearLabels } from './calc'
 import { provenanceText } from './provenance'
+import {
+  DECISION_LABEL,
+  shortId,
+  SIGNOFF_DISCLAIMER,
+  signoffLine,
+  signoffStatus,
+} from './signoff'
 import { changeLabel, computeSensitivity, cushionSentence } from './sensitivity'
 import type { Doc, Results } from './types'
 
@@ -192,6 +199,42 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
   if (cushion) rows.push(['Benefit cushion', cushion])
   rows.push([])
 
+  const approval = signoffStatus(doc)
+  rows.push(['SIGN-OFF'])
+  rows.push(['Case fingerprint (SHA-256)', approval.fingerprint])
+  if (doc.signoffs?.length) {
+    rows.push([
+      'Name',
+      'Role',
+      'Decision',
+      'Recorded (UTC)',
+      'Case ID',
+      'Applies to this version',
+      'Conditions',
+      'Five-year net',
+      'NPV',
+      'Break-even year',
+    ])
+    for (const s of doc.signoffs) {
+      rows.push([
+        s.name,
+        s.role,
+        DECISION_LABEL[s.decision],
+        s.at,
+        shortId(s.fingerprint),
+        s.fingerprint === approval.fingerprint ? 'Yes' : 'No',
+        s.conditions,
+        s.figures.totalNet,
+        s.figures.npv,
+        s.figures.paybackYear ?? 'never',
+      ])
+    }
+  } else {
+    rows.push(['Status', 'No sign-off recorded'])
+  }
+  rows.push(['Note', SIGNOFF_DISCLAIMER])
+  rows.push([])
+
   rows.push(['ASSUMPTIONS'])
   for (const a of assumptionsList(doc)) rows.push([a.label, a.value])
   rows.push([])
@@ -327,6 +370,20 @@ export function buildMarkdown(doc: Doc, results: Results, now: Date = new Date()
     `- **ROI:** ${results.roi === null ? 'n/a' : `${(results.roi * 100).toFixed(0)}%`} · **NPV @ ${doc.project.discountRate}%:** ${fmt(results.npv)}${results.irr !== null ? ` · **IRR:** ${(results.irr * 100).toFixed(1)}%` : ''}`,
   )
   if (results.irrNote) L.push(`- **IRR note:** ${results.irrNote}`)
+  L.push('')
+
+  const approval = signoffStatus(doc)
+  L.push('## Sign-off')
+  L.push('')
+  if (doc.signoffs?.length) {
+    for (const s of doc.signoffs) L.push(`- ${signoffLine(s, approval.fingerprint)}`)
+  } else {
+    L.push('No sign-off recorded.')
+  }
+  L.push('')
+  L.push(`Case fingerprint (SHA-256): \`${approval.fingerprint}\``)
+  L.push('')
+  L.push(`_${SIGNOFF_DISCLAIMER}_`)
   L.push('')
 
   L.push('## Sensitivity')
