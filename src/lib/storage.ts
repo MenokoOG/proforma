@@ -1,6 +1,7 @@
 import { normalizeDiscountRate, normalizeNpvTiming } from './calc'
 import { createDoc, DOC_VERSION, defaultDecisions, defaultPhases } from './defaults'
 import { cleanProvenance } from './provenance'
+import { cleanSignoffs } from './signoff'
 import type { Doc } from './types'
 
 const KEY = 'proforma.doc.v1'
@@ -18,6 +19,8 @@ export function hydrate(raw: unknown): Doc {
   const decisionsById = new Map(
     (Array.isArray(input.decisions) ? input.decisions : []).map((d) => [d?.id, d]),
   )
+
+  const signoffs = cleanSignoffs(input.signoffs)
 
   return {
     version: DOC_VERSION,
@@ -45,6 +48,8 @@ export function hydrate(raw: unknown): Doc {
     benefits: mergeLines(base.benefits, input.benefits),
     mitigations: mergeLines(base.mitigations, input.mitigations),
     phases: mergePhases(base.phases, input.phases),
+    // Kept only when valid entries exist, so a case with no sign-off stays as it was.
+    ...(signoffs.length ? { signoffs } : {}),
   }
 }
 

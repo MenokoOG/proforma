@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { CashChart, CHART_NARROW_QUERY } from '../components/Chart'
 import { SensitivityTables } from '../components/SensitivityTables'
 import { Card, Icon, Note, Segmented, Stat, useMediaQuery } from '../components/ui'
@@ -11,6 +11,7 @@ import {
   spread,
 } from '../lib/calc'
 import { compactMoney, money, percent, signedMoney, years } from '../lib/format'
+import { DECISION_LABEL, signoffStatus } from '../lib/signoff'
 import type { Doc, YearRow } from '../lib/types'
 import { useStore } from '../state/store'
 
@@ -30,6 +31,7 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
   const stat = (v: number) => (narrow ? compactMoney(v, currency) : money(v, currency))
 
   const [showTable, setShowTable] = useState(false)
+  const approval = useMemo(() => signoffStatus(doc), [doc])
 
   return (
     <>
@@ -110,6 +112,17 @@ export function ResultsStep({ goTo }: { goTo: (step: number) => void }) {
           ) : null}
         </Note>
       </div>
+
+      {approval.latest ? (
+        <Note>
+          <strong>Sign-off.</strong> {approval.latest.name} ({approval.latest.role}):{' '}
+          {DECISION_LABEL[approval.latest.decision].toLowerCase()} on{' '}
+          {approval.latest.at.slice(0, 10)}.{' '}
+          {approval.state === 'current'
+            ? 'This applies to the case as it stands.'
+            : 'The case has changed since, so this no longer applies.'}
+        </Note>
+      ) : null}
 
       {blockers.length ? (
         <Card title="Before this goes anywhere">

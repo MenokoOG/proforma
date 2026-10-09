@@ -4,6 +4,7 @@ import { PHASES, SWIMLANES, deliverableKey } from '../data/roadmap'
 import { STAKEHOLDER_ROLES } from '../data/stakeholders'
 import { assumptionsList } from '../lib/assumptions'
 import { provenanceText } from '../lib/provenance'
+import { SIGNOFF_DISCLAIMER, signoffLine, signoffStatus } from '../lib/signoff'
 import { lineTotal, spread, yearLabels } from '../lib/calc'
 import { longDate, money, percent, signedMoney } from '../lib/format'
 import { useStore } from '../state/store'
@@ -22,6 +23,7 @@ export function PrintReport() {
   const industry = INDUSTRIES.find((i) => i.id === doc.useCase.industry)
   const namedStakeholders = STAKEHOLDER_ROLES.filter((r) => (doc.stakeholders[r.id] ?? '').trim())
   const selectedDecisions = doc.decisions.filter((d) => d.selected)
+  const approval = signoffStatus(doc)
 
   return (
     <div className="print-report">
@@ -85,6 +87,26 @@ export function PrintReport() {
             <strong>IRR.</strong> {results.irrNote}
           </p>
         ) : null}
+      </section>
+
+      <section className="card">
+        <h2>Sign-off</h2>
+        {doc.signoffs?.length ? (
+          <ul style={{ paddingLeft: 20, marginTop: 8 }}>
+            {doc.signoffs.map((s) => (
+              <li key={s.id} style={{ marginBottom: 4 }}>
+                {signoffLine(s, approval.fingerprint)}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p style={{ marginTop: 8 }}>No sign-off recorded.</p>
+        )}
+        <p className="note" style={{ marginTop: 10 }}>
+          Case fingerprint (SHA-256): <code>{approval.fingerprint}</code>
+          <br />
+          {SIGNOFF_DISCLAIMER}
+        </p>
       </section>
 
       <section className="card">

@@ -137,6 +137,7 @@ export function TextField({
   placeholder,
   type = 'text',
   autoComplete = 'off',
+  list,
 }: {
   label: string
   hint?: string
@@ -145,6 +146,8 @@ export function TextField({
   placeholder?: string
   type?: string
   autoComplete?: string
+  /** id of a <datalist> offering suggestions. */
+  list?: string
 }) {
   return (
     <Field label={label} hint={hint}>
@@ -156,6 +159,7 @@ export function TextField({
           value={value}
           placeholder={placeholder}
           autoComplete={autoComplete}
+          list={list}
           onChange={(e) => onChange(e.target.value)}
         />
       )}
