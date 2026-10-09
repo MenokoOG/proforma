@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   are in the printed report, the CSV and the Markdown export. Every figure comes from
   `computeResults` on a scaled copy of the case, so the core arithmetic is untouched.
 - **Markdown export says when it was generated**, as the CSV already did.
+- **Owner, source and date on every line.** Each cost, benefit and mitigation line gains three optional fields: who stands behind the number, where it came from, and the date it was last confirmed. They save in the JSON project file (still document version 1; older files open unchanged), appear in the printed report and the Markdown justifications, and become Owner, Source and As of columns in the CSV. Readiness gains two warnings for benefit lines that carry money: one when any of the three is missing, one when the confirmation date is more than 12 months before the start date. The worked example is left bare, so it shows the first warning. Core arithmetic is untouched.
+- **Fixed with it:** loading a built-in line copied only its amounts and note, so any new line field would have been dropped on load and import. `hydrate` now keeps the provenance fields and discards a malformed date.
 
 - **`npm run size`.** Sums the gzipped JS and CSS in `dist/assets` the way CI does and prints the
   headroom against the 120 kB budget (115,587 bytes at this commit). Run it after `npm run build`.

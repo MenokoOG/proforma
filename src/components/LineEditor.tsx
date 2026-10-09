@@ -2,7 +2,7 @@ import { lineTotal, spread, yearLabels } from '../lib/calc'
 import { money, signedMoney } from '../lib/format'
 import type { LineItem } from '../lib/types'
 import { useStore } from '../state/store'
-import { Icon, MoneyField, TextArea } from './ui'
+import { Icon, MoneyField, TextArea, TextField } from './ui'
 
 type Bucket = 'costs' | 'benefits' | 'mitigations'
 type Tone = 'cost' | 'benefit' | 'risk'
@@ -107,6 +107,41 @@ export function LineEditor({
               : 'e.g. Four FTE for the build year, two thereafter.'
           }
         />
+
+        <div className="grid-2">
+          <TextField
+            label="Owner"
+            hint="Who stands behind this number."
+            value={item.owner ?? ''}
+            onChange={(v) => patch({ owner: v })}
+            placeholder="e.g. J. Ruiz, Finance"
+          />
+          <TextField
+            label="Source"
+            hint="Where the number came from."
+            value={item.source ?? ''}
+            onChange={(v) => patch({ source: v })}
+            placeholder="e.g. Q3 helpdesk report, tab 2"
+          />
+        </div>
+        <div className="grid-2">
+          <TextField
+            label="Confirmed on"
+            hint="The date this figure was last checked."
+            type="date"
+            value={item.asOf ?? ''}
+            onChange={(v) => patch({ asOf: v })}
+          />
+          <div className="btn-row" style={{ alignSelf: 'end' }}>
+            <button
+              type="button"
+              className="btn small"
+              onClick={() => patch({ asOf: new Date().toISOString().slice(0, 10) })}
+            >
+              Today
+            </button>
+          </div>
+        </div>
 
         <div className="spread" role="group" aria-label={`${item.label} five-year spread`}>
           {cells.map((v, i) => (

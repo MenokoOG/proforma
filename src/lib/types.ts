@@ -20,6 +20,12 @@ export interface LineItem {
   annual: number
   /** Free-text justification. This is what a sponsor actually reads. */
   note: string
+  /** Who stands behind the number, e.g. "J. Ruiz, Finance". Optional. */
+  owner?: string
+  /** Where the number came from, e.g. "Q3 helpdesk report, tab 2". Optional. */
+  source?: string
+  /** ISO date (YYYY-MM-DD) the figure was last confirmed. Optional. */
+  asOf?: string
   /** True for rows the user added themselves (can be deleted). */
   custom?: boolean
 }
