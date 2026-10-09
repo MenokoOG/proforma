@@ -3,6 +3,7 @@ import { DECISION_OPTIONS, RISK_DIMENSIONS } from '../data/decisions'
 import { STAKEHOLDER_ROLES } from '../data/stakeholders'
 import { assumptionsList } from './assumptions'
 import { lineTotal, spread, yearLabels } from './calc'
+import { provenanceText } from './provenance'
 import { changeLabel, computeSensitivity, cushionSentence } from './sensitivity'
 import type { Doc, Results } from './types'
 
@@ -96,7 +97,17 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
   rows.push(['Note', 'One-time amounts fall in Year 1. Annual amounts apply to Years 2-5.'])
   rows.push([])
 
-  const header = ['Item', 'Description', 'One-time', 'Annual', ...labels, '5-year total']
+  const header = [
+    'Item',
+    'Description',
+    'Owner',
+    'Source',
+    'As of',
+    'One-time',
+    'Annual',
+    ...labels,
+    '5-year total',
+  ]
   rows.push(header)
 
   const section = (title: string, items: Doc['costs'], sign: 1 | -1) => {
@@ -106,6 +117,9 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
       rows.push([
         item.label,
         item.note,
+        item.owner ?? '',
+        item.source ?? '',
+        item.asOf ?? '',
         item.oneTime * sign,
         item.annual * sign,
         ...cells,
@@ -115,15 +129,15 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
   }
 
   section('COSTS', doc.costs, -1)
-  rows.push(['TOTAL COST', '', '', '', ...results.years.map((y) => -y.cost), -results.totalCost])
+  // Total rows leave Description, Owner, Source, As of, One-time and Annual blank.
+  const pad = ['', '', '', '', '', '']
+  rows.push(['TOTAL COST', ...pad, ...results.years.map((y) => -y.cost), -results.totalCost])
   rows.push([])
 
   section('BENEFITS', doc.benefits, 1)
   rows.push([
     'TOTAL BENEFITS',
-    '',
-    '',
-    '',
+    ...pad,
     ...results.years.map((y) => y.benefit),
     results.totalBenefit,
   ])
@@ -132,9 +146,7 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
   section('RISK MITIGATIONS', doc.mitigations, -1)
   rows.push([
     'TOTAL MITIGATION',
-    '',
-    '',
-    '',
+    ...pad,
     ...results.years.map((y) => -y.mitigation),
     -results.totalMitigation,
   ])
@@ -142,13 +154,11 @@ export function buildCsv(doc: Doc, results: Results, now: Date = new Date()): st
 
   rows.push([
     'TOTAL COST / BENEFIT',
-    '',
-    '',
-    '',
+    ...pad,
     ...results.years.map((y) => y.net),
     results.totalNet,
   ])
-  rows.push(['RUNNING TOTAL', '', '', '', ...results.years.map((y) => y.cumulative), ''])
+  rows.push(['RUNNING TOTAL', ...pad, ...results.years.map((y) => y.cumulative), ''])
   rows.push([])
 
   rows.push(['SUMMARY'])
@@ -347,13 +357,14 @@ export function buildMarkdown(doc: Doc, results: Results, now: Date = new Date()
   L.push('')
 
   const justified = [...doc.costs, ...doc.benefits, ...doc.mitigations].filter(
-    (i) => lineTotal(i) > 0 && i.note.trim(),
+    (i) => lineTotal(i) > 0 && (i.note.trim() || provenanceText(i)),
   )
   if (justified.length) {
     L.push('## Justifications')
     L.push('')
     for (const item of justified) {
-      L.push(`- **${item.label}** (${fmt(lineTotal(item))}), ${item.note.trim()}`)
+      const text = [item.note.trim(), provenanceText(item)].filter(Boolean).join(' ')
+      L.push(`- **${item.label}** (${fmt(lineTotal(item))}), ${text}`)
     }
     L.push('')
   }

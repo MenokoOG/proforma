@@ -1,3 +1,4 @@
+import { hasFullProvenance, isStale } from './provenance'
 import type { Doc, LineItem, NpvTiming, Results, TokenModel, TokenPlan, YearRow } from './types'
 
 export const HORIZON = 5
@@ -407,6 +408,24 @@ export function findGaps(doc: Doc, results: Results): Gap[] {
       4,
       'warning',
       `${unjustifiedBenefits.length} benefit line${unjustifiedBenefits.length === 1 ? '' : 's'} carry money but no justification.`,
+    )
+
+  const funded = doc.benefits.filter((b) => lineTotal(b) > 0)
+  const unsourced = funded.filter((b) => !hasFullProvenance(b))
+  if (unsourced.length)
+    push(
+      'provenance',
+      4,
+      'warning',
+      `${unsourced.length} benefit line${unsourced.length === 1 ? '' : 's'} with money ${unsourced.length === 1 ? 'is' : 'are'} missing an owner, source or date.`,
+    )
+  const stale = funded.filter((b) => isStale(b, doc.project.startDate))
+  if (stale.length)
+    push(
+      'stale',
+      4,
+      'warning',
+      `${stale.length} benefit figure${stale.length === 1 ? ' was' : 's were'} last confirmed more than 12 months before the start date.`,
     )
 
   if (results.totalMitigation === 0)

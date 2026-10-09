@@ -3,6 +3,7 @@ import { INDUSTRIES } from '../data/industries'
 import { PHASES, SWIMLANES, deliverableKey } from '../data/roadmap'
 import { STAKEHOLDER_ROLES } from '../data/stakeholders'
 import { assumptionsList } from '../lib/assumptions'
+import { provenanceText } from '../lib/provenance'
 import { lineTotal, spread, yearLabels } from '../lib/calc'
 import { longDate, money, percent, signedMoney } from '../lib/format'
 import { useStore } from '../state/store'
@@ -417,7 +418,7 @@ function Totals({
 function Justifications() {
   const { doc, currency } = useStore()
   const items = [...doc.costs, ...doc.benefits, ...doc.mitigations].filter(
-    (i) => lineTotal(i) > 0 && i.note.trim(),
+    (i) => lineTotal(i) > 0 && (i.note.trim() || provenanceText(i)),
   )
   if (!items.length) return null
   return (
@@ -433,7 +434,15 @@ function Justifications() {
                 {money(lineTotal(i), currency)}
               </span>
             </dt>
-            <dd>{i.note}</dd>
+            <dd>
+              {i.note}
+              {provenanceText(i) ? (
+                <>
+                  <br />
+                  <em>{provenanceText(i)}</em>
+                </>
+              ) : null}
+            </dd>
           </div>
         ))}
       </dl>

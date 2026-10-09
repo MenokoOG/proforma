@@ -1,5 +1,6 @@
 import { normalizeDiscountRate, normalizeNpvTiming } from './calc'
 import { createDoc, DOC_VERSION, defaultDecisions, defaultPhases } from './defaults'
+import { cleanProvenance } from './provenance'
 import type { Doc } from './types'
 
 const KEY = 'proforma.doc.v1'
@@ -52,7 +53,15 @@ function mergeLines(base: Doc['costs'], saved: unknown): Doc['costs'] {
   const savedById = new Map(saved.map((l) => [l?.id, l]))
   const merged = base.map((l) => {
     const s = savedById.get(l.id)
-    return s ? { ...l, oneTime: +s.oneTime || 0, annual: +s.annual || 0, note: s.note ?? '' } : l
+    return s
+      ? {
+          ...l,
+          oneTime: +s.oneTime || 0,
+          annual: +s.annual || 0,
+          note: s.note ?? '',
+          ...cleanProvenance(s),
+        }
+      : l
   })
   // Preserve any rows the user added themselves.
   for (const s of saved) {
@@ -64,6 +73,7 @@ function mergeLines(base: Doc['costs'], saved: unknown): Doc['costs'] {
         oneTime: +s.oneTime || 0,
         annual: +s.annual || 0,
         note: String(s.note ?? ''),
+        ...cleanProvenance(s),
         custom: true,
       })
     }
