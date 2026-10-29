@@ -87,9 +87,9 @@ export function Roadmap() {
         >
           <div className="grid-2">
             <Field label="Gate date" hint="When this phase must be signed off.">
-              {(id) => (
+              {(control) => (
                 <input
-                  id={id}
+                  {...control}
                   className="input"
                   type="date"
                   value={state.date}

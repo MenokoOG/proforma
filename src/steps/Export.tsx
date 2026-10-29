@@ -81,11 +81,16 @@ export function Export() {
           <button type="button" className="btn" onClick={() => fileRef.current?.click()}>
             {Icon.upload(17)} Open project file
           </button>
+          {/* Driven by the button above. `visually-hidden` clips rather than
+              removes, so without these two it sits in the tab order as an
+              unnamed "file upload" control. */}
           <input
             ref={fileRef}
             type="file"
             accept="application/json,.json"
             className="visually-hidden"
+            tabIndex={-1}
+            aria-hidden="true"
             onChange={(e) => {
               const f = e.target.files?.[0]
               if (f) void onImport(f)

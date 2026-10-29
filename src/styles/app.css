@@ -710,9 +710,17 @@ textarea {
 .input:focus,
 .select:focus,
 .textarea:focus {
-  outline: none;
   border-color: var(--brand);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 22%, transparent);
+}
+/* Pointer focus gets the soft brand ring on its own. Keyboard focus also
+   keeps the 3px --focus outline declared near the top of this file, which an
+   unconditional `outline: none` here used to cancel on every input in the
+   app, leaving keyboard users a 22%-opacity shadow to navigate by. */
+.input:focus:not(:focus-visible),
+.select:focus:not(:focus-visible),
+.textarea:focus:not(:focus-visible) {
+  outline: none;
 }
 .textarea {
   min-height: 88px;

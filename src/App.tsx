@@ -218,7 +218,7 @@ export function App() {
                     <>
                       <span className="rail-dot" aria-hidden="true" />
                       <span className="visually-hidden">
-                        {gapsByStep.get(i)} item needs attention
+                        {attentionText(gapsByStep.get(i) ?? 0)}
                       </span>
                     </>
                   ) : null}
@@ -271,6 +271,11 @@ export function App() {
       <LiveRegion message={`Step ${step + 1} of ${STEPS.length}: ${STEPS[step].label}`} />
     </div>
   )
+}
+
+/** The rail's screen-reader text for a step with open gaps. */
+function attentionText(n: number): string {
+  return n === 1 ? '1 item needs attention' : `${n} items need attention`
 }
 
 /** Holds the step's shape while its chunk arrives, so nothing jumps. */
