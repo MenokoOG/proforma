@@ -114,9 +114,9 @@ export function Brief() {
         <div className="grid-2">
           {STAKEHOLDER_ROLES.map((role) => (
             <Field key={role.id} label={role.label} hint={role.owns}>
-              {(id) => (
+              {(control) => (
                 <input
-                  id={id}
+                  {...control}
                   className="input"
                   type="text"
                   autoComplete="off"
@@ -135,9 +135,9 @@ export function Brief() {
       <Card title="Financial assumptions" sub="These drive every figure in the model.">
         <div className="grid-3">
           <Field label="Year 1 starts" hint="Anchors the year labels and the roadmap gates.">
-            {(id) => (
+            {(control) => (
               <input
-                id={id}
+                {...control}
                 className="input"
                 type="date"
                 value={p.startDate}

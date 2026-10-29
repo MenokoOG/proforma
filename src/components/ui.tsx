@@ -104,10 +104,20 @@ export const Icon = {
 /* Field wrappers                                                      */
 /* ------------------------------------------------------------------ */
 
+/**
+ * What a Field hands to its control. Spread it onto the input, not just the
+ * id: the hint is the field's description, and a hint the control does not
+ * point at is text a screen reader never reads out.
+ */
+export interface FieldControl {
+  id: string
+  'aria-describedby': string | undefined
+}
+
 interface FieldProps {
   label: string
   hint?: string
-  children: (id: string) => ReactNode
+  children: (control: FieldControl) => ReactNode
   className?: string
 }
 
@@ -124,7 +134,7 @@ export function Field({ label, hint, children, className }: FieldProps) {
           {hint}
         </p>
       ) : null}
-      {children(id)}
+      {children({ id, 'aria-describedby': hint ? hintId : undefined })}
     </div>
   )
 }
@@ -151,9 +161,9 @@ export function TextField({
 }) {
   return (
     <Field label={label} hint={hint}>
-      {(id) => (
+      {(control) => (
         <input
-          id={id}
+          {...control}
           className="input"
           type={type}
           value={value}
@@ -184,9 +194,9 @@ export function TextArea({
 }) {
   return (
     <Field label={label} hint={hint}>
-      {(id) => (
+      {(control) => (
         <textarea
-          id={id}
+          {...control}
           className="textarea"
           rows={rows}
           value={value}
@@ -219,13 +229,13 @@ export function MoneyField({
   const display = draft ?? groupDigits(value)
   return (
     <Field label={label} hint={hint}>
-      {(id) => (
+      {(control) => (
         <span className="input-affix">
           <span className="affix" aria-hidden="true">
             {symbol}
           </span>
           <input
-            id={id}
+            {...control}
             className="input money"
             type="text"
             inputMode="decimal"
@@ -278,7 +288,7 @@ export function NumberField({
   }
   return (
     <Field label={label} hint={hint}>
-      {(id) => (
+      {(control) => (
         <span className={`input-affix${suffix ? ' suffix' : ''}`}>
           {suffix ? (
             <span className="affix" aria-hidden="true">
@@ -286,7 +296,7 @@ export function NumberField({
             </span>
           ) : null}
           <input
-            id={id}
+            {...control}
             className="input money"
             type="text"
             inputMode="decimal"
@@ -324,9 +334,9 @@ export function SelectField<T extends string>({
 }) {
   return (
     <Field label={label} hint={hint}>
-      {(id) => (
+      {(control) => (
         <select
-          id={id}
+          {...control}
           className="select"
           value={value}
           onChange={(e) => onChange(e.target.value as T)}
