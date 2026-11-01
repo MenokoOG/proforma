@@ -24,7 +24,7 @@
 <!--
   SCREENSHOT PENDING, replace this comment with:
   <p align="center"><img src="docs/screenshot.png" alt="The Results step showing the five-year table, cash chart and headline figures" width="900"></p>
-  Capture the Results step at ~1180px in Event Horizon dark, with the sample
+  Capture the Results step at ~1180px in CHROMA LAB dark, with the sample
   case loaded, then a 375px shot of the year cards beside it.
 -->
 
@@ -154,7 +154,7 @@ Override the model with `PROFORMA_MODEL` (default `claude-opus-5`).
 44 px, no horizontal page scroll at 375 px. Wide tables and phase tabs scroll inside their own
 containers rather than pushing the page sideways. The step rail appears at ≥900 px.
 
-**Snappy.** React and one self-hosted typeface (Space Grotesk), no chart library, no UI kit, no icon font. About 117 kB gzipped (JS and CSS), against a 120 kB budget; `npm run size` prints the figure.
+**Snappy.** React and the system font stack, no chart library, no UI kit, no icon font. About 117 kB gzipped (JS and CSS), against a 120 kB budget; `npm run size` prints the figure.
 The chart is hand-rolled SVG so it renders instantly, inherits theme colours, and prints
 correctly. Writes to `localStorage` are debounced so typing never blocks.
 
