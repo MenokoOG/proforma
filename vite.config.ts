@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -21,6 +22,11 @@ export default defineConfig({
     target: 'es2022',
     sourcemap: false,
     rollupOptions: {
+      // Two pages: the landing page at the root and the app under /app/.
+      input: {
+        landing: fileURLToPath(new URL('index.html', import.meta.url)),
+        app: fileURLToPath(new URL('app/index.html', import.meta.url)),
+      },
       output: {
         // React changes on a release cadence; the app changes on ours.
         // Splitting them means a deploy only invalidates the app chunk.
