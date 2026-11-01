@@ -39,8 +39,9 @@ jobs:
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
 
-      # Client-side routing: an unknown path must return index.html rather
-      # than a 404. Pages honours a copy named 404.html.
+      # The app has no client-side routes, so an unknown path falls back to
+      # the landing page rather than a bare 404. Pages honours a copy named
+      # 404.html.
       - name: Add SPA fallback
         run: cp dist/index.html dist/404.html
 

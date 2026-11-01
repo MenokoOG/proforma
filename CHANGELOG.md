@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Landing page at the root, app under `/app/`.** `https://menokoog.github.io/proforma/` now shows the CHROMA LAB landing page and the app lives at `/proforma/app/`. A link to the old root now lands on the landing page, whose buttons open the app. Vite builds both pages as separate entries; the app's `index.html` moved to `app/index.html`.
+
+### Changed
+
 - **New visual system: CHROMA LAB.** Warm bench (#F5F4F0), white cards, ink (#1C1B18) and one working blue. Dark keeps the same warm ink as its ground. The foil is now a mix of blue, violet and red on chrome only. The system font stack replaces Space Grotesk, so the `@fontsource-variable/space-grotesk` dependency and its NOTICE credit are removed. Radius scale is 4/8/16px. Figures keep their own hues: green benefit, red cost, amber risk. The contrast suite passes unchanged.
 
 ### Fixed
