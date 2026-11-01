@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **New visual system: CHROMA LAB.** Warm bench (#F5F4F0), white cards, ink (#1C1B18) and one working blue. Dark keeps the same warm ink as its ground. The foil is now a mix of blue, violet and red on chrome only. The system font stack replaces Space Grotesk, so the `@fontsource-variable/space-grotesk` dependency and its NOTICE credit are removed. Radius scale is 4/8/16px. Figures keep their own hues: green benefit, red cost, amber risk. The contrast suite passes unchanged.
+
 ### Fixed
 
 - **Worked example no longer shifts on load.** The sample hand-entered 50,000 for the AI API line, but its linked token plan computed about 14,191 a year, and the app replaces a linked line with the computed figure. The screen therefore showed Years 2-5 net of about +825,809 instead of the +790,000 the README and tests state. The sample plan now runs 6,342 requests a day, which computes 50,000, and a test fails if the plan and the line drift apart.
